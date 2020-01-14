@@ -7,6 +7,7 @@ import randomAbi from "./abi/random";
 import hydroAbi from "./abi/hydro";
 import style from './style.less';
 import Panel from '../components/Panel';
+import TrendHistory from '../components/TrendHistory';
 
 var Web3 = require("web3");
 
@@ -128,19 +129,9 @@ class IndexPage extends Component {
           <WalletButton />
         </div>
         <Panel web3={this.web3}/>
+        <TrendHistory web3={this.web3}/>
         
-        <div>How do you...</div>
-        <div className={style.upDownRegion}>
-          <div>
-            <Button className={style.upDownButton}>UP</Button>
-          </div>
-          <div>
-            <Button className={style.upDownButton}>DOWN</Button>
-          </div>
-        </div>
-        <div className={style.roundHistory}>RoundHistoryGrid</div>
-        <div>Transaction fee will ...</div>
-        <div className={style.feePool}>Fee Pool</div>
+        
         <h2 className={style.history}>Transaction History</h2>
         <Table columns={this.columns}/>
       </div>
