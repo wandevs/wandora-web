@@ -8,6 +8,7 @@ import hydroAbi from "./abi/hydro";
 import style from './style.less';
 import Panel from '../components/Panel';
 import TrendHistory from '../components/TrendHistory';
+import TransactionHistory from '../components/TransactionHistory';
 
 var Web3 = require("web3");
 
@@ -19,38 +20,7 @@ class IndexPage extends Component {
     window._nodeUrl = "https://demodex.wandevs.org:48545";
   }
 
-  columns = [
-    {
-      title: 'Time',
-      dataIndex: 'time',
-      key: 'time',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: 'Round',
-      dataIndex: 'round',
-      key: 'round',
-    },
-    {
-      title: 'Amount',
-      dataIndex: 'amount',
-      key: 'amount',
-    },
-    {
-      title: 'Type',
-      dataIndex: 'type',
-      key: 'type',
-    },
-    {
-      title: 'Result',
-      dataIndex: 'result',
-      key: 'result',
-    }
-  ]
+
 
 
   componentDidMount() {
@@ -130,10 +100,9 @@ class IndexPage extends Component {
         </div>
         <Panel web3={this.web3}/>
         <TrendHistory web3={this.web3}/>
-        
-        
-        <h2 className={style.history}>Transaction History</h2>
-        <Table columns={this.columns}/>
+        <TransactionHistory />
+        <TransactionHistory />
+
       </div>
     );
   }
