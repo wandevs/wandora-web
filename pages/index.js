@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { Component } from "../components/base";
-import { Button, Table } from 'antd';
+import { Button, Table, Icon } from 'antd';
 import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong } from "wan-dex-sdk-wallet";
 import "wan-dex-sdk-wallet/index.css";
 import randomAbi from "./abi/random";
@@ -122,9 +122,10 @@ class IndexPage extends Component {
       <div className={style.app}>
         <div className={style.header}>
           <Wallet title="Wan Game" nodeUrl={window._nodeUrl} />
+          <Icon className={style.logo} type="appstore" />
+          <div className={style.title}>BTC</div>
           <WalletButton />
         </div>
-        <h1 className={style.title}>Hello World</h1>
         <div>How do you...</div>
         <div className={style.upDownRegion}>
           <div>
