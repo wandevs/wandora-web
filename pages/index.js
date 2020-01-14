@@ -6,6 +6,7 @@ import "wan-dex-sdk-wallet/index.css";
 import randomAbi from "./abi/random";
 import hydroAbi from "./abi/hydro";
 import style from './style.less';
+import Panel from '../components/Panel';
 
 var Web3 = require("web3");
 
@@ -126,6 +127,8 @@ class IndexPage extends Component {
           <div className={style.title}>BTC</div>
           <WalletButton />
         </div>
+        <Panel web3={this.web3}/>
+        
         <div>How do you...</div>
         <div className={style.upDownRegion}>
           <div>
