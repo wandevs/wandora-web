@@ -78,9 +78,9 @@ class SendModalForm extends Component {
               )}
             </Form.Item>
           </Form>
-          <div className={style.bt20}>20 wan</div>
-          <div className={style.bt10}>10 wan</div>
-          <div className={style.bt5}>5 wan</div>
+          <div className={style.bt20} onClick={()=>{this.props.form.setFieldsValue({amount: 20})}}>20 wan</div>
+          <div className={style.bt10} onClick={()=>{this.props.form.setFieldsValue({amount: 10})}}>10 wan</div>
+          <div className={style.bt5} onClick={()=>{this.props.form.setFieldsValue({amount: 5})}}>5 wan</div>
         </Modal>
       </div>
     );
