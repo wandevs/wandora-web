@@ -60,7 +60,15 @@ class SendModalForm extends Component {
             </Form.Item>
             <Form.Item label="Amount:">
               {getFieldDecorator('amount', {
-                rules: [{ required: true, message: 'Please input your Amount!' }],
+                getValueFromEvent: (e) => {
+                  const convertedValue = Number(e.currentTarget.value);
+                  if (isNaN(convertedValue)) {
+                    return Number(this.props.form.getFieldValue("amount"));
+                  } else {
+                    return convertedValue;
+                  }
+                },
+                rules: [{ required: true, type: 'integer' }],
                 initialValue: 1
               })(
                 <Input
