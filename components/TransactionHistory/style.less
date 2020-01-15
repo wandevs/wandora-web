@@ -45,6 +45,24 @@
 }
 
 :global {
+    @table-td-bg-hover: #303147;
+
+    .ant-table-tbody>tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)>td {
+        background:@table-td-bg-hover;
+    }
+
+    .ant-table-tbody > tr > td {
+        border-bottom: 10px solid #1A1B2C;
+    }
+
+    .ant-pagination-item-active a,
+    .ant-pagination-item a ,
+    .ant-pagination-prev .ant-pagination-item-link, 
+    .ant-pagination-next .ant-pagination-item-link {
+        color: white;
+        background-color: @table-td-bg-hover;
+    }
+
     .ant-table-placeholder {
         background: none;
         border: none;
@@ -105,9 +123,5 @@
 
     .ant-table-row-level-0:hover {
         background:rgba(31,32,52,1);
-    }
-
-    .ant-table-tbody > tr > td {
-        border: none;
     }
 }
