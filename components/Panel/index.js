@@ -32,6 +32,7 @@ class Panel extends Component {
               <div>WAN in</div>
               <div className={style.boxText2}>4h</div>
               <div className={style.boxText2}>23m</div>
+              <div className={style.boxText2}>46s</div>
               <div style={{ marginLeft: '10px' }}>later.</div>
               <Icon type="question-circle" style={{ margin: '13px', color: 'gray', fontSize: '16px' }} />
             </div>
@@ -52,6 +53,7 @@ class Panel extends Component {
           <div className={style.bottomText}>Buying in this round will be closed in</div>
           <div className={style.boxText}>2h</div>
           <div className={style.boxText}>25m</div>
+          <div className={style.boxText}>26s</div>
         </div>
       </div>
     );
