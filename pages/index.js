@@ -18,7 +18,8 @@ class IndexPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    window._nodeUrl = "https://demodex.wandevs.org:48545";
+    // window._nodeUrl = "https://demodex.wandevs.org:48545";
+    window._nodeUrl = "https://mywanwallet.io/testnet";
   }
 
 
@@ -99,7 +100,7 @@ class IndexPage extends Component {
           <div className={style.title}>BTC</div>
           <WalletButton />
         </div>
-        <Panel web3={this.web3}/>
+        <Panel web3={this.web3} walletButton={WalletButtonLong}/>
         <TrendHistory web3={this.web3}/>
         <TransactionHistory />
         <DistributionHistory />
