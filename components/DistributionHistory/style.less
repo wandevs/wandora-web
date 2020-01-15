@@ -1,0 +1,154 @@
+.body {
+    margin: 20px;
+}
+
+.title {
+    font-size:18px;
+    font-family:RobotoCondensed-Bold;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    line-height:18px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    height: 60px;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-top: 14px;
+}
+
+.rightText {
+    margin:6px;
+    margin-right: 26px;
+    font-size:14px;
+    font-family:Roboto Condensed;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    line-height:15px;
+}
+
+.subLine {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.logo {
+    position: absolute;
+    left: 20px;
+    margin: 6px;
+}
+
+.subTitle {
+    position: absolute;
+    left: 44px;
+    margin: 6px;
+}
+
+.subSelect {
+    position: absolute;
+    left: 206px;
+    margin-top: -2px;
+    width:300px;
+    
+}
+
+
+
+:global {
+    @table-td-bg-hover: #303147;
+
+    .ant-table-tbody>tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)>td {
+        background:@table-td-bg-hover;
+    }
+
+    .ant-table-tbody > tr > td {
+        border-bottom: 10px solid #1A1B2C;
+    }
+
+    .ant-pagination-item-active a,
+    .ant-pagination-item a ,
+    .ant-pagination-prev .ant-pagination-item-link, 
+    .ant-pagination-next .ant-pagination-item-link {
+        color: white;
+        background-color: @table-td-bg-hover;
+    }
+
+    .ant-table-placeholder {
+        background: none;
+        border: none;
+    }
+
+    .ant-table {
+        color: white;
+    }
+
+    .ant-table-thead > tr > th {
+        background: none;
+        color: white;
+        border: none;
+    }
+
+    .ant-table-column-title {
+        height:15px;
+        font-size:20px;
+        font-family:RobotoCondensed-Bold;
+        font-weight:bold;
+        color:rgba(255,255,255,0.3);
+        text-align: center;
+    }
+
+    .ant-table-thead > tr:first-child > th:last-child {
+        text-align: center;
+    }
+
+    .ant-empty-description {
+        font-size:20px;
+        font-family:RobotoCondensed-Bold;
+        font-weight:bold;
+        color:rgba(255,255,255,0.3);
+        text-align: center;
+    }
+
+    .ant-table-row {
+        height:80px;
+        background:rgba(31,32,52,1);
+        border-radius:4px;
+        border: none;
+        margin-bottom: 6px;
+
+        font-size:16px;
+        font-family:Roboto Condensed;
+        font-weight:400;
+        color:rgba(255,255,255,1);
+        line-height:46px;
+    }
+
+    .ant-table-row:hover {
+        background:rgba(31,32,52,1);
+    }
+
+    .ant-table-row-level-0 {
+        border: none;
+    }
+
+    .ant-table-row-level-0:hover {
+        background:rgba(31,32,52,1);
+    }
+
+    .ant-select-selection--single {
+        height:35px;
+        background:rgba(48,49,71,1);
+        border-radius:18px;
+        border: none;
+        font-size:14px;
+        font-family:Roboto Condensed;
+        font-weight:400;
+        color:rgba(255,255,255,0.5);
+        padding-left: 5px;
+        padding-top: 2px;
+    }
+
+    .ant-select-arrow .ant-select-arrow-icon svg {
+        color: white;
+    }
+}

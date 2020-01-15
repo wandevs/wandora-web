@@ -9,6 +9,7 @@ import style from './style.less';
 import Panel from '../components/Panel';
 import TrendHistory from '../components/TrendHistory';
 import TransactionHistory from '../components/TransactionHistory';
+import DistributionHistory from '../components/DistributionHistory';
 
 var Web3 = require("web3");
 
@@ -101,7 +102,7 @@ class IndexPage extends Component {
         <Panel web3={this.web3}/>
         <TrendHistory web3={this.web3}/>
         <TransactionHistory />
-        <TransactionHistory />
+        <DistributionHistory />
 
       </div>
     );
