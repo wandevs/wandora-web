@@ -6,37 +6,63 @@
 }
 
 .upButton {
-    width:215px;
-    height:50px;
+    width:155px;
+    height:45px;
     background:linear-gradient(90deg,rgba(64,218,191,1) 0%,rgba(39,199,171,1) 100%);
     border-radius:4px;
     display: flex;
     justify-content: center;
     position: relative;
-    top: 59px;
-    left: 45.5px;
+    top: 209px;
+    left: 546px;
     cursor: pointer;
+    z-index:999;
 }
 
 .upButton:hover {
     background:linear-gradient(90deg,rgb(43, 146, 127) 0%,rgb(8, 89, 75) 100%);
 }
 
+.upButtonDisable {
+    width:155px;
+    height:45px;
+    border-radius:4px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 209px;
+    left: 546px;
+    background:gray;
+}
+
 .downButton {
-    width:215px;
-    height:50px;
+    width:155px;
+    height:45px;
     background:linear-gradient(45deg,rgba(225,20,102,1) 0%,rgba(227,0,121,1) 100%);
     border-radius:4px;
     display: flex;
     justify-content: center;
     position: relative;
-    top: 125.5px;
-    left: 45.5px;
+    top: 164px;
+    left: 716px;
     cursor: pointer;
+    z-index:999;
 }
 
 .downButton:hover {
     background:linear-gradient(45deg,rgb(114, 63, 83) 0%,rgb(94, 1, 51) 100%);
+}
+
+.downButtonDisable {
+    width:155px;
+    height:45px;
+    border-radius:4px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 164px;
+    left: 716px;
+    background:gray;
 }
 
 .btText {
@@ -49,7 +75,7 @@
     font-weight:bold;
     color:rgba(255,255,255,1);
     line-height:23px;
-    margin: 14px;
+    margin: 12px;
 }
 
 .roundPoolUp {
@@ -89,7 +115,7 @@
     justify-content: center;
     padding: 14px;
     position: relative;
-    top: -239px;
+    top: -203px;
 }
 
 .bottomText {
@@ -152,7 +178,7 @@
     font-weight:400;
     color:rgba(255,255,255,1);
     line-height:40px;
-    padding-top:19px;
+    padding-top:58px;
     padding-bottom:20px;
 }
 
@@ -190,7 +216,7 @@
     font-weight:300;
     color:rgba(255,255,255,1);
     line-height:15px;
-    margin-top:24px;
+    margin-top:32px;
 }
 
 .unitText {
@@ -199,6 +225,14 @@
     font-weight:400;
     color:rgba(255,255,255,1);
     line-height:15px;
-    margin-top:33px;
+    margin-top:40px;
     margin-left:10px;
+}
+
+.pieChart {
+    position: relative;
+    top: -527px;
+    left: 56px;
+    width: 250px;
+    height: 250px;
 }

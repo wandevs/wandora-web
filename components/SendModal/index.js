@@ -81,6 +81,7 @@ class SendModalForm extends Component {
           <div className={style.bt20} onClick={()=>{this.props.form.setFieldsValue({amount: 20})}}>20 wan</div>
           <div className={style.bt10} onClick={()=>{this.props.form.setFieldsValue({amount: 10})}}>10 wan</div>
           <div className={style.bt5} onClick={()=>{this.props.form.setFieldsValue({amount: 5})}}>5 wan</div>
+          <div style={{color:'#880'}}>* We will use the lowest gas charge by default, around 0.003 WAN.</div>
         </Modal>
       </div>
     );

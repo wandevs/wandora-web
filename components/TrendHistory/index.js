@@ -10,7 +10,12 @@ class TrendHistory extends Component {
   }
 
   componentDidMount() {
-
+    setTimeout(()=>{
+      let scr = document.getElementById('scrollView')
+      if (scr) {
+        scr.scrollLeft = scr.scrollWidth;
+      }
+    }, 300);
   }
 
   testHistory = [
@@ -38,12 +43,6 @@ class TrendHistory extends Component {
   ]
 
   render() {
-    setTimeout(()=>{
-      let scr = document.getElementById('scrollView')
-      if (scr) {
-        scr.scrollLeft = scr.scrollWidth;
-      }
-    }, 500);
     return (
       <div className={style.body}>
         <div className={style.title}>
