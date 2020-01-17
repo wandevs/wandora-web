@@ -20,16 +20,21 @@ import style from './style.less';
 
 class PieChart extends React.Component {
   render() {
+    const upCnt = this.props.upCnt;
+    const downCnt = this.props.downCnt;
+    const totalCnt = upCnt + downCnt;
+    const upPercent = (upCnt / totalCnt).toFixed(1) + '%';
+    const downPercent = (downCnt / totalCnt).toFixed(1) + '%';
     const { DataView } = DataSet;
     const { Html } = Guide;
     const data = [
       {
-        item: "Up",
-        count: 40
+        item: "UP",
+        count: upCnt
       },
       {
-        item: "Down",
-        count: 20
+        item: "DOWN",
+        count: downCnt
       },
     ];
     const dv = new DataView();
@@ -49,7 +54,7 @@ class PieChart extends React.Component {
     };
 
     return (
-      <div style={{height:'350px'}}>
+      <div style={{ height: '350px' }}>
         <Chart
           height={250}
           width={250}
@@ -60,7 +65,7 @@ class PieChart extends React.Component {
           z-index={99}
         >
           <Coord type={"theta"} radius={0.75} innerRadius={0.6} />
-          
+
           <Tooltip
             showTitle={false}
           />
@@ -82,13 +87,13 @@ class PieChart extends React.Component {
           </Geom>
         </Chart>
         <div className={style.totalText}>Total</div>
-        <div className={style.circelText}>2000</div>
+        <div className={style.circelText}>{totalCnt}</div>
         <div className={style.wanText}>WAN</div>
-        <div className={style.bigCircle}/>
+        <div className={style.bigCircle} />
         <div className={style.smallCircle} />
         <div className={style.inALine}>
-          <div className={style.greenLabel}><div className={style.greenBox}/>UP 66.6%</div>
-          <div className={style.redLabel}><div className={style.redBox}/>DOWN 33.3%</div>
+          <div className={style.greenLabel}><div className={style.greenBox} />UP: {upPercent}</div>
+          <div className={style.redLabel}><div className={style.redBox} />DOWN: {downPercent}</div>
         </div>
       </div>
     );

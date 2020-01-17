@@ -27,7 +27,10 @@ class Panel extends Component {
 
   componentDidMount() {
     //Update left time
-    this.timer = setInterval(() => {
+    this.timer = setInterval(async () => {
+      let ret = await this.getDataFromNode()
+      this.setState(ret);
+
       if (this.state.startTime !== 0 && this.state.timeSpan !== 0 && this.state.stopBefore !== 0) {
         this.setState({
           endLeft: this.getLastTime(Date.now() / 1000 - (this.state.startTime + this.state.timeSpan)),
@@ -41,9 +44,24 @@ class Panel extends Component {
       }
     }, 5000);
 
-    setTimeout(()=>{
-      this.setState({disable: false});
+    setTimeout(() => {
+      this.setState({ disable: false });
     }, 3000);
+  }
+
+  getDataFromNode = async () => {
+    //Demo data
+    
+
+    return {
+      startTime: 1579227480,
+      timeSpan: 0,
+      stopBefore: 0,
+      btcPriceStart: 0,
+      randomPoolAmount: 0,
+      upPoolAmount: 0,
+      downPoolAmount: 0,
+    }
   }
 
   componentWillUnmount() {
@@ -100,7 +118,7 @@ class Panel extends Component {
           <div className={style.firstLine}>
             How do you predict the price trend of WAN-BTC compared with
             <div className={style.subLine}>
-              <div className={style.bold}>0.0000240 BTC</div>
+              <div className={style.bold}>{this.state.btcPriceStart.toFixed(7)} BTC</div>
               <div>WAN in</div>
               <div className={style.boxText2}>{this.state.endLeft.h}h</div>
               <div className={style.boxText2}>{this.state.endLeft.m}m</div>
@@ -115,7 +133,7 @@ class Panel extends Component {
               <Icon type="question-circle" style={{ color: 'gray', fontSize: '16px' }} />
             </div>
             <div className={style.subLine}>
-              <div className={style.poolValue}>9000</div>
+              <div className={style.poolValue}>{this.state.randomPoolAmount}</div>
               <div className={style.unitText}>WAN</div>
             </div>
           </div>
@@ -128,7 +146,7 @@ class Panel extends Component {
           {/* <div className={style.boxText}>{this.state.endLeft.s}s</div> */}
         </div>
         <div className={style.pieChart}>
-          <PieChart/>
+          <PieChart upCnt={this.state.upPoolAmount} downCnt={this.state.downPoolAmount} />
         </div>
         <SendModal web3={this.web3} visible={this.state.modalVisible} hideModal={this.hideModal} type={this.type} walletButton={this.props.walletButton} />
       </div>
