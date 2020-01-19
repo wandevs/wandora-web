@@ -20,17 +20,270 @@ class IndexPage extends Component {
     this.state = {};
     // window._nodeUrl = "https://demodex.wandevs.org:48545";
     window._nodeUrl = "https://mywanwallet.io/testnet";
+
+    let trendStr = window.localStorage.getItem('currentTrend');
+    let trend = null;
+    if (trendStr) {
+      trend = JSON.parse(trendStr);
+    }
+
+    let trendHistoryStr = window.localStorage.getItem('trendHistory');
+    let trendHistory = [];
+    if (trendHistoryStr) {
+      trendHistory = JSON.parse(trendHistoryStr);
+    }
+
+    this.state = {
+      trendInfo: trend,
+      trendHistory: trendHistory,
+      transactionHistory: this.getTransactionHistory(),
+      lotteryHistory: this.getLotteryHistory(),
+    }
   }
-
-
 
 
   componentDidMount() {
     var web3 = new Web3();
     web3.setProvider(new Web3.providers.HttpProvider(window._nodeUrl));
     this.web3 = web3;
-    // this.getInfoFromSC();
-    // setInterval(this.getInfoFromSC.bind(this), 5000)
+
+    this.updateTrendInfoFromNode();
+    setInterval(this.updateTrendInfoFromNode, 5000);
+    
+    this.updateTrendHistoryFromNode();
+    setInterval(this.updateTrendHistoryFromNode, 60*1000);
+  }
+
+  setTrendInfo = (trendInfo) => {
+    let stateTrend = JSON.stringify(this.state.trendInfo);
+    let inComeTrend = JSON.stringify(trendInfo);
+    if (stateTrend !== inComeTrend) {
+      this.setState({trendInfo});
+      window.localStorage.setItem('currentTrend', inComeTrend);
+    }
+  }
+
+  updateTrendInfoFromNode = async () => {
+    let trend = {
+      round: 21,
+      startTime: 1579427102,
+      timeSpan: 3600 * 12,
+      stopBefore: 3600 * 2,
+      btcPriceStart: 0.0000241,
+      randomPoolAmount: 9873.1234,
+      upPoolAmount: 4351,
+      downPoolAmount: 2321,
+      lotteryRound: 1,
+    };
+
+    this.setTrendInfo(trend);
+  }
+
+  setTrendHistory = (trendHistory) => {
+    let stateValue = JSON.stringify(this.state.trendHistory);
+    let inComeValue = JSON.stringify(trendHistory);
+    if (stateValue !== inComeValue) {
+      this.setState({trendHistory});
+      window.localStorage.setItem('trendHistory', inComeValue);
+    }
+  }
+
+  updateTrendHistoryFromNode = async () => {
+    let trendHistory = [
+      { round: 1, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 2, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 3, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 4, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 5, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 6, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 7, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 8, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 9, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 10, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 11, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 12, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 13, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 14, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 15, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 16, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 17, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 18, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 19, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+      { round: 20, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+    ];
+
+    this.setTrendHistory(trendHistory);
+  }
+
+  addTransactionHistory = (singleHistory) => {
+    const stateHistory = this.state.transactionHistory;
+    let history = [];
+    if (stateHistory) {
+      history = stateHistory.slice();
+    }
+    history.push(singleHistory);
+    this.setState({transactionHistory: history});
+    window.localStorage.setItem('transactionHistory', JSON.stringify(history));
+  }
+
+  getTransactionHistory = () => {
+    return [
+      {
+        key: 0,
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        round: '03',
+        amount: 100,
+        type: 'UP',
+        result: 'Done',
+      },
+      {
+        key: 1,
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        round: '05',
+        amount: 100,
+        type: 'DOWN',
+        result: 'to be settled',
+      },
+      {
+        key: 2,
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        round: '02',
+        amount: 100,
+        type: 'DOWN',
+        result: 'Done',
+      },
+      {
+        key: 3,
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        round: '07',
+        amount: 100,
+        type: 'Return',
+        result: 'to be settled',
+      },
+      {
+        key: 4,
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        round: '-',
+        amount: 100.1234,
+        type: 'Fee distribution',
+        result: 'Done',
+      },
+      {
+        key: 5,
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        round: '03',
+        amount: 100,
+        type: 'UP',
+        result: 'Done',
+      }, {
+        key: 6,
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        round: '03',
+        amount: 100,
+        type: 'UP',
+        result: 'Done',
+      },
+      {
+        key: 7,
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        round: '05',
+        amount: 100,
+        type: 'DOWN',
+        result: 'to be settled',
+      },
+      {
+        key: 8,
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        round: '02',
+        amount: 100,
+        type: 'DOWN',
+        result: 'Done',
+      },
+      {
+        key: 9,
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        round: '07',
+        amount: 100,
+        type: 'Return',
+        result: 'to be settled',
+      },
+      {
+        key: 10,
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        round: '-',
+        amount: 100.1234,
+        type: 'Fee distribution',
+        result: 'Done',
+      },
+      {
+        key: 11,
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        round: '03',
+        amount: 100,
+        type: 'UP',
+        result: 'Done',
+      },
+    ];
+  }
+
+  getLotteryHistory = () => {
+    return {
+      '1': [
+      {
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        amountBuy: '1000',
+        amountPay: 100.1234,
+      }, 
+      {
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        amountBuy: '1000',
+        amountPay: 100.1234,
+      }, 
+      {
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        amountBuy: '1000',
+        amountPay: 100.1234,
+      }, 
+      {
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        amountBuy: '1000',
+        amountPay: 100.1234,
+      }, 
+      {
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        amountBuy: '1000',
+        amountPay: 100.1234,
+      }, 
+      {
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        amountBuy: '1000',
+        amountPay: 100.1234,
+      }, 
+      {
+        time: '2020-01-14 17:46:39',
+        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+        amountBuy: '1000',
+        amountPay: 100.1234,
+      }, 
+    ]};
   }
 
   // async getInfoFromSC() {
@@ -90,6 +343,24 @@ class IndexPage extends Component {
   // }
 
 
+
+  getTrendHistoryFromBlock = async (blockNumber) => {
+    try {
+      let lotteryAbi = '';
+      let lotteryAddr = '';
+      let lotteryEvent = 'Pay';
+      let lottery = new this.web3.eth.Contract(lotteryAbi, lotteryAddr);
+      let events = lottery.getPastEvents(lotteryEvent, { fromBlock: blockNumber, toBlock: 'latest' });
+      console.log('events:', events);
+      return events;
+    } catch (error) {
+      console.log(error);
+      return null
+    }
+  }
+
+
+
   render() {
     const { selectedAccount } = this.props;
     return (
@@ -100,10 +371,10 @@ class IndexPage extends Component {
           <div className={style.title}>BTC</div>
           <WalletButton />
         </div>
-        <Panel web3={this.web3} walletButton={WalletButtonLong}/>
-        <TrendHistory web3={this.web3}/>
-        <TransactionHistory />
-        <DistributionHistory />
+        <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} />
+        <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} />
+        <TransactionHistory transactionHistory={this.state.transactionHistory} />
+        <DistributionHistory lotteryHistory={this.state.lotteryHistory} />
 
       </div>
     );

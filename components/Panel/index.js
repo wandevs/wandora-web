@@ -33,51 +33,38 @@ class Panel extends Component {
     }, 5000);
   }
 
-  flushData = async () => {
-    let ret = await this.getDataFromNode()
-    this.setState(ret);
+  flushData = () => {
+    const ret = this.props.trendInfo;
 
-    if (this.state.startTime !== 0 && this.state.timeSpan !== 0 && this.state.stopBefore !== 0) {
-      this.setState({
-        endLeft: this.getLastTime((this.state.startTime + this.state.timeSpan) - Date.now() / 1000),
-        buyLeft: this.getLastTime((this.state.startTime + this.state.timeSpan - this.state.stopBefore) - Date.now() / 1000),
-      })
-      this.setState({ disable: false });
+    if (ret.startTime !== 0 && ret.timeSpan !== 0 && ret.stopBefore !== 0) {
+      const { endLeft, buyLeft } = this.getTimeLeft(ret);
+      if (buyLeft.h === '0' && buyLeft.m === '0') {
+        this.setState({
+          endLeft,
+          buyLeft,
+          ...ret,
+          disable: true
+        });
+      } else {
+        this.setState({
+          endLeft,
+          buyLeft,
+          ...ret,
+          disable: false
+        });
+      }
     } else {
       this.setState({
         endLeft: this.getLastTime(-1),
         buyLeft: this.getLastTime(-1),
+        ...ret,
+        disable: true
       })
-    }
-  }
-
-  getDataFromNode = async () => {
-    //Demo data
-    return {
-      startTime: 1579238136,
-      timeSpan: 3600*12,
-      stopBefore: 3600*2,
-      btcPriceStart: 0.0000241,
-      randomPoolAmount: 9873.1234,
-      upPoolAmount: 4351,
-      downPoolAmount: 2321,
     }
   }
 
   componentWillUnmount() {
     clearInterval(this.timer);
-  }
-
-  getLastTime(leftTimeSecond) {
-    if (leftTimeSecond < 0) {
-      return { h: '0', m: '0', s: '0' }
-    }
-
-    let h = Math.floor(leftTimeSecond / 60 / 60);
-    let m = Math.floor(leftTimeSecond / 60 % 60);
-    let s = Math.floor(leftTimeSecond % 60);
-    console.log({ h, m, s })
-    return { h, m, s }
   }
 
   onUpClick = () => {
