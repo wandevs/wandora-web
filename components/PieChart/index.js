@@ -23,8 +23,8 @@ class PieChart extends React.Component {
     const upCnt = this.props.upCnt;
     const downCnt = this.props.downCnt;
     const totalCnt = upCnt + downCnt;
-    const upPercent = (upCnt / totalCnt).toFixed(1) + '%';
-    const downPercent = (downCnt / totalCnt).toFixed(1) + '%';
+    const upPercent = (upCnt*100 / totalCnt).toFixed(1) + '%';
+    const downPercent = (downCnt*100 / totalCnt).toFixed(1) + '%';
     const { DataView } = DataSet;
     const { Html } = Guide;
     const data = [
