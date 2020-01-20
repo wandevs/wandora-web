@@ -20,7 +20,9 @@ class TrendHistory extends Component {
 
   render() {
     let history = this.props.trendHistory.slice();
-    history.push({ round: this.props.trendInfo.round, result: 'waitting', startPrice: this.props.trendInfo.btcPriceStart, endPrice: 'waiting...' });
+    if (this.props.trendInfo) {
+      history.push({ round: this.props.trendInfo.round, result: 'waitting', startPrice: this.props.trendInfo.btcPriceStart, endPrice: 'waiting...' });
+    }
     const { endLeft } = this.getTimeLeft(this.props.trendInfo);
     return (
       <div className={style.body}>

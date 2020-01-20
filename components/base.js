@@ -7,9 +7,13 @@ export class Component extends React.PureComponent {
   componentDidMount() {}
 
   getTimeLeft(trendInfo) {
-    let endLeft = this.getLastTime((trendInfo.startTime + trendInfo.timeSpan) - Date.now() / 1000);
-    let buyLeft = this.getLastTime((trendInfo.startTime + trendInfo.timeSpan - trendInfo.stopBefore) - Date.now() / 1000);
-    return {endLeft, buyLeft};
+    if (trendInfo) {
+      let endLeft = this.getLastTime((trendInfo.startTime + trendInfo.timeSpan) - Date.now() / 1000);
+      let buyLeft = this.getLastTime((trendInfo.startTime + trendInfo.timeSpan - trendInfo.stopBefore) - Date.now() / 1000);
+      return {endLeft, buyLeft};
+    } 
+    
+    return {endLeft: { h: '0', m: '0', s: '0' }, buyLeft: { h: '0', m: '0', s: '0' }};
   }
 
   getLastTime(leftTimeSecond) {

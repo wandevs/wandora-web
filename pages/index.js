@@ -13,6 +13,7 @@ import DistributionHistory from '../components/DistributionHistory';
 
 var Web3 = require("web3");
 
+let debugStartTime = (Date.now()/1000).toFixed(0)
 
 class IndexPage extends Component {
   constructor(props) {
@@ -66,7 +67,7 @@ class IndexPage extends Component {
   updateTrendInfoFromNode = async () => {
     let trend = {
       round: 21,
-      startTime: 1579427102,
+      startTime: debugStartTime,
       timeSpan: 3600 * 12,
       stopBefore: 3600 * 2,
       btcPriceStart: 0.0000241,
