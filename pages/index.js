@@ -13,7 +13,7 @@ import DistributionHistory from '../components/DistributionHistory';
 
 var Web3 = require("web3");
 
-let debugStartTime = (Date.now()/1000).toFixed(0)
+let debugStartTime = (Date.now()/1000)
 
 class IndexPage extends Component {
   constructor(props) {
