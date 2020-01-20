@@ -36,7 +36,7 @@ class Panel extends Component {
   flushData = () => {
     const ret = this.props.trendInfo;
 
-    if (ret.startTime !== 0 && ret.timeSpan !== 0 && ret.stopBefore !== 0) {
+    if (ret && ret.startTime !== 0 && ret.timeSpan !== 0 && ret.stopBefore !== 0) {
       const { endLeft, buyLeft } = this.getTimeLeft(ret);
       if (buyLeft.h === '0' && buyLeft.m === '0') {
         this.setState({
