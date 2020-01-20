@@ -113,6 +113,15 @@ class IndexPage extends Component {
       { round: 20, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
     ];
 
+    let currentRound = 1;
+    if (this.state.trendInfo) {
+      currentRound = this.state.trendInfo.round;
+    }
+
+    let roundArray = [];
+    let startRound = currentRound - 29 > 1 ? (currentRound - 29) : 1;
+    
+
     this.setTrendHistory(trendHistory);
   }
 
