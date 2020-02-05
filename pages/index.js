@@ -5,15 +5,18 @@ import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong } from "wan-
 import "wan-dex-sdk-wallet/index.css";
 import randomAbi from "./abi/random";
 import hydroAbi from "./abi/hydro";
+import lotteryAbi from "./abi/lottery";
 import style from './style.less';
 import Panel from '../components/Panel';
 import TrendHistory from '../components/TrendHistory';
 import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
 
+const lotterySCAddr = '0x0000000000000000000000000000000000000262';
+
 var Web3 = require("web3");
 
-let debugStartTime = (Date.now()/1000)
+let debugStartTime = (Date.now() / 1000)
 
 class IndexPage extends Component {
   constructor(props) {
@@ -50,16 +53,15 @@ class IndexPage extends Component {
 
     this.updateTrendInfoFromNode();
     setInterval(this.updateTrendInfoFromNode, 5000);
-    
-    this.updateTrendHistoryFromNode();
-    setInterval(this.updateTrendHistoryFromNode, 60*1000);
+
+    setInterval(this.updateTrendHistoryFromNode, 60 * 1000);
   }
 
   setTrendInfo = (trendInfo) => {
     let stateTrend = JSON.stringify(this.state.trendInfo);
     let inComeTrend = JSON.stringify(trendInfo);
     if (stateTrend !== inComeTrend) {
-      this.setState({trendInfo});
+      this.setState({ trendInfo });
       window.localStorage.setItem('currentTrend', inComeTrend);
     }
   }
@@ -77,52 +79,172 @@ class IndexPage extends Component {
       lotteryRound: 1,
     };
 
+    let lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
+    trend.round = await lotterySC.methods.curUpDownRound().call();
+    trend.lotteryRound = await lotterySC.methods.curRandomRound().call();
+    trend.startTime = await lotterySC.methods.upDownLotteryStartTime().call();
+    trend.timeSpan = await lotterySC.methods.upDownLotteryTimeCycle().call();
+    trend.stopBefore = await lotterySC.methods.upDownLtrstopTimeSpanInAdvance().call();
+    let roundInfo = await lotterySC.methods.updownGameMap(trend.round).call();
+    trend.btcPriceStart = roundInfo.openPrice;
+    trend.upPoolAmount = roundInfo.upAmount;
+    trend.downPoolAmount = roundInfo.downAmount;
+    trend.randomPoolAmount = roundInfo.feeTotal;
+
     this.setTrendInfo(trend);
+
+    this.updateTrendHistoryFromNode();
   }
 
   setTrendHistory = (trendHistory) => {
     let stateValue = JSON.stringify(this.state.trendHistory);
     let inComeValue = JSON.stringify(trendHistory);
     if (stateValue !== inComeValue) {
-      this.setState({trendHistory});
+      this.setState({ trendHistory });
       window.localStorage.setItem('trendHistory', inComeValue);
     }
   }
 
   updateTrendHistoryFromNode = async () => {
-    let trendHistory = [
-      { round: 1, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 2, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 3, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 4, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 5, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 6, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 7, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 8, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 9, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 10, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 11, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 12, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 13, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 14, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 15, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 16, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 17, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 18, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 19, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-      { round: 20, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-    ];
+    try {
+      let trendHistory = [
+        { round: 1, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 2, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 3, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 4, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 5, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 6, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 7, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 8, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 9, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 10, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 11, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 12, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 13, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 14, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 15, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 16, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 17, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 18, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 19, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+        { round: 20, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+      ];
+      
+      let roundArray = this.getUpDownRoundRange();
+      if (roundArray.length === 0) {
+        return;
+      }
 
+      let lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
+
+      for (let i=0; i<roundArray.length; i++) {
+        let ret = await lotterySC.methods.updownGameMap(roundArray[i]).call();
+        trendHistory.push({
+          round: roundArray[i],
+          startPrice: ret.openPrice,
+          endPrice: ret.closePrice,
+          result: (ret.openPrice > ret.closePrice) ? 'down':'up',
+          upAmount: ret.upAmount,
+          downAmount: ret.downAmount,
+          feeTotal: ret.feeTotal,
+        })
+      }
+      this.setTrendHistory(trendHistory);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // updateTrendHistoryFromNode = async () => {
+  //   try {
+  //     let trendHistory = [
+  //       { round: 1, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 2, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 3, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 4, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 5, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 6, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 7, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 8, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 9, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 10, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 11, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 12, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 13, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 14, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 15, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 16, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 17, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 18, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 19, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //       { round: 20, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
+  //     ];
+      
+  //     let roundArray = this.getUpDownRoundRange();
+  //     if (roundArray.length === 0) {
+  //       return;
+  //     }
+
+  //     let lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
+  //     let blockNumber = await this.web3.eth.getBlockNumber();
+  //     let events = await lotterySC.getPastEvents('UpDownBingGo', {
+  //       filter: { round: roundArray },
+  //       fromBlock: this.getUpDownHistoryStartBlock(),
+  //       toBlock: blockNumber
+  //     });
+  
+  //     if (events && events.length > 0) {
+  //       for (let i=0; i<events.length; i++) {
+  //         trendHistory.push({
+  //           round: events[i].round, 
+  //           startPrice: events[i].startPrice, 
+  //           endPrice: events[i].endPrice,
+  //           result: "up",
+  //         })
+  //       }
+  //     }
+
+  //     this.setTrendHistory(trendHistory);
+  //     this.setUpDownHistoryStartBlock(blockNumber);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+
+  getUpDownRoundRange = () => {
     let currentRound = 1;
     if (this.state.trendInfo) {
-      currentRound = this.state.trendInfo.round;
+      currentRound = this.state.trendInfo.round - 1;
+    }
+
+    let startRound = currentRound - 29 > 1 ? (currentRound - 29) : 1;
+    if (this.state.trendHistory && this.state.trendHistory.length > 0) {
+      startRound = Number(this.state.trendHistory[this.state.trendHistory.length - 1].round) + 1;
+    }
+
+    if (startRound >= currentRound) {
+      return [];
     }
 
     let roundArray = [];
-    let startRound = currentRound - 29 > 1 ? (currentRound - 29) : 1;
-    
+    for (let i=startRound; i<currentRound; i++) {
+      roundArray.push(i);
+    }
+    return roundArray;
+  }
 
-    this.setTrendHistory(trendHistory);
+  getUpDownHistoryStartBlock = () => {
+    let startBlock = window.localStorage.getItem('UpDownHistoryStartBlock');
+    if (startBlock && startBlock.length > 0) {
+      return Number(startBlock);
+    }
+
+    let defaultStartBlock = 6000000;
+    return defaultStartBlock;
+  }
+
+  setUpDownHistoryStartBlock = (blockNumber) => {
+    window.localStorage.setItem('UpDownHistoryStartBlock', blockNumber.toString());
   }
 
   addTransactionHistory = (singleHistory) => {
@@ -132,7 +254,7 @@ class IndexPage extends Component {
       history = stateHistory.slice();
     }
     history.push(singleHistory);
-    this.setState({transactionHistory: history});
+    this.setState({ transactionHistory: history });
     window.localStorage.setItem('transactionHistory', JSON.stringify(history));
   }
 
@@ -251,49 +373,50 @@ class IndexPage extends Component {
   getLotteryHistory = () => {
     return {
       '1': [
-      {
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        amountBuy: '1000',
-        amountPay: 100.1234,
-      }, 
-      {
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        amountBuy: '1000',
-        amountPay: 100.1234,
-      }, 
-      {
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        amountBuy: '1000',
-        amountPay: 100.1234,
-      }, 
-      {
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        amountBuy: '1000',
-        amountPay: 100.1234,
-      }, 
-      {
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        amountBuy: '1000',
-        amountPay: 100.1234,
-      }, 
-      {
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        amountBuy: '1000',
-        amountPay: 100.1234,
-      }, 
-      {
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        amountBuy: '1000',
-        amountPay: 100.1234,
-      }, 
-    ]};
+        {
+          time: '2020-01-14 17:46:39',
+          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+          amountBuy: '1000',
+          amountPay: 100.1234,
+        },
+        {
+          time: '2020-01-14 17:46:39',
+          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+          amountBuy: '1000',
+          amountPay: 100.1234,
+        },
+        {
+          time: '2020-01-14 17:46:39',
+          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+          amountBuy: '1000',
+          amountPay: 100.1234,
+        },
+        {
+          time: '2020-01-14 17:46:39',
+          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+          amountBuy: '1000',
+          amountPay: 100.1234,
+        },
+        {
+          time: '2020-01-14 17:46:39',
+          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+          amountBuy: '1000',
+          amountPay: 100.1234,
+        },
+        {
+          time: '2020-01-14 17:46:39',
+          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+          amountBuy: '1000',
+          amountPay: 100.1234,
+        },
+        {
+          time: '2020-01-14 17:46:39',
+          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
+          amountBuy: '1000',
+          amountPay: 100.1234,
+        },
+      ]
+    };
   }
 
   // async getInfoFromSC() {
@@ -356,9 +479,8 @@ class IndexPage extends Component {
 
   getTrendHistoryFromBlock = async (blockNumber) => {
     try {
-      let lotteryAbi = '';
       let lotteryAddr = '';
-      let lotteryEvent = 'Pay';
+      let lotteryEvent = 'UpDownBingGo';
       let lottery = new this.web3.eth.Contract(lotteryAbi, lotteryAddr);
       let events = lottery.getPastEvents(lotteryEvent, { fromBlock: blockNumber, toBlock: 'latest' });
       console.log('events:', events);
