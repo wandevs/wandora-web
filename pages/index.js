@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { Component } from "../components/base";
 import { Button, Table, Icon } from 'antd';
-import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong } from "wan-dex-sdk-wallet";
+import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet } from "wan-dex-sdk-wallet";
 import "wan-dex-sdk-wallet/index.css";
 import randomAbi from "./abi/random";
 import hydroAbi from "./abi/hydro";
@@ -94,6 +94,7 @@ class IndexPage extends Component {
     this.setTrendInfo(trend);
 
     this.updateTrendHistoryFromNode();
+    this.updateRandomHistoryFromNode();
   }
 
   setTrendHistory = (trendHistory) => {
@@ -148,6 +149,9 @@ class IndexPage extends Component {
           downAmount: ret.downAmount,
           feeTotal: ret.feeTotal,
         })
+        if (trendHistory.length > 29) {
+          trendHistory.splice(0, 1);
+        }
       }
       this.setTrendHistory(trendHistory);
     } catch (err) {
@@ -155,61 +159,61 @@ class IndexPage extends Component {
     }
   }
 
-  // updateTrendHistoryFromNode = async () => {
-  //   try {
-  //     let trendHistory = [
-  //       { round: 1, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 2, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 3, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 4, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 5, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 6, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 7, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 8, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 9, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 10, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 11, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 12, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 13, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 14, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 15, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 16, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 17, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 18, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 19, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //       { round: 20, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-  //     ];
+  updateRandomHistoryFromNode = async () => {
+
+  }
+
+  addRandomHistory = (randomHistories) => {
+    const stateHistory = this.state.lotteryHistory;
+    let history = [];
+    if (stateHistory) {
+      history = stateHistory.slice();
+    }
+    for (let i=0; i<randomHistories; i++) {
+      history.push(singleRandomHistory);
+    }
+    this.setState({ transactionHistory: history });
+    window.localStorage.setItem('randomHistory', JSON.stringify(history));
+  }
+
+  updateRandomHistoryFromNode = async () => {
+    try {
+      let randomHistories = {};
       
-  //     let roundArray = this.getUpDownRoundRange();
-  //     if (roundArray.length === 0) {
-  //       return;
-  //     }
+      let roundArray = this.getRandomRoundRange();
+      if (roundArray.length === 0) {
+        return;
+      }
 
-  //     let lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
-  //     let blockNumber = await this.web3.eth.getBlockNumber();
-  //     let events = await lotterySC.getPastEvents('UpDownBingGo', {
-  //       filter: { round: roundArray },
-  //       fromBlock: this.getUpDownHistoryStartBlock(),
-  //       toBlock: blockNumber
-  //     });
+      let lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
+      let blockNumber = await this.web3.eth.getBlockNumber();
+      let events = await lotterySC.getPastEvents('RandomBingGo', {
+        filter: { round: roundArray },
+        fromBlock: this.getRandomHistoryStartBlock(),
+        toBlock: blockNumber
+      });
   
-  //     if (events && events.length > 0) {
-  //       for (let i=0; i<events.length; i++) {
-  //         trendHistory.push({
-  //           round: events[i].round, 
-  //           startPrice: events[i].startPrice, 
-  //           endPrice: events[i].endPrice,
-  //           result: "up",
-  //         })
-  //       }
-  //     }
+      if (events && events.length > 0) {
+        for (let i=0; i<events.length; i++) {
+          if (!randomHistories[events[i].returnValues.round]) {
+            randomHistories[events[i].returnValues.round] = [];
+          }
 
-  //     this.setTrendHistory(trendHistory);
-  //     this.setUpDownHistoryStartBlock(blockNumber);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
+          randomHistories[events[i].returnValues.round].push({
+            round: events[i].returnValues.round, 
+            address: events[i].returnValues.staker,
+            amountBuy: '--',
+            amountPay: events[i].returnValues.prizeAmount,
+          });
+        }
+      }
+
+      this.addRandomHistory(randomHistories);
+      this.setRandomHistoryStartBlock(blockNumber);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   getUpDownRoundRange = () => {
     let currentRound = 1;
@@ -233,8 +237,36 @@ class IndexPage extends Component {
     return roundArray;
   }
 
-  getUpDownHistoryStartBlock = () => {
-    let startBlock = window.localStorage.getItem('UpDownHistoryStartBlock');
+  getRandomRoundRange = () => {
+    let currentRound = 1;
+    if (this.state.trendInfo) {
+      currentRound = this.state.trendInfo.lotteryRound - 1;
+    }
+
+    let startRound = currentRound - 7 > 1 ? (currentRound - 7) : 1;
+    let maxKey = 1;
+    if (this.state.lotteryHistory && this.state.lotteryHistory.length > 0 && startRound > 1) {
+      for (var i in this.state.lotteryHistory) {
+        if (Number(i) > maxKey) {
+          maxKey = Number(i);
+        }
+      }
+      startRound = maxKey + 1;
+    }
+
+    if (startRound >= currentRound) {
+      return [];
+    }
+
+    let roundArray = [];
+    for (let i=startRound; i<currentRound; i++) {
+      roundArray.push(i);
+    }
+    return roundArray;
+  }
+
+  getRandomHistoryStartBlock = () => {
+    let startBlock = window.localStorage.getItem('RandomHistoryStartBlock');
     if (startBlock && startBlock.length > 0) {
       return Number(startBlock);
     }
@@ -243,8 +275,8 @@ class IndexPage extends Component {
     return defaultStartBlock;
   }
 
-  setUpDownHistoryStartBlock = (blockNumber) => {
-    window.localStorage.setItem('UpDownHistoryStartBlock', blockNumber.toString());
+  setRandomHistoryStartBlock = (blockNumber) => {
+    window.localStorage.setItem('RandomHistoryStartBlock', blockNumber.toString());
   }
 
   addTransactionHistory = (singleHistory) => {
@@ -371,6 +403,11 @@ class IndexPage extends Component {
   }
 
   getLotteryHistory = () => {
+    let randomHistory = window.localStorage.getItem('randomHistory');
+    if (randomHistory) {
+      return JSON.parse(randomHistory);
+    }
+
     return {
       '1': [
         {
@@ -477,24 +514,28 @@ class IndexPage extends Component {
 
 
 
-  getTrendHistoryFromBlock = async (blockNumber) => {
+  sendTransaction = async (value, selectUp) => {
+    const { selectedAccount, selectedWallet } = this.props;
+    const address = selectedAccount ? selectedAccount.get('address') : null;
+    console.log('address:', address);
+
+    let params = {
+      to: lotterySCAddr,
+      data: selectUp ? '0xd0e30db0':'0xd0e30db0',
+      value
+    };
+    
     try {
-      let lotteryAddr = '';
-      let lotteryEvent = 'UpDownBingGo';
-      let lottery = new this.web3.eth.Contract(lotteryAbi, lotteryAddr);
-      let events = lottery.getPastEvents(lotteryEvent, { fromBlock: blockNumber, toBlock: 'latest' });
-      console.log('events:', events);
-      return events;
-    } catch (error) {
-      console.log(error);
-      return null
+      let transactionID = await selectedWallet.sendTransaction(params);
+      return transactionID;
+    } catch (err) {
+      window.assert(err);
+      return false;
     }
   }
 
 
-
   render() {
-    const { selectedAccount } = this.props;
     return (
       <div className={style.app}>
         <div className={style.header}>
@@ -503,18 +544,18 @@ class IndexPage extends Component {
           <div className={style.title}>BTC</div>
           <WalletButton />
         </div>
-        <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} />
+        <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} sendTransaction={this.sendTransaction} />
         <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} />
         <TransactionHistory transactionHistory={this.state.transactionHistory} />
         <DistributionHistory lotteryHistory={this.state.lotteryHistory} />
-
       </div>
     );
   }
 }
 
 export default connect(state => ({
-  selectedAccount: getSelectedAccount(state)
+  selectedAccount: getSelectedAccount(state),
+  selectedWallet: getSelectedAccountWallet(state),
 }))(IndexPage);
 
 

@@ -136,7 +136,7 @@ class Panel extends Component {
         <div className={style.pieChart}>
           <PieChart upCnt={this.state.upPoolAmount} downCnt={this.state.downPoolAmount} />
         </div>
-        <SendModal web3={this.web3} visible={this.state.modalVisible} hideModal={this.hideModal} type={this.type} walletButton={this.props.walletButton} />
+        <SendModal sendTransaction={this.props.sendTransaction} visible={this.state.modalVisible} hideModal={this.hideModal} type={this.type} walletButton={this.props.walletButton} />
       </div>
     );
   }

@@ -26,12 +26,15 @@ class SendModalForm extends Component {
         this.setState({
           confirmLoading: true,
         });
-        setTimeout(() => {
+        setTimeout(async () => {
+          let ret = await this.props.sendTransaction();
           this.setState({
             confirmLoading: false,
           });
-          this.props.hideModal();
-        }, 2000);
+          if (ret) {
+            this.props.hideModal();
+          }
+        }, 0);
       }
     });
   };
