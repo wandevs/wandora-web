@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import { Component } from "../components/base";
 import { Button, Table, Icon } from 'antd';
+import BigNumber from 'bignumber.js';
 import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet } from "wan-dex-sdk-wallet";
 import "wan-dex-sdk-wallet/index.css";
 import randomAbi from "./abi/random";
@@ -43,8 +44,28 @@ class IndexPage extends Component {
       transactionHistory: this.getTransactionHistory(),
       lotteryHistory: this.getLotteryHistory(),
     }
-  }
 
+    Date.prototype.format = function (fmt) {
+      var o = {
+        "M+": this.getMonth() + 1,                 //月份 
+        "d+": this.getDate(),                    //日 
+        "h+": this.getHours(),                   //小时 
+        "m+": this.getMinutes(),                 //分 
+        "s+": this.getSeconds(),                 //秒 
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+        "S": this.getMilliseconds()             //毫秒 
+      };
+      if (/(y+)/.test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+      }
+      for (var k in o) {
+        if (new RegExp("(" + k + ")").test(fmt)) {
+          fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        }
+      }
+      return fmt;
+    }
+  }
 
   componentDidMount() {
     var web3 = new Web3();
@@ -130,7 +151,7 @@ class IndexPage extends Component {
         { round: 19, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
         { round: 20, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
       ];
-      
+
       let roundArray = this.getUpDownRoundRange();
       if (roundArray.length === 0) {
         return;
@@ -138,13 +159,13 @@ class IndexPage extends Component {
 
       let lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
 
-      for (let i=0; i<roundArray.length; i++) {
+      for (let i = 0; i < roundArray.length; i++) {
         let ret = await lotterySC.methods.updownGameMap(roundArray[i]).call();
         trendHistory.push({
           round: roundArray[i],
           startPrice: ret.openPrice,
           endPrice: ret.closePrice,
-          result: (ret.openPrice > ret.closePrice) ? 'down':'up',
+          result: (ret.openPrice > ret.closePrice) ? 'down' : 'up',
           upAmount: ret.upAmount,
           downAmount: ret.downAmount,
           feeTotal: ret.feeTotal,
@@ -159,17 +180,13 @@ class IndexPage extends Component {
     }
   }
 
-  updateRandomHistoryFromNode = async () => {
-
-  }
-
   addRandomHistory = (randomHistories) => {
     const stateHistory = this.state.lotteryHistory;
     let history = [];
     if (stateHistory) {
       history = stateHistory.slice();
     }
-    for (let i=0; i<randomHistories; i++) {
+    for (let i = 0; i < randomHistories; i++) {
       history.push(singleRandomHistory);
     }
     this.setState({ transactionHistory: history });
@@ -179,7 +196,7 @@ class IndexPage extends Component {
   updateRandomHistoryFromNode = async () => {
     try {
       let randomHistories = {};
-      
+
       let roundArray = this.getRandomRoundRange();
       if (roundArray.length === 0) {
         return;
@@ -192,15 +209,15 @@ class IndexPage extends Component {
         fromBlock: this.getRandomHistoryStartBlock(),
         toBlock: blockNumber
       });
-  
+
       if (events && events.length > 0) {
-        for (let i=0; i<events.length; i++) {
+        for (let i = 0; i < events.length; i++) {
           if (!randomHistories[events[i].returnValues.round]) {
             randomHistories[events[i].returnValues.round] = [];
           }
 
           randomHistories[events[i].returnValues.round].push({
-            round: events[i].returnValues.round, 
+            round: events[i].returnValues.round,
             address: events[i].returnValues.staker,
             amountBuy: '--',
             amountPay: events[i].returnValues.prizeAmount,
@@ -231,7 +248,7 @@ class IndexPage extends Component {
     }
 
     let roundArray = [];
-    for (let i=startRound; i<currentRound; i++) {
+    for (let i = startRound; i < currentRound; i++) {
       roundArray.push(i);
     }
     return roundArray;
@@ -259,7 +276,7 @@ class IndexPage extends Component {
     }
 
     let roundArray = [];
-    for (let i=startRound; i<currentRound; i++) {
+    for (let i = startRound; i < currentRound; i++) {
       roundArray.push(i);
     }
     return roundArray;
@@ -291,6 +308,11 @@ class IndexPage extends Component {
   }
 
   getTransactionHistory = () => {
+    let transactionHistory = window.localStorage.getItem('transactionHistory');
+    if (transactionHistory) {
+      return JSON.parse(transactionHistory);
+    }
+
     return [
       {
         key: 0,
@@ -456,77 +478,34 @@ class IndexPage extends Component {
     };
   }
 
-  // async getInfoFromSC() {
-  //   // let blockNumber = await this.web3.eth.getBlockNumber();
-  //   // let random = new this.web3.eth.Contract(randomAbi, "0x0000000000000000000000000000000000000262");
-  //   // let epochId = await random.methods.getEpochId((Date.now()/1000).toFixed(0)).call();
-  //   // let randomNow = await random.methods.getRandomNumberByEpochId(epochId).call();
-  //   // let randomLast = await random.methods.getRandomNumberByEpochId(epochId-1).call();
-  //   // this.setState({ epochId: epochId, rn: randomNow, rn0: randomLast, blockNumber });
+  flushTransactionHistory = () => {
 
-  //   // let hydro = new this.web3.eth.Contract(hydroAbi, '0x8786038ef9c2f659772c6c2ee8402bdfdc511bb8');
-  //   // console.log(blockNumber);
-  //   // // let events = await hydro.getPastEvents('Match', {fromBlock: blockNumber - 100, toBlock: 'latest'});
-  //   // // console.log('events:', events);
-  //   // // hydro.once('Match', (err, event)=>{
-  //   // //   console.log('err, event:', err, event);
-  //   // // })
-  //   // hydro.getPastEvents({fromBlock:5581471}, (err, event)=>{
-  //   //   console.log('err, event:', err, event);
-  //   // })
-  // }
+  }
 
-  // renderAccount(account) {
-  //   return (
-  //     <p>
-  //       Address: {account.get("address")}
-  //       <br />
-  //       IsLock: {account.get("isLocked").toString()}
-  //       <br />
-  //       Eth Balance: {(account.get("balance")/1e18).toFixed(4)}
-  //       <br />
-  //       <br />
-  //       <button
-  //         className="HydroSDK-button"
-  //         onClick={() =>
-  //           account
-  //             .get("wallet")
-  //             .signPersonalMessage("0xff2137d657209247083297f72c85e10227634b221049a44c63348509a08d95cc")
-  //             .then(alert, alert)
-  //         }>
-  //         Sign "0xff2137d657209247083297f72c85e10227634b221049a44c63348509a08d95cc"
-  //       </button>
-
-  //       <button
-  //         className="HydroSDK-button"
-  //         onClick={() =>
-  //           account
-  //             .get("wallet")
-  //             .sendTransaction({to:"0x15f59e30ef6f881549ec6196b0633a2cdf3de54c", value: 1e18})
-  //             // .then(alert, alert)
-  //             .then(console.log, console.log)
-  //         }>
-  //         Send Transaction
-  //       </button>
-  //     </p>
-  //   );
-  // }
-
-
-
-  sendTransaction = async (value, selectUp) => {
+  sendTransaction = async (amount, selectUp) => {
     const { selectedAccount, selectedWallet } = this.props;
     const address = selectedAccount ? selectedAccount.get('address') : null;
     console.log('address:', address);
 
+    const value = new BigNumber(amount).multipliedBy(Math.pow(10, 18)).toString();
+
     let params = {
       to: lotterySCAddr,
-      data: selectUp ? '0xd0e30db0':'0xd0e30db0',
+      data: selectUp ? '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000001' : '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000000',
       value
     };
-    
+
     try {
       let transactionID = await selectedWallet.sendTransaction(params);
+      this.addTransactionHistory({
+        key: transactionID,
+        time: new Date().format("yyyy-MM-dd hh:mm:ss"),
+        address,
+        round: this.state.currentRound,
+        amount,
+        type: selectUp ? 'UP' : 'DOWN',
+        result: 'to be settled',
+      });
       return transactionID;
     } catch (err) {
       window.assert(err);
