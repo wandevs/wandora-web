@@ -1,8 +1,8 @@
 import { connect } from "react-redux";
 import { Component } from "../components/base";
-import { Button, Table, Icon } from 'antd';
+import { Icon, message } from 'antd';
 import BigNumber from 'bignumber.js';
-import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet } from "wan-dex-sdk-wallet";
+import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet, getTransactionReceipt } from "wan-dex-sdk-wallet";
 import "wan-dex-sdk-wallet/index.css";
 import randomAbi from "./abi/random";
 import hydroAbi from "./abi/hydro";
@@ -19,12 +19,28 @@ var Web3 = require("web3");
 
 let debugStartTime = (Date.now() / 1000)
 
+function alertAntd(info) {
+  if(typeof(info) === "string") {
+    message.success(info, 10);
+  } else {
+    if (info.toString().includes("Error")) {
+      message.error(info.toString(), 10);
+    } else if (info.hasOwnProperty('tip')) {
+      message.info(info.tip, 5);
+    } else {
+      message.info(JSON.stringify(info), 10);
+    }
+  }
+}
+
 class IndexPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
     // window._nodeUrl = "https://demodex.wandevs.org:48545";
     window._nodeUrl = "https://mywanwallet.io/testnet";
+
+    window.alertAntd = alertAntd;
 
     let trendStr = window.localStorage.getItem('currentTrend');
     let trend = null;
@@ -482,6 +498,20 @@ class IndexPage extends Component {
 
   }
 
+  watchTransactionStatus = (txID, callback) => {
+    const getTransactionStatus = async () => {
+      const tx = await getTransactionReceipt(txID);
+      if (!tx) {
+        window.setTimeout(() => getTransactionStatus(txID), 3000);
+      } else if (callback) {
+        callback(Number(tx.status) === 1);
+      } else {
+        window.alertAntd('success');
+      }
+    };
+    window.setTimeout(() => getTransactionStatus(txID), 3000);
+  };
+
   sendTransaction = async (amount, selectUp) => {
     const { selectedAccount, selectedWallet } = this.props;
     const address = selectedAccount ? selectedAccount.get('address') : null;
@@ -497,18 +527,24 @@ class IndexPage extends Component {
 
     try {
       let transactionID = await selectedWallet.sendTransaction(params);
-      this.addTransactionHistory({
-        key: transactionID,
-        time: new Date().format("yyyy-MM-dd hh:mm:ss"),
-        address,
-        round: this.state.currentRound,
-        amount,
-        type: selectUp ? 'UP' : 'DOWN',
-        result: 'to be settled',
+      let round = this.state.currentRound;
+      this.watchTransactionStatus(transactionID, (ret) => {
+        if (ret) {
+          this.addTransactionHistory({
+            key: transactionID,
+            time: new Date().format("yyyy-MM-dd hh:mm:ss"),
+            address,
+            round,
+            amount,
+            type: selectUp ? 'UP' : 'DOWN',
+            result: 'Done',
+          });
+        }
       });
+      
       return transactionID;
     } catch (err) {
-      window.assert(err);
+      window.alertAntd(err);
       return false;
     }
   }
@@ -523,7 +559,7 @@ class IndexPage extends Component {
           <div className={style.title}>BTC</div>
           <WalletButton />
         </div>
-        <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} sendTransaction={this.sendTransaction} />
+        <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} />
         <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} />
         <TransactionHistory transactionHistory={this.state.transactionHistory} />
         <DistributionHistory lotteryHistory={this.state.lotteryHistory} />

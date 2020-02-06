@@ -18,6 +18,21 @@ class SendModalForm extends Component {
   componentWillUnmount() {
   }
 
+  okCallback = (ret) => {
+    this.setState({
+      confirmLoading: false,
+    });
+
+    if (ret) {
+      window.alertAntd('send success.');
+      if (ret) {
+        this.props.hideModal();
+      }
+    } else {
+      window.alertAntd('send failed.');
+    }
+  }
+
   handleOk = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -28,11 +43,10 @@ class SendModalForm extends Component {
         });
         setTimeout(async () => {
           let ret = await this.props.sendTransaction();
-          this.setState({
-            confirmLoading: false,
-          });
           if (ret) {
-            this.props.hideModal();
+            this.props.watchTransactionStatus(ret, okCallback)
+          } else {
+            this.okCallback(false);
           }
         }, 0);
       }
