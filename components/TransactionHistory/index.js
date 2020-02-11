@@ -58,7 +58,7 @@ class TransactionHistory extends Component {
           <div className={style.subTitle}>Transaction History</div>
           <div className={style.rightText}>Total: {total} WAN</div>
         </div>
-        <Table columns={this.columns} dataSource={this.props.transactionHistory} pagination={{ pageSize: 4 }}/>
+        <Table columns={this.columns} dataSource={this.props.transactionHistory.slice().reverse()} pagination={{ pageSize: 4 }}/>
       </div>
     );
   }

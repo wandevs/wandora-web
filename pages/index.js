@@ -95,15 +95,28 @@ class IndexPage extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     var web3 = new Web3();
     web3.setProvider(new Web3.providers.HttpProvider(window._nodeUrl));
     this.web3 = web3;
+    this.lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
 
-    this.updateTrendInfoFromNode();
-    setInterval(this.updateTrendInfoFromNode, 5000);
 
-    setInterval(this.updateTrendHistoryFromNode, 60 * 1000);
+    await this.getOnce();
+    await this.updateTrendInfoFromNode();
+    this.timerTrendInfo = setInterval(this.updateTrendInfoFromNode, 5000);
+
+    this.timerTrendHistory = setInterval(this.updateTrendHistoryFromNode, 60 * 1000);
+  }
+
+  componentWillUnmount() {
+    if (this.timerTrendInfo) {
+      clearInterval(this.timerTrendInfo);
+    }
+
+    if (this.timerTrendHistory) {
+      clearInterval(this.timerTrendHistory);
+    }
   }
 
   setTrendInfo = (trendInfo) => {
@@ -115,7 +128,7 @@ class IndexPage extends Component {
     }
   }
 
-  updateTrendInfoFromNode = async () => {
+  getOnce = async () => {
     let trend = {
       round: 0,
       startTime: debugStartTime,
@@ -128,28 +141,79 @@ class IndexPage extends Component {
       lotteryRound: 0,
       randomEndTime: 0,
     };
+    console.log('updateTrendInfoFromNode');
+    let lotterySC = this.lotterySC;
 
-    let lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
-    trend.round = Number(await lotterySC.methods.curUpDownRound().call());
-    trend.lotteryRound = Number(await lotterySC.methods.curRandomRound().call());
-    let upDownLotteryStartRN = Number(await lotterySC.methods.updownLotteryStartRN().call());
-    let upDownLotteryStartTime = Number(await lotterySC.methods.upDownLotteryStartTime().call());
-    trend.timeSpan = Number(await lotterySC.methods.upDownLotteryTimeCycle().call());
-    trend.startTime = Number((upDownLotteryStartRN + trend.round) * trend.timeSpan) + Number(upDownLotteryStartTime);
-    let feeRatio = Number(await lotterySC.methods.feeRatio().call());
-    trend.stopBefore = Number(await lotterySC.methods.upDownLtrstopTimeSpanInAdvance().call());
+    let awaitArray = [];
+    awaitArray.push(lotterySC.methods.curUpDownRound().call());
+    awaitArray.push(lotterySC.methods.curRandomRound().call());
+    awaitArray.push(lotterySC.methods.updownLotteryStartRN().call());
+    awaitArray.push(lotterySC.methods.upDownLotteryStartTime().call());
+    awaitArray.push(lotterySC.methods.upDownLotteryTimeCycle().call());
+    awaitArray.push(lotterySC.methods.feeRatio().call());
+    awaitArray.push(lotterySC.methods.upDownLtrstopTimeSpanInAdvance().call());
+    awaitArray.push(lotterySC.methods.randomLotteryStartRN().call());
+    awaitArray.push(lotterySC.methods.randomLotteryTimeCycle().call());
+    awaitArray.push(lotterySC.methods.randomLotteryStartTime().call());
+    
+    [
+      trend.round, 
+      trend.lotteryRound, 
+      trend.upDownLotteryStartRN, 
+      trend.upDownLotteryStartTime, 
+      trend.timeSpan,
+      trend.feeRatio,
+      trend.stopBefore,
+      trend.randomStartRN,
+      trend.randomTimeCycle,
+      trend.randomLotteryStartTime
+    ] = await Promise.all(awaitArray);
+
+    trend.round = Number(trend.round);
+    trend.lotteryRound = Number(trend.lotteryRound);
+    trend.upDownLotteryStartRN= Number(trend.upDownLotteryStartRN);
+    trend.upDownLotteryStartTime= Number(trend.upDownLotteryStartTime); 
+    trend.timeSpan= Number(trend.timeSpan);
+    trend.feeRatio= Number(trend.feeRatio);
+    trend.stopBefore= Number(trend.stopBefore);
+    trend.randomStartRN= Number(trend.randomStartRN);
+    trend.randomTimeCycle= Number(trend.randomTimeCycle);
+    trend.randomLotteryStartTime= Number(trend.randomLotteryStartTime);
+
     let roundInfo = await lotterySC.methods.updownGameMap(trend.round).call();
+
+    trend.startTime = Number((trend.upDownLotteryStartRN + trend.round) * trend.timeSpan) + Number(trend.upDownLotteryStartTime);
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
     trend.upPoolAmount = Number(roundInfo.upAmount)/1e18;
     trend.downPoolAmount = Number(roundInfo.downAmount)/1e18;
-    trend.randomPoolAmount = ((trend.upPoolAmount + trend.downPoolAmount) * (feeRatio/1000)).toFixed(1);
-    let randomStartRN = Number(await lotterySC.methods.randomLotteryStartRN().call());
-    let randomTimeCycle = Number(await lotterySC.methods.randomLotteryTimeCycle().call());
-    let randomLotteryStartTime = Number(await lotterySC.methods.randomLotteryStartTime().call());
-    trend.randomEndTime = Number((randomStartRN + trend.lotteryRound + 1) * randomTimeCycle) + Number(randomLotteryStartTime);
+    trend.randomPoolAmount = ((trend.upPoolAmount + trend.downPoolAmount) * (trend.feeRatio/1000)).toFixed(1);
+    trend.randomEndTime = Number((trend.randomStartRN + trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.randomLotteryStartTime);
+    this.setTrendInfo(trend);
+  }
+
+  updateTrendInfoFromNode = async () => {
+    let trend = Object.assign({}, this.state.trendInfo);
+    console.log('updateTrendInfoFromNode:', trend);
+    let lotterySC = this.lotterySC;
+
+    let awaitArray = [];
+    awaitArray.push(lotterySC.methods.curUpDownRound().call());
+    awaitArray.push(lotterySC.methods.curRandomRound().call());
+
+    [trend.round, trend.lotteryRound] = await Promise.all(awaitArray);
+
+    trend.round = Number(trend.round);
+    trend.lotteryRound = Number(trend.lotteryRound);
+    let roundInfo = await lotterySC.methods.updownGameMap(trend.round).call();
+
+    trend.startTime = Number((trend.upDownLotteryStartRN + trend.round) * trend.timeSpan) + Number(trend.upDownLotteryStartTime);
+    trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
+    trend.upPoolAmount = Number(roundInfo.upAmount)/1e18;
+    trend.downPoolAmount = Number(roundInfo.downAmount)/1e18;
+    trend.randomPoolAmount = ((trend.upPoolAmount + trend.downPoolAmount) * (trend.feeRatio/1000)).toFixed(1);
+    trend.randomEndTime = Number((trend.randomStartRN + trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.randomLotteryStartTime);
 
     this.setTrendInfo(trend);
-
     this.updateTrendHistoryFromNode();
     this.updateRandomHistoryFromNode();
   }
@@ -172,7 +236,8 @@ class IndexPage extends Component {
         return;
       }
 
-      let lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
+      console.log('updateTrendHistoryFromNode');
+      let lotterySC = this.lotterySC;
 
       for (let i = 0; i < roundArray.length; i++) {
         let ret = await lotterySC.methods.updownGameMap(roundArray[i]).call();
@@ -217,7 +282,8 @@ class IndexPage extends Component {
         return;
       }
 
-      let lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
+      console.log('updateRandomHistoryFromNode');
+      let lotterySC = this.lotterySC;
       let blockNumber = await this.web3.eth.getBlockNumber();
       let events = await lotterySC.getPastEvents('RandomBingGo', {
         filter: { round: roundArray },
