@@ -13,14 +13,14 @@ import TrendHistory from '../components/TrendHistory';
 import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
 
-const lotterySCAddr = '0x8495226b4da732ca129a0ea6d368573c465f661d';
+const lotterySCAddr = '0xa843f035fd8d6b4cf4415f5910fb95ddfb6af328';
 
 var Web3 = require("web3");
 
 let debugStartTime = (Date.now() / 1000)
 
 function alertAntd(info) {
-  if(typeof(info) === "string") {
+  if (typeof (info) === "string") {
     message.success(info, 10);
   } else {
     if (info.toString().includes("Error")) {
@@ -135,13 +135,13 @@ class IndexPage extends Component {
     let upDownLotteryStartTime = Number(await lotterySC.methods.upDownLotteryStartTime().call());
     trend.timeSpan = Number(await lotterySC.methods.upDownLotteryTimeCycle().call());
     trend.startTime = Number((upDownLotteryStartRN + trend.round) * trend.timeSpan) + Number(upDownLotteryStartTime);
-
+    let feeRatio = Number(await lotterySC.methods.feeRatio().call());
     trend.stopBefore = Number(await lotterySC.methods.upDownLtrstopTimeSpanInAdvance().call());
     let roundInfo = await lotterySC.methods.updownGameMap(trend.round).call();
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
-    trend.upPoolAmount = Number(roundInfo.upAmount);
-    trend.downPoolAmount = Number(roundInfo.downAmount);
-    trend.randomPoolAmount = Number(roundInfo.feeTotal);
+    trend.upPoolAmount = Number(roundInfo.upAmount)/1e18;
+    trend.downPoolAmount = Number(roundInfo.downAmount)/1e18;
+    trend.randomPoolAmount = (trend.upPoolAmount + trend.downPoolAmount) * (feeRatio/1000);
 
     this.setTrendInfo(trend);
 
@@ -267,12 +267,12 @@ class IndexPage extends Component {
   getRandomRoundRange = () => {
     let currentRound = 1;
     if (this.state.trendInfo) {
-      currentRound = this.state.trendInfo.lotteryRound - 1;
+      currentRound = this.state.trendInfo.lotteryRound;
     }
 
-    let startRound = currentRound - 7 > 1 ? (currentRound - 7) : 1;
+    let startRound = currentRound - 7 > 0 ? (currentRound - 7) : 0;
     let maxKey = 1;
-    if (this.state.lotteryHistory && this.state.lotteryHistory.length > 0 && startRound > 1) {
+    if (this.state.lotteryHistory && this.state.lotteryHistory.length > 0 && startRound > 0) {
       for (var i in this.state.lotteryHistory) {
         if (Number(i) > maxKey) {
           maxKey = Number(i);
@@ -333,43 +333,7 @@ class IndexPage extends Component {
     }
 
     return {
-      '1': [
-        {
-          time: '2020-01-14 17:46:39',
-          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-          amountBuy: '1000',
-          amountPay: 100.1234,
-        },
-        {
-          time: '2020-01-14 17:46:39',
-          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-          amountBuy: '1000',
-          amountPay: 100.1234,
-        },
-        {
-          time: '2020-01-14 17:46:39',
-          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-          amountBuy: '1000',
-          amountPay: 100.1234,
-        },
-        {
-          time: '2020-01-14 17:46:39',
-          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-          amountBuy: '1000',
-          amountPay: 100.1234,
-        },
-        {
-          time: '2020-01-14 17:46:39',
-          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-          amountBuy: '1000',
-          amountPay: 100.1234,
-        },
-        {
-          time: '2020-01-14 17:46:39',
-          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-          amountBuy: '1000',
-          amountPay: 100.1234,
-        },
+      '0': [
         {
           time: '2020-01-14 17:46:39',
           address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
@@ -409,8 +373,8 @@ class IndexPage extends Component {
       to: lotterySCAddr,
       data: selectUp ? '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000001' : '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000000',
       value,
-      gasPrice:"0x2a600b9c00",
-      gas:"0x030d40",
+      // gasPrice: "0x2a600b9c00",
+      // gas: "0x030d40",
     };
 
     try {
@@ -423,13 +387,13 @@ class IndexPage extends Component {
             time: new Date().format("yyyy-MM-dd hh:mm:ss"),
             address,
             round,
-            amount,
+            amount: amount * -1,
             type: selectUp ? 'UP' : 'DOWN',
             result: 'Done',
           });
         }
       });
-      
+
       return transactionID;
     } catch (err) {
       console.log(err);

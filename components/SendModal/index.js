@@ -44,7 +44,7 @@ class SendModalForm extends Component {
         setTimeout(async () => {
           let ret = await this.props.sendTransaction(values.amount, this.props.type === 'Up' ? true : false);
           if (ret) {
-            this.props.watchTransactionStatus(ret, okCallback)
+            this.props.watchTransactionStatus(ret, this.okCallback)
           } else {
             this.okCallback(false);
           }
@@ -98,7 +98,7 @@ class SendModalForm extends Component {
           <div className={style.bt20} onClick={() => { this.props.form.setFieldsValue({ amount: 20 }) }}>20 wan</div>
           <div className={style.bt10} onClick={() => { this.props.form.setFieldsValue({ amount: 10 }) }}>10 wan</div>
           <div className={style.bt5} onClick={() => { this.props.form.setFieldsValue({ amount: 5 }) }}>5 wan</div>
-          <div style={{ color: '#880' }}>* We will use the lowest gas charge by default, around 0.003 WAN.</div>
+          <div style={{ color: '#880' }}>* We will use the lowest gas charge by default, around 0.03~0.1 WAN.</div>
         </Modal>
       </div>
     );
