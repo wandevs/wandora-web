@@ -84,6 +84,7 @@ class Panel extends Component {
   }
 
   render() {
+    const { d, h } = this.getLastTimeDH(Date.now()/1000 - this.props.trendInfo.randomEndTime);
     return (
       <div className={style.panel}>
         {this.state.disable
@@ -117,7 +118,7 @@ class Panel extends Component {
           </div>
           <div className={style.secondLine}>
             <div className={style.subLine}>
-              <div className={style.subLine2}>The total fee in this period {this.props.trendInfo.lotteryRound} （to be distributed after 4 days 3 hours later）</div>
+              <div className={style.subLine2}>The total fee in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours later）</div>
               <Icon type="question-circle" style={{ color: 'gray', fontSize: '16px' }} />
             </div>
             <div className={style.subLine}>

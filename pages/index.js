@@ -119,13 +119,14 @@ class IndexPage extends Component {
     let trend = {
       round: 0,
       startTime: debugStartTime,
-      timeSpan: 3600 * 12,
-      stopBefore: 3600 * 2,
+      timeSpan: 0,
+      stopBefore: 0,
       btcPriceStart: 0,
       randomPoolAmount: 0,
       upPoolAmount: 0,
       downPoolAmount: 0,
       lotteryRound: 0,
+      randomEndTime: 0,
     };
 
     let lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
@@ -141,7 +142,11 @@ class IndexPage extends Component {
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
     trend.upPoolAmount = Number(roundInfo.upAmount)/1e18;
     trend.downPoolAmount = Number(roundInfo.downAmount)/1e18;
-    trend.randomPoolAmount = (trend.upPoolAmount + trend.downPoolAmount) * (feeRatio/1000);
+    trend.randomPoolAmount = ((trend.upPoolAmount + trend.downPoolAmount) * (feeRatio/1000)).toFixed(1);
+    let randomStartRN = Number(await lotterySC.methods.randomLotteryStartRN().call());
+    let randomTimeCycle = Number(await lotterySC.methods.randomLotteryTimeCycle().call());
+    let randomLotteryStartTime = Number(await lotterySC.methods.randomLotteryStartTime().call());
+    trend.randomEndTime = Number((randomStartRN + trend.lotteryRound + 1) * randomTimeCycle) + Number(randomLotteryStartTime);
 
     this.setTrendInfo(trend);
 
