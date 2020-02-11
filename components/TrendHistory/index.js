@@ -46,7 +46,7 @@ class TrendHistory extends Component {
                   up = 'In ' + endLeft.h + 'h ' + endLeft.m + 'm';
                   down = 'In ' + endLeft.h + 'h ' + endLeft.m + 'm';
                 }
-                let info = (<div>Start Price:{v.startPrice}<br />End Price:{v.endPrice}</div>);
+                let info = (<div>Start Price:{v.startPrice/1e8}<br />End Price:{v.endPrice/1e8}</div>);
 
                 return (
                   <Tooltip title={info}>

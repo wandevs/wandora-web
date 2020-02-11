@@ -36,7 +36,7 @@ class Panel extends Component {
   flushData = () => {
     const ret = this.props.trendInfo;
 
-    if (ret && ret.startTime !== 0 && ret.timeSpan !== 0 && ret.stopBefore !== 0) {
+    if (ret && ret.startTime !== 0 && ret.timeSpan !== 0 && ret.stopBefore !== 0 && (ret.startTime<(Date.now()/1000))) {
       const { endLeft, buyLeft } = this.getTimeLeft(ret);
       if (buyLeft.h === '0' && buyLeft.m === '0') {
         this.setState({
@@ -106,7 +106,7 @@ class Panel extends Component {
           <div className={style.firstLine}>
             How do you predict the price trend of WAN-BTC compared with
             <div className={style.subLine}>
-              <div className={style.bold}>{this.state.btcPriceStart.toFixed(7)} BTC</div>
+              <div className={style.bold}>{this.state.btcPriceStart} BTC</div>
               <div>WAN in</div>
               <div className={style.boxText2}>{this.state.endLeft.h}h</div>
               <div className={style.boxText2}>{this.state.endLeft.m}m</div>
@@ -117,11 +117,11 @@ class Panel extends Component {
           </div>
           <div className={style.secondLine}>
             <div className={style.subLine}>
-              <div className={style.subLine2}>The total fee in this period9 （to be distributed after 4 days 3 hours later）</div>
+              <div className={style.subLine2}>The total fee in this period {this.props.trendInfo.lotteryRound} （to be distributed after 4 days 3 hours later）</div>
               <Icon type="question-circle" style={{ color: 'gray', fontSize: '16px' }} />
             </div>
             <div className={style.subLine}>
-              <div className={style.poolValue}>{this.state.randomPoolAmount.toFixed(0)}</div>
+              <div className={style.poolValue}>{this.state.randomPoolAmount}</div>
               <div className={style.unitText}>WAN</div>
             </div>
           </div>

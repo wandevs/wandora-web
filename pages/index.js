@@ -13,7 +13,7 @@ import TrendHistory from '../components/TrendHistory';
 import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
 
-const lotterySCAddr = '0x0000000000000000000000000000000000000262';
+const lotterySCAddr = '0x8495226b4da732ca129a0ea6d368573c465f661d';
 
 var Web3 = require("web3");
 
@@ -46,6 +46,18 @@ class IndexPage extends Component {
     let trend = null;
     if (trendStr) {
       trend = JSON.parse(trendStr);
+    } else {
+      trend = {
+        round: 0,
+        startTime: debugStartTime,
+        timeSpan: 3600 * 12,
+        stopBefore: 3600 * 2,
+        btcPriceStart: 0,
+        randomPoolAmount: 0,
+        upPoolAmount: 0,
+        downPoolAmount: 0,
+        lotteryRound: 0,
+      };
     }
 
     let trendHistoryStr = window.localStorage.getItem('trendHistory');
@@ -105,28 +117,31 @@ class IndexPage extends Component {
 
   updateTrendInfoFromNode = async () => {
     let trend = {
-      round: 21,
+      round: 0,
       startTime: debugStartTime,
       timeSpan: 3600 * 12,
       stopBefore: 3600 * 2,
-      btcPriceStart: 0.0000241,
-      randomPoolAmount: 9873.1234,
-      upPoolAmount: 4351,
-      downPoolAmount: 2321,
-      lotteryRound: 1,
+      btcPriceStart: 0,
+      randomPoolAmount: 0,
+      upPoolAmount: 0,
+      downPoolAmount: 0,
+      lotteryRound: 0,
     };
 
     let lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
-    trend.round = await lotterySC.methods.curUpDownRound().call();
-    trend.lotteryRound = await lotterySC.methods.curRandomRound().call();
-    trend.startTime = await lotterySC.methods.upDownLotteryStartTime().call();
-    trend.timeSpan = await lotterySC.methods.upDownLotteryTimeCycle().call();
-    trend.stopBefore = await lotterySC.methods.upDownLtrstopTimeSpanInAdvance().call();
+    trend.round = Number(await lotterySC.methods.curUpDownRound().call());
+    trend.lotteryRound = Number(await lotterySC.methods.curRandomRound().call());
+    let upDownLotteryStartRN = Number(await lotterySC.methods.updownLotteryStartRN().call());
+    let upDownLotteryStartTime = Number(await lotterySC.methods.upDownLotteryStartTime().call());
+    trend.timeSpan = Number(await lotterySC.methods.upDownLotteryTimeCycle().call());
+    trend.startTime = Number((upDownLotteryStartRN + trend.round) * trend.timeSpan) + Number(upDownLotteryStartTime);
+
+    trend.stopBefore = Number(await lotterySC.methods.upDownLtrstopTimeSpanInAdvance().call());
     let roundInfo = await lotterySC.methods.updownGameMap(trend.round).call();
-    trend.btcPriceStart = roundInfo.openPrice;
-    trend.upPoolAmount = roundInfo.upAmount;
-    trend.downPoolAmount = roundInfo.downAmount;
-    trend.randomPoolAmount = roundInfo.feeTotal;
+    trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
+    trend.upPoolAmount = Number(roundInfo.upAmount);
+    trend.downPoolAmount = Number(roundInfo.downAmount);
+    trend.randomPoolAmount = Number(roundInfo.feeTotal);
 
     this.setTrendInfo(trend);
 
@@ -145,28 +160,7 @@ class IndexPage extends Component {
 
   updateTrendHistoryFromNode = async () => {
     try {
-      let trendHistory = [
-        { round: 1, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 2, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 3, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 4, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 5, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 6, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 7, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 8, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 9, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 10, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 11, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 12, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 13, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 14, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 15, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 16, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 17, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 18, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 19, result: "down", startPrice: '0.0000281', endPrice: '0.0000288' },
-        { round: 20, result: "up", startPrice: '0.0000281', endPrice: '0.0000288' },
-      ];
+      let trendHistory = [];
 
       let roundArray = this.getUpDownRoundRange();
       if (roundArray.length === 0) {
@@ -251,10 +245,10 @@ class IndexPage extends Component {
   getUpDownRoundRange = () => {
     let currentRound = 1;
     if (this.state.trendInfo) {
-      currentRound = this.state.trendInfo.round - 1;
+      currentRound = this.state.trendInfo.round;
     }
 
-    let startRound = currentRound - 29 > 1 ? (currentRound - 29) : 1;
+    let startRound = currentRound - 29 > 0 ? (currentRound - 29) : 0;
     if (this.state.trendHistory && this.state.trendHistory.length > 0) {
       startRound = Number(this.state.trendHistory[this.state.trendHistory.length - 1].round) + 1;
     }
@@ -329,115 +323,7 @@ class IndexPage extends Component {
       return JSON.parse(transactionHistory);
     }
 
-    return [
-      {
-        key: 0,
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        round: '03',
-        amount: 100,
-        type: 'UP',
-        result: 'Done',
-      },
-      {
-        key: 1,
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        round: '05',
-        amount: 100,
-        type: 'DOWN',
-        result: 'to be settled',
-      },
-      {
-        key: 2,
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        round: '02',
-        amount: 100,
-        type: 'DOWN',
-        result: 'Done',
-      },
-      {
-        key: 3,
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        round: '07',
-        amount: 100,
-        type: 'Return',
-        result: 'to be settled',
-      },
-      {
-        key: 4,
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        round: '-',
-        amount: 100.1234,
-        type: 'Fee distribution',
-        result: 'Done',
-      },
-      {
-        key: 5,
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        round: '03',
-        amount: 100,
-        type: 'UP',
-        result: 'Done',
-      }, {
-        key: 6,
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        round: '03',
-        amount: 100,
-        type: 'UP',
-        result: 'Done',
-      },
-      {
-        key: 7,
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        round: '05',
-        amount: 100,
-        type: 'DOWN',
-        result: 'to be settled',
-      },
-      {
-        key: 8,
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        round: '02',
-        amount: 100,
-        type: 'DOWN',
-        result: 'Done',
-      },
-      {
-        key: 9,
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        round: '07',
-        amount: 100,
-        type: 'Return',
-        result: 'to be settled',
-      },
-      {
-        key: 10,
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        round: '-',
-        amount: 100.1234,
-        type: 'Fee distribution',
-        result: 'Done',
-      },
-      {
-        key: 11,
-        time: '2020-01-14 17:46:39',
-        address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-        round: '03',
-        amount: 100,
-        type: 'UP',
-        result: 'Done',
-      },
-    ];
+    return [];
   }
 
   getLotteryHistory = () => {
@@ -515,14 +401,16 @@ class IndexPage extends Component {
   sendTransaction = async (amount, selectUp) => {
     const { selectedAccount, selectedWallet } = this.props;
     const address = selectedAccount ? selectedAccount.get('address') : null;
-    console.log('address:', address);
+    console.log('address:', address, 'amount:', amount, 'selectUp:', selectUp);
 
     const value = new BigNumber(amount).multipliedBy(Math.pow(10, 18)).toString();
 
     let params = {
       to: lotterySCAddr,
       data: selectUp ? '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000001' : '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000000',
-      value
+      value,
+      gasPrice:"0x2a600b9c00",
+      gas:"0x030d40",
     };
 
     try {
@@ -544,6 +432,7 @@ class IndexPage extends Component {
       
       return transactionID;
     } catch (err) {
+      console.log(err);
       window.alertAntd(err);
       return false;
     }
