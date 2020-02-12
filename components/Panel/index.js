@@ -36,7 +36,7 @@ class Panel extends Component {
   flushData = () => {
     const ret = this.props.trendInfo;
 
-    if (ret && ret.startTime !== 0 && ret.timeSpan !== 0 && ret.stopBefore !== 0 && (ret.startTime<(Date.now()/1000))) {
+    if (ret && ret.startTime !== 0 && ret.timeSpan !== 0 && ret.stopBefore !== 0 && (ret.startTime < (Date.now() / 1000))) {
       const { endLeft, buyLeft } = this.getTimeLeft(ret);
       if (buyLeft.h === '0' && buyLeft.m === '0') {
         this.setState({
@@ -84,46 +84,52 @@ class Panel extends Component {
   }
 
   render() {
-    const { d, h } = this.getLastTimeDH(Date.now()/1000 - this.props.trendInfo.randomEndTime);
+    const { d, h } = this.getLastTimeDH(Date.now() / 1000 - this.props.trendInfo.randomEndTime);
     return (
       <div className={style.panel}>
-        {this.state.disable
-          ? <div className={style.upButtonDisable}>
-            <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
+        <div className={style.upBlock}>
+          <div className={style.pieChart}>
+            <PieChart upCnt={this.state.upPoolAmount} downCnt={this.state.downPoolAmount} />
           </div>
-          : <div className={style.upButton} onClick={this.onUpClick}>
-            <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
-          </div>
-        }
-        {this.state.disable
-          ? <div className={style.downButtonDisable}>
-            <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
-          </div>
-          : <div className={style.downButton} onClick={this.onDownClick}>
-            <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
-          </div>
-        }
-        <div className={style.rightBlock}>
-          <div className={style.firstLine}>
-            How do you predict the price trend of WAN-BTC compared with
+
+          <div className={style.rightBlock}>
+            <div className={style.firstLine}>
+              How do you predict the price trend of WAN-BTC compared with
             <div className={style.subLine}>
-              <div className={style.bold}>{this.state.btcPriceStart} BTC</div>
-              <div>WAN in</div>
-              <div className={style.boxText2}>{this.state.endLeft.h}h</div>
-              <div className={style.boxText2}>{this.state.endLeft.m}m</div>
-              <div className={style.boxText2}>{this.state.endLeft.s}s</div>
-              <div style={{ marginLeft: '10px' }}>later.</div>
-              <Icon type="question-circle" style={{ margin: '13px', color: 'gray', fontSize: '16px' }} />
+                <div className={style.bold}>{this.state.btcPriceStart} BTC</div>
+                <div>WAN in</div>
+                <div className={style.boxText2}>{this.state.endLeft.h}h</div>
+                <div className={style.boxText2}>{this.state.endLeft.m}m</div>
+                <div className={style.boxText2}>{this.state.endLeft.s}s</div>
+                <div style={{ marginLeft: '10px' }}>later.</div>
+                <Icon type="question-circle" style={{ margin: '13px', color: 'gray', fontSize: '16px' }} />
+              </div>
             </div>
-          </div>
-          <div className={style.secondLine}>
-            <div className={style.subLine}>
-              <div className={style.subLine2}>The total fee in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours later）</div>
-              <Icon type="question-circle" style={{ color: 'gray', fontSize: '16px' }} />
-            </div>
-            <div className={style.subLine}>
-              <div className={style.poolValue}>{this.state.randomPoolAmount}</div>
-              <div className={style.unitText}>WAN</div>
+            <div className={style.secondLine}>
+              <div className={style.subLine}>
+                <div className={style.subLine2}>The total fee in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours later）</div>
+                <Icon type="question-circle" style={{ color: 'gray', fontSize: '16px' }} />
+              </div>
+              <div className={style.subLine}>
+                <div className={style.poolValue}>{this.state.randomPoolAmount}</div>
+                <div className={style.unitText}>WAN</div>
+                {this.state.disable
+                  ? <div className={style.upButtonDisable}>
+                    <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
+                  </div>
+                  : <div className={style.upButton} onClick={this.onUpClick}>
+                    <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
+                  </div>
+                }
+                {this.state.disable
+                  ? <div className={style.downButtonDisable}>
+                    <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
+                  </div>
+                  : <div className={style.downButton} onClick={this.onDownClick}>
+                    <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
+                  </div>
+                }
+              </div>
             </div>
           </div>
         </div>
@@ -134,9 +140,7 @@ class Panel extends Component {
           <div className={style.boxText}>{this.state.buyLeft.m}m</div>
           <div className={style.boxText}>{this.state.endLeft.s}s</div>
         </div>
-        <div className={style.pieChart}>
-          <PieChart upCnt={this.state.upPoolAmount} downCnt={this.state.downPoolAmount} />
-        </div>
+
         <SendModal sendTransaction={this.props.sendTransaction} watchTransactionStatus={this.props.watchTransactionStatus} visible={this.state.modalVisible} hideModal={this.hideModal} type={this.type} walletButton={this.props.walletButton} />
       </div>
     );
