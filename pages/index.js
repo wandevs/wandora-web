@@ -18,7 +18,7 @@ var Web3 = require("web3");
 let debugStartTime = (Date.now() / 1000)
 
 function alertAntd(info) {
-  if (typeof (info) === "string") {
+  if (typeof (info) === "string" && !info.includes('Error')) {
     message.success(info, 10);
   } else {
     if (info.toString().includes("Error")) {

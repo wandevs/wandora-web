@@ -24,12 +24,12 @@ class SendModalForm extends Component {
     });
 
     if (ret) {
-      window.alertAntd('send success.');
+      window.alertAntd('Transaction Success!');
       if (ret) {
         this.props.hideModal();
       }
     } else {
-      window.alertAntd('send failed.');
+      window.alertAntd('Error: Transaction Failed!');
     }
   }
 
