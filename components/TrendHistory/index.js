@@ -21,7 +21,7 @@ class TrendHistory extends Component {
   render() {
     let history = this.props.trendHistory.slice();
     if (this.props.trendInfo) {
-      history.push({ round: this.props.trendInfo.round, result: 'waitting', startPrice: this.props.trendInfo.btcPriceStart*1e8, endPrice: 'waiting...' });
+      history.push({ round: this.props.trendInfo.round, result: 'waitting', startPrice: this.props.trendInfo.btcPriceStart, endPrice: 'waiting...' });
     }
     const { endLeft } = this.getTimeLeft(this.props.trendInfo);
     return (
