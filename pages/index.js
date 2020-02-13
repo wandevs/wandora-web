@@ -239,12 +239,12 @@ class IndexPage extends Component {
         let ret = await lotterySC.methods.updownGameMap(roundArray[i]).call();
         trendHistory.push({
           round: roundArray[i],
-          startPrice: ret.openPrice,
-          endPrice: ret.closePrice,
+          startPrice: ret.openPrice/1e8,
+          endPrice: ret.closePrice/1e8,
           result: (ret.openPrice > ret.closePrice) ? 'down' : 'up',
-          upAmount: ret.upAmount,
-          downAmount: ret.downAmount,
-          feeTotal: ret.feeTotal,
+          upAmount: ret.upAmount/1e18,
+          downAmount: ret.downAmount/1e18,
+          feeTotal: (ret.upAmount/1e18 + ret.downAmount/1e18) * this.state.trendInfo.feeRatio/1000,
         })
         if (trendHistory.length > 29) {
           trendHistory.splice(0, 1);
@@ -262,8 +262,8 @@ class IndexPage extends Component {
     if (stateHistory) {
       history = stateHistory.slice();
     }
-    for (let i = 0; i < randomHistories; i++) {
-      history.push(singleRandomHistory);
+    for (var i in randomHistories) {
+      history.push(randomHistories[i]);
     }
     this.setState({ transactionHistory: history });
     window.localStorage.setItem('randomHistory', JSON.stringify(history));
@@ -332,7 +332,7 @@ class IndexPage extends Component {
   }
 
   getRandomRoundRange = () => {
-    let currentRound = 1;
+    let currentRound = 0;
     if (this.state.trendInfo) {
       currentRound = this.state.trendInfo.lotteryRound;
     }
