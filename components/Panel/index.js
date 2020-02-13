@@ -138,7 +138,7 @@ class Panel extends Component {
           <div className={style.bottomText}>Buying in this round will be closed in</div>
           <div className={style.boxText}>{this.state.buyLeft.h}h</div>
           <div className={style.boxText}>{this.state.buyLeft.m}m</div>
-          <div className={style.boxText}>{this.state.endLeft.s}s</div>
+          <div className={style.boxText}>{this.state.buyLeft.s}s</div>
         </div>
 
         <SendModal sendTransaction={this.props.sendTransaction} watchTransactionStatus={this.props.watchTransactionStatus} visible={this.state.modalVisible} hideModal={this.hideModal} type={this.type} walletButton={this.props.walletButton} />

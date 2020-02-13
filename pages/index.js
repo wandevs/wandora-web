@@ -4,8 +4,6 @@ import { Icon, message } from 'antd';
 import BigNumber from 'bignumber.js';
 import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet, getTransactionReceipt } from "wan-dex-sdk-wallet";
 import "wan-dex-sdk-wallet/index.css";
-import randomAbi from "./abi/random";
-import hydroAbi from "./abi/hydro";
 import lotteryAbi from "./abi/lottery";
 import style from './style.less';
 import Panel from '../components/Panel';
@@ -13,7 +11,7 @@ import TrendHistory from '../components/TrendHistory';
 import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
 
-const lotterySCAddr = '0xf895652fc02743739a1d9243509106219a3bdb4e';
+const lotterySCAddr = '0xc6025bed7d9e8ab85771ce2a127169ae9c64270f';
 
 var Web3 = require("web3");
 
@@ -222,14 +220,19 @@ class IndexPage extends Component {
 
   updateTrendHistoryFromNode = async () => {
     try {
-      let trendHistory = [];
+      let trendHistory = this.state.trendHistory.slice();
+      console.log('trendHistory:', trendHistory);
+      if (!trendHistory[0]) {
+        trendHistory = [];
+      }
 
       let roundArray = this.getUpDownRoundRange();
+      console.log('updateTrendHistoryFromNode', roundArray);
+
       if (roundArray.length === 0) {
         return;
       }
-
-      console.log('updateTrendHistoryFromNode');
+      
       let lotterySC = this.lotterySC;
 
       for (let i = 0; i < roundArray.length; i++) {
@@ -307,7 +310,7 @@ class IndexPage extends Component {
   }
 
   getUpDownRoundRange = () => {
-    let currentRound = 1;
+    let currentRound = 0;
     if (this.state.trendInfo) {
       currentRound = this.state.trendInfo.round;
     }
