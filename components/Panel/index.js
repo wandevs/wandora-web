@@ -1,5 +1,5 @@
 import { Component } from "../base";
-import { Icon } from 'antd';
+import { Icon, Tooltip, Modal } from 'antd';
 import style from './style.less';
 import SendModal from '../SendModal';
 import PieChart from '../PieChart';
@@ -83,6 +83,39 @@ class Panel extends Component {
     this.setState({ modalVisible: false });
   }
 
+  showHelp1 = () => {
+    Modal.info({
+      title: 'Rules of Up and Down Forecast Game',
+      content: (
+        <div>
+          <p>1) WAN-BTC price rise and fall predicted by users within a certain time;</p>
+          <p>2) Buy up or buy down according to the forecast;</p>
+          <p>3) 10% of the fund will be accumulated to the random number bonus pool as a service charge;</p>
+          <p>4) The remaining 90% shall be allocated according to the proportion of bets. The loser shall receive no reward and the winner shall enjoy all the rewards;</p>
+          <p>5) Have the chance to participate in random number lottery regardless of winning or losing;</p>
+          <p>6) There is a period of time before the settlement is prohibited betting period.</p>
+        </div>
+      ),
+      onOk() { },
+    });
+  }
+
+  showHelp2 = () => {
+    Modal.info({
+      title: 'Rules of Random Lottery Game',
+      content: (
+        <div>
+          <p>1) The handling charge of up and down games is used as the prize pool of random number lottery;</p>
+          <p>2) Every few days, only a few people can win the lottery;</p>
+          <p>3) The true random number on wanchain is used as the drawing basis;</p>
+          <p>4) The probability of winning is directly proportional to the bet amount, and 1 wan coin is taken as a bet;</p>
+          <p>5) The winners share the whole prize pool according to the betting rate;</p>
+        </div>
+      ),
+      onOk() { },
+    });
+  }
+
   render() {
     const { d, h } = this.getLastTimeDH(Date.now() / 1000 - this.props.trendInfo.randomEndTime);
     return (
@@ -102,13 +135,17 @@ class Panel extends Component {
                 <div className={style.boxText2}>{this.state.endLeft.m}m</div>
                 <div className={style.boxText2}>{this.state.endLeft.s}s</div>
                 <div style={{ marginLeft: '10px' }}>later.</div>
-                <Icon type="question-circle" style={{ margin: '13px', color: 'gray', fontSize: '16px' }} />
+                <Tooltip title={"Show Help"}>
+                  <Icon type="question-circle" onClick={this.showHelp1} className={style.helpIcon} style={{ margin: '13px', color: 'gray', fontSize: '16px' }} />
+                </Tooltip>
               </div>
             </div>
             <div className={style.secondLine}>
               <div className={style.subLine}>
                 <div className={style.subLine2}>The total fee in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours later）</div>
-                <Icon type="question-circle" style={{ color: 'gray', fontSize: '16px' }} />
+                <Tooltip title={"Show Help"}>
+                  <Icon type="question-circle" onClick={this.showHelp2} className={style.helpIcon} style={{ color: 'gray', fontSize: '16px' }} />
+                </Tooltip>
               </div>
               <div className={style.subLine}>
                 <div className={style.poolValue}>{this.state.randomPoolAmount}</div>

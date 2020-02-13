@@ -11,7 +11,7 @@ import TrendHistory from '../components/TrendHistory';
 import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
 
-const lotterySCAddr = '0xc6025bed7d9e8ab85771ce2a127169ae9c64270f';
+const lotterySCAddr = '0x349be04a0ad9b92486430869d1390afc85faf5ad';
 
 var Web3 = require("web3");
 
