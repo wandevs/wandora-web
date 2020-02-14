@@ -68,13 +68,11 @@ class Panel extends Component {
   }
 
   onUpClick = () => {
-    console.log('up click');
     this.type = 'Up';
     this.setState({ modalVisible: true });
   }
 
   onDownClick = () => {
-    console.log('down click');
     this.type = 'Down';
     this.setState({ modalVisible: true });
   }
@@ -133,7 +131,7 @@ class Panel extends Component {
                 <div>WAN in</div>
                 <div className={style.boxText2}>{this.state.endLeft.h}h</div>
                 <div className={style.boxText2}>{this.state.endLeft.m}m</div>
-                <div className={style.boxText2}>{this.state.endLeft.s}s</div>
+                {/* <div className={style.boxText2}>{this.state.endLeft.s}s</div> */}
                 <div style={{ marginLeft: '10px' }}>later.</div>
                 <Tooltip title={"Show Help"}>
                   <Icon type="question-circle" onClick={this.showHelp1} className={style.helpIcon} style={{ margin: '13px', color: 'gray', fontSize: '16px' }} />
@@ -175,7 +173,7 @@ class Panel extends Component {
           <div className={style.bottomText}>Buying in this round will be closed in</div>
           <div className={style.boxText}>{this.state.buyLeft.h}h</div>
           <div className={style.boxText}>{this.state.buyLeft.m}m</div>
-          <div className={style.boxText}>{this.state.buyLeft.s}s</div>
+          {/* <div className={style.boxText}>{this.state.buyLeft.s}s</div> */}
         </div>
 
         <SendModal sendTransaction={this.props.sendTransaction} watchTransactionStatus={this.props.watchTransactionStatus} visible={this.state.modalVisible} hideModal={this.hideModal} type={this.type} walletButton={this.props.walletButton} />

@@ -37,7 +37,6 @@ class SendModalForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         this.setState({
           confirmLoading: true,
         });
@@ -54,7 +53,6 @@ class SendModalForm extends Component {
   };
 
   handleCancel = () => {
-    console.log('Clicked cancel button');
     this.props.hideModal();
   };
 

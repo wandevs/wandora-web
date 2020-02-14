@@ -139,7 +139,6 @@ class IndexPage extends Component {
       lotteryRound: 0,
       randomEndTime: 0,
     };
-    console.log('updateTrendInfoFromNode');
     let lotterySC = this.lotterySC;
 
     let awaitArray = [];
@@ -182,7 +181,6 @@ class IndexPage extends Component {
 
   updateTrendInfoFromNode = async () => {
     let trend = Object.assign({}, this.state.trendInfo);
-    console.log('updateTrendInfoFromNode:', trend);
     let lotterySC = this.lotterySC;
 
     let awaitArray = [];
@@ -221,13 +219,11 @@ class IndexPage extends Component {
   updateTrendHistoryFromNode = async () => {
     try {
       let trendHistory = this.state.trendHistory.slice();
-      console.log('trendHistory:', trendHistory);
       if (!trendHistory[0]) {
         trendHistory = [];
       }
 
       let roundArray = this.getUpDownRoundRange();
-      console.log('updateTrendHistoryFromNode', roundArray);
 
       if (roundArray.length === 0) {
         return;
@@ -278,7 +274,6 @@ class IndexPage extends Component {
         return;
       }
 
-      console.log('updateRandomHistoryFromNode');
       let lotterySC = this.lotterySC;
       let blockNumber = await this.web3.eth.getBlockNumber();
       let events = await lotterySC.getPastEvents('RandomBingGo', {
@@ -429,6 +424,21 @@ class IndexPage extends Component {
     window.setTimeout(() => getTransactionStatus(txID), 3000);
   };
 
+  estimateSendGas = async (value, selectUp) => {
+    let lotterySC = this.lotterySC;
+    try {
+      let ret = await lotterySC.methods.stakeIn(selectUp).estimateGas({gas: 10000000, value})
+      console.log('estimateGas:', ret + 30000);
+      if (ret == 10000000) {
+        return -1;
+      }
+      return ret + 30000;
+    } catch (err) {
+      console.log(err);
+      return -1;
+    }
+  }
+
   sendTransaction = async (amount, selectUp) => {
     const { selectedAccount, selectedWallet } = this.props;
     const address = selectedAccount ? selectedAccount.get('address') : null;
@@ -443,6 +453,12 @@ class IndexPage extends Component {
       gasPrice: "0x29E8D60800",
       gas: "0x87A23",
     };
+
+    params.gas = await this.estimateSendGas(value, selectUp);
+    if (params.gas == -1) {
+      window.alertAntd('Estimate Gas Error. Maybe out of time range.');
+      return false;
+    }
 
     try {
       let transactionID = await selectedWallet.sendTransaction(params);

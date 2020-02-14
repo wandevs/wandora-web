@@ -17,7 +17,6 @@ export class Component extends React.PureComponent {
   }
 
   getLastTime(leftTimeSecond) {
-    console.log('getLastTime:', leftTimeSecond);
     if (leftTimeSecond < 0) {
       return { h: '0', m: '0', s: '0' }
     }
@@ -25,7 +24,6 @@ export class Component extends React.PureComponent {
     let h = Math.floor(leftTimeSecond / 3600);
     let m = Math.floor(leftTimeSecond % 3600 / 60);
     let s = Math.floor(leftTimeSecond % 60);
-    console.log({ h, m, s });
     return { h, m, s }
   }
 
