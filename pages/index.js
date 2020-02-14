@@ -11,7 +11,7 @@ import TrendHistory from '../components/TrendHistory';
 import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
 
-const lotterySCAddr = '0x349be04a0ad9b92486430869d1390afc85faf5ad';
+const lotterySCAddr = '0xf28f0b8479e7af32874128ede6990b24d946c038';
 
 var Web3 = require("web3");
 
@@ -176,6 +176,7 @@ class IndexPage extends Component {
     trend.downPoolAmount = Number(roundInfo.downAmount)/1e18;
     trend.randomPoolAmount = ((trend.upPoolAmount + trend.downPoolAmount) * (trend.feeRatio/1000)).toFixed(1);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
+    console.log('randomEndTime:', trend.randomEndTime);
     this.setTrendInfo(trend);
   }
 

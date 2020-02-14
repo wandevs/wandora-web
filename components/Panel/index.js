@@ -38,7 +38,7 @@ class Panel extends Component {
 
     if (ret && ret.startTime !== 0 && ret.timeSpan !== 0 && ret.stopBefore !== 0 && (ret.startTime < (Date.now() / 1000))) {
       const { endLeft, buyLeft } = this.getTimeLeft(ret);
-      if (buyLeft.h === '0' && buyLeft.m === '0') {
+      if (buyLeft.h == 0 && buyLeft.m == 0) {
         this.setState({
           endLeft,
           buyLeft,
@@ -115,7 +115,7 @@ class Panel extends Component {
   }
 
   render() {
-    const { d, h } = this.getLastTimeDH(Date.now() / 1000 - this.props.trendInfo.randomEndTime);
+    const { d, h } = this.getLastTimeDH(Number(this.props.trendInfo.randomEndTime) - Date.now() / 1000);
     return (
       <div className={style.panel}>
         <div className={style.upBlock}>
