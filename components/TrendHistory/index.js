@@ -37,6 +37,9 @@ class TrendHistory extends Component {
         <div className={style.title}>
           <Icon type="history" style={{ margin: '6px' }} />
           Trend History
+          <Tooltip title={'Hover over the round value to see detail.'}>
+            <Icon type="info-circle" style={{ margin: '6px' }} />
+          </Tooltip>
         </div>
         <div className={style.subLine}>
           <div>
