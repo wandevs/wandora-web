@@ -12,7 +12,7 @@ import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
 import sleep from 'ko-sleep';
 
-const lotterySCAddr = '0xda1de06101e62d71d75502e9970c7f3b522f78bd';
+const lotterySCAddr = '0xf83cf25f36846ff7aa1e5a9b0299d38be57dacbc';
 
 var Web3 = require("web3");
 
@@ -185,7 +185,7 @@ class IndexPage extends Component {
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
     trend.upPoolAmount = Number(roundInfo.upAmount) / 1e18;
     trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
-    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)+Number(extraPrice))/1e18 * (trend.feeRatio / 1000)).toFixed(1);
+    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount))/1e18 * (trend.feeRatio / 1000) + Number(extraPrice)/1e18).toFixed(1);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
     console.log('randomEndTime:', trend.randomEndTime);
     this.setTrendInfo(trend);
@@ -217,7 +217,7 @@ class IndexPage extends Component {
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
     trend.upPoolAmount = Number(roundInfo.upAmount) / 1e18;
     trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
-    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)+Number(extraPrice))/1e18 * (trend.feeRatio / 1000)).toFixed(1);
+    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount))/1e18 * (trend.feeRatio / 1000)+Number(extraPrice)/1e18).toFixed(1);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
 
     this.setTrendInfo(trend);
@@ -527,7 +527,7 @@ class IndexPage extends Component {
       if (ret == 10000000) {
         return -1;
       }
-      return ret + 30000;
+      return '0x'+(ret + 30000).toString(16);
     } catch (err) {
       console.log(err);
       return -1;
@@ -546,11 +546,11 @@ class IndexPage extends Component {
       data: selectUp ? '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000001' : '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000000',
       value,
       gasPrice: "0x29E8D60800",
-      gas: "0x87A23",
+      gasLimit: "0x87A23",
     };
 
-    params.gas = await this.estimateSendGas(value, selectUp);
-    if (params.gas == -1) {
+    params.gasLimit = await this.estimateSendGas(value, selectUp);
+    if (params.gasLimit == -1) {
       window.alertAntd('Estimate Gas Error. Maybe out of time range.');
       return false;
     }
