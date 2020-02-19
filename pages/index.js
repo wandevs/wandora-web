@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { Component } from "../components/base";
-import { Icon, message } from 'antd';
+import { Icon, message, Modal } from 'antd';
 import BigNumber from 'bignumber.js';
 import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet, getTransactionReceipt } from "wan-dex-sdk-wallet";
 import "wan-dex-sdk-wallet/index.css";
@@ -12,7 +12,7 @@ import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
 import sleep from 'ko-sleep';
 
-const lotterySCAddr = '0xf83cf25f36846ff7aa1e5a9b0299d38be57dacbc';
+const lotterySCAddr = '0x0411d36b9b54890c5d697f33d76b31a4f7e83d95';
 
 var Web3 = require("web3");
 
@@ -185,7 +185,7 @@ class IndexPage extends Component {
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
     trend.upPoolAmount = Number(roundInfo.upAmount) / 1e18;
     trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
-    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount))/1e18 * (trend.feeRatio / 1000) + Number(extraPrice)/1e18).toFixed(1);
+    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(1);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
     console.log('randomEndTime:', trend.randomEndTime);
     this.setTrendInfo(trend);
@@ -207,7 +207,7 @@ class IndexPage extends Component {
     let roundInfo = {};
     let randomInfo = {};
     let extraPrice = 0;
-    
+
     [trend.round, trend.lotteryRound, roundInfo, randomInfo, extraPrice] = await Promise.all(awaitArray);
 
     trend.round = Number(trend.round);
@@ -217,7 +217,7 @@ class IndexPage extends Component {
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
     trend.upPoolAmount = Number(roundInfo.upAmount) / 1e18;
     trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
-    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount))/1e18 * (trend.feeRatio / 1000)+Number(extraPrice)/1e18).toFixed(1);
+    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(1);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
 
     this.setTrendInfo(trend);
@@ -294,6 +294,8 @@ class IndexPage extends Component {
   updateRandomHistoryFromNode = async () => {
     try {
       let randomHistories = {};
+      const { selectedAccount } = this.props;
+      const address = selectedAccount ? selectedAccount.get('address') : null;
       console.log('random list:', this.state.lotteryHistory);
       console.log('random scan start:', this.getRandomHistoryStartBlock());
 
@@ -325,8 +327,20 @@ class IndexPage extends Component {
             round: events[i].returnValues.round,
             address: events[i].returnValues.staker.toLowerCase(),
             amountBuy: '--',
-            amountPay: (Number(events[i].returnValues.prizeAmount)/1e18).toFixed(2),
+            amountPay: (Number(events[i].returnValues.prizeAmount) / 1e18).toFixed(2),
           });
+
+          if (address.toLowerCase() === events[i].returnValues.staker.toLowerCase()) {
+            this.addTransactionHistory({
+              key: events[i].transactionHash,
+              time: (new Date(Number(block.timestamp) * 1000)).format("yyyy-MM-dd hh:mm:ss"),
+              address: address.toLowerCase(),
+              round: events[i].returnValues.round,
+              amount: (Number(events[i].returnValues.prizeAmount) / 1e18).toFixed(2),
+              type: 'Distribute',
+              result: 'Done',
+            });
+          }
         }
         console.log('randomHistories:', randomHistories);
         this.addRandomHistory(randomHistories);
@@ -527,7 +541,7 @@ class IndexPage extends Component {
       if (ret == 10000000) {
         return -1;
       }
-      return '0x'+(ret + 30000).toString(16);
+      return '0x' + (ret + 30000).toString(16);
     } catch (err) {
       console.log(err);
       return -1;
@@ -580,6 +594,9 @@ class IndexPage extends Component {
     }
   }
 
+  showGameRule = () => {
+    window.open("//www.jb51.net"); 
+  }
 
   render() {
     return (
@@ -588,6 +605,7 @@ class IndexPage extends Component {
           <Wallet title="Wan Game" nodeUrl={window._nodeUrl} />
           <Icon className={style.logo} type="appstore" />
           <div className={style.title}>BTC</div>
+          <div className={style.gameRule} onClick={this.showGameRule}>Game Rule</div>
           <WalletButton />
         </div>
         <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} />
@@ -603,5 +621,8 @@ export default connect(state => ({
   selectedAccount: getSelectedAccount(state),
   selectedWallet: getSelectedAccountWallet(state),
 }))(IndexPage);
+
+
+
 
 

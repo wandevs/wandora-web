@@ -10,6 +10,8 @@ class Panel extends Component {
     this.state = {
       endLeft: { h: '0', m: '0', s: '0' },
       buyLeft: { h: '0', m: '0', s: '0' },
+      nextStart: {h: '0', m: '0', s: '0'},
+      nextEnd: '00:00',
       modalVisible: false,
       startTime: 0,
       timeSpan: 0,
@@ -37,11 +39,13 @@ class Panel extends Component {
     const ret = this.props.trendInfo;
 
     if (ret && ret.startTime !== 0 && ret.timeSpan !== 0 && ret.stopBefore !== 0 && (ret.startTime < (Date.now() / 1000))) {
-      const { endLeft, buyLeft } = this.getTimeLeft(ret);
+      const { endLeft, buyLeft, nextStart, nextEnd } = this.getTimeLeft(ret);
       if (buyLeft.h == 0 && buyLeft.m == 0) {
         this.setState({
           endLeft,
           buyLeft,
+          nextStart,
+          nextEnd,
           ...ret,
           disable: true
         });
@@ -49,6 +53,8 @@ class Panel extends Component {
         this.setState({
           endLeft,
           buyLeft,
+          nextStart,
+          nextEnd,
           ...ret,
           disable: false
         });
@@ -86,12 +92,12 @@ class Panel extends Component {
       title: 'Rules of Up and Down Forecast Game',
       content: (
         <div>
-          <p>1) WAN-BTC price rise and fall predicted by users within a certain time;</p>
-          <p>2) Buy up or buy down according to the forecast;</p>
-          <p>3) 10% of the fund will be accumulated to the random number bonus pool as a service charge;</p>
-          <p>4) The remaining 90% shall be allocated according to the proportion of bets. The loser shall receive no reward and the winner shall enjoy all the rewards;</p>
-          <p>5) Have the chance to participate in random number lottery regardless of winning or losing;</p>
-          <p>6) There is a period of time before the settlement is prohibited betting period.</p>
+          <p>1) Users predict whether the price of WAN/BTC will rise or fall within a time period.</p>
+          <p>2) Users can place a bet on whether the price will go up or down within the period.</p>
+          <p>3) 10% of the funds bet will be pooled in a rewards pot to be rewarded to several lucky users who participated in the game.</p>
+          <p>4) The remaining 90% shall be divided amongst the winners in each period. Losers will receive nothing and winners will receive an amount equal to the proportion of their bet vs the total amount of all winning bets.</p>
+          <p>5) Regardless of winning or losing the. Up/Down bet, all winners have a chance of winning the rewards pot.</p>
+          <p>6) Last bets must be placed 2 hours before the period begins.</p>
         </div>
       ),
       onOk() { },
@@ -103,11 +109,11 @@ class Panel extends Component {
       title: 'Rules of Random Lottery Game',
       content: (
         <div>
-          <p>1) The handling charge of up and down games is used as the prize pool of random number lottery;</p>
-          <p>2) Every few days, only a few people can win the lottery;</p>
-          <p>3) The true random number on wanchain is used as the drawing basis;</p>
-          <p>4) The probability of winning is directly proportional to the bet amount, and 1 wan coin is taken as a bet;</p>
-          <p>5) The winners share the whole prize pool according to the betting rate;</p>
+          <p>1) 10% of each bet is intered into a rewards pot to be paid out to one user at random.</p>
+          <p>2) Each few days there will be several winners.</p>
+          <p>3) Wanchain's on chain random number generation will be used to decide the winners.</p>
+          <p>4) The probability of winning is directly proportional to the amount bet with 1 WAN counting as 1 bet.</p>
+          <p>5) The winners share the whole rewards pot according to their betting ratio.</p>
         </div>
       ),
       onOk() { },
@@ -125,10 +131,11 @@ class Panel extends Component {
 
           <div className={style.rightBlock}>
             <div className={style.firstLine}>
-              How do you predict the price trend of WAN-BTC compared with
-            <div className={style.subLine}>
+              <div className={style.subLine}>
+                <div>The price of WAN at the end of the last round was </div>
                 <div className={style.bold}>{this.state.btcPriceStart} BTC</div>
-                <div>WAN in</div>
+                <div>{' / WAN.'}</div>
+                <div>Place your predict whether the price will go up or down after</div>
                 <div className={style.boxText2}>{this.state.endLeft.h}h</div>
                 <div className={style.boxText2}>{this.state.endLeft.m}m</div>
                 {/* <div className={style.boxText2}>{this.state.endLeft.s}s</div> */}
@@ -140,7 +147,7 @@ class Panel extends Component {
             </div>
             <div className={style.secondLine}>
               <div className={style.subLine}>
-                <div className={style.subLine2}>The total fee in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours later）</div>
+                <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours later）</div>
                 <Tooltip title={"Show Help"}>
                   <Icon type="question-circle" onClick={this.showHelp2} className={style.helpIcon} style={{ color: 'gray', fontSize: '16px' }} />
                 </Tooltip>
@@ -174,6 +181,11 @@ class Panel extends Component {
           <div className={style.boxText}>{this.state.buyLeft.h}h</div>
           <div className={style.boxText}>{this.state.buyLeft.m}m</div>
           {/* <div className={style.boxText}>{this.state.buyLeft.s}s</div> */}
+          <span />
+          <div className={style.bottomText}>The next round begins in</div>
+          <div className={style.boxText}>{this.state.nextStart.h}h</div>
+          <div className={style.boxText}>{this.state.nextStart.m}m</div>
+          <div className={style.bottomText}> and ends at {this.state.nextEnd}.</div>
         </div>
 
         <SendModal sendTransaction={this.props.sendTransaction} watchTransactionStatus={this.props.watchTransactionStatus} visible={this.state.modalVisible} hideModal={this.hideModal} type={this.type} walletButton={this.props.walletButton} />

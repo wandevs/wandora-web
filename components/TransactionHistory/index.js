@@ -49,7 +49,7 @@ class TransactionHistory extends Component {
   render() {
     let total = 0;
     this.props.transactionHistory.forEach(element => {
-      total += element.amount;
+      total += Number(element.amount);
     });
     console.log('transaction:', this.props.transactionHistory);
     return (

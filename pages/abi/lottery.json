@@ -509,29 +509,19 @@
         "type": "uint256"
       },
       {
-        "name": "_updownLtryTimeCycle",
+        "name": "_updownLottryTimeCycle",
         "type": "uint256"
       },
       {
         "name": "_stopTimeSpanInAdvance",
         "type": "uint256"
-      }
-    ],
-    "name": "setUpDownLotteryTime",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
+      },
       {
         "name": "_randomLotteryTimeCycle",
         "type": "uint256"
       }
     ],
-    "name": "setRandomLotteryTime",
+    "name": "setLotteryTime",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
