@@ -595,7 +595,7 @@ class IndexPage extends Component {
   }
 
   showGameRule = () => {
-    window.open("//www.jb51.net"); 
+    window.open("https://github.com/wandevs/wan-game/blob/master/GameRule.md"); 
   }
 
   render() {

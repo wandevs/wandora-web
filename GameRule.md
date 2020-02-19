@@ -1,6 +1,6 @@
 # Game Rule
 
-![GameRuleImg](./svg/gameRule.svg)
+![GameRuleImg](./img/gameRule.png)
 
 1) Users predict whether the price of WAN/BTC will rise or fall within a time period.
 
