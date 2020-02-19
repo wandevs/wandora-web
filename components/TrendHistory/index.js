@@ -40,8 +40,8 @@ class TrendHistory extends Component {
             {
               history.map((v, i, arr) => {
                 let round = v.round.toString().padStart(2, '0');
-                let up = v.result === 'up' ? (<div className={style.ball} />) : '';
-                let down = v.result === 'down' ? <div className={style.ball} /> : '';
+                let up = (v.result === 'up')||(v.result === 'draw') ? (<div className={style.ball} />) : '';
+                let down = (v.result === 'down')||(v.result === 'draw') ? <div className={style.ball} /> : '';
                 if (up.length === 0 && down.length === 0) {
                   up = 'In ' + endLeft.h + 'h ' + endLeft.m + 'm';
                   down = 'In ' + endLeft.h + 'h ' + endLeft.m + 'm';

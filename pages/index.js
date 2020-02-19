@@ -10,8 +10,9 @@ import Panel from '../components/Panel';
 import TrendHistory from '../components/TrendHistory';
 import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
+import sleep from 'ko-sleep';
 
-const lotterySCAddr = '0xf28f0b8479e7af32874128ede6990b24d946c038';
+const lotterySCAddr = '0xda1de06101e62d71d75502e9970c7f3b522f78bd';
 
 var Web3 = require("web3");
 
@@ -71,6 +72,8 @@ class IndexPage extends Component {
       lotteryHistory: this.getLotteryHistory(),
     }
 
+    window.debugState = this.state;
+
     Date.prototype.format = function (fmt) {
       var o = {
         "M+": this.getMonth() + 1,                 //月份 
@@ -105,6 +108,7 @@ class IndexPage extends Component {
     this.timerTrendInfo = setInterval(this.updateTrendInfoFromNode, 5000);
 
     this.timerTrendHistory = setInterval(this.updateTrendHistoryFromNode, 60 * 1000);
+    this.timerTrendHistory = setInterval(this.flushTransactionHistory, 100 * 1000);
   }
 
   componentWillUnmount() {
@@ -149,11 +153,11 @@ class IndexPage extends Component {
     awaitArray.push(lotterySC.methods.feeRatio().call());
     awaitArray.push(lotterySC.methods.upDownLtrstopTimeSpanInAdvance().call());
     awaitArray.push(lotterySC.methods.randomLotteryTimeCycle().call());
-    
+
     [
-      trend.round, 
-      trend.lotteryRound, 
-      trend.gameStartTime, 
+      trend.round,
+      trend.lotteryRound,
+      trend.gameStartTime,
       trend.timeSpan,
       trend.feeRatio,
       trend.stopBefore,
@@ -162,50 +166,67 @@ class IndexPage extends Component {
 
     trend.round = Number(trend.round);
     trend.lotteryRound = Number(trend.lotteryRound);
-    trend.gameStartTime= Number(trend.gameStartTime);
-    trend.timeSpan= Number(trend.timeSpan);
-    trend.feeRatio= Number(trend.feeRatio);
-    trend.stopBefore= Number(trend.stopBefore);
-    trend.randomTimeCycle= Number(trend.randomTimeCycle);
+    trend.gameStartTime = Number(trend.gameStartTime);
+    trend.timeSpan = Number(trend.timeSpan);
+    trend.feeRatio = Number(trend.feeRatio);
+    trend.stopBefore = Number(trend.stopBefore);
+    trend.randomTimeCycle = Number(trend.randomTimeCycle);
 
-    let roundInfo = await lotterySC.methods.updownGameMap(trend.round).call();
+    awaitArray = []
+    awaitArray.push(lotterySC.methods.updownGameMap(trend.round).call());
+    awaitArray.push(lotterySC.methods.randomGameMap(trend.lotteryRound).call());
+    awaitArray.push(lotterySC.methods.extraPrizeMap(trend.lotteryRound).call());
+
+
+    let [roundInfo, randomInfo, extraPrice] = await Promise.all(awaitArray);
+
 
     trend.startTime = trend.round * trend.timeSpan + trend.gameStartTime;
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
-    trend.upPoolAmount = Number(roundInfo.upAmount)/1e18;
-    trend.downPoolAmount = Number(roundInfo.downAmount)/1e18;
-    trend.randomPoolAmount = ((trend.upPoolAmount + trend.downPoolAmount) * (trend.feeRatio/1000)).toFixed(1);
+    trend.upPoolAmount = Number(roundInfo.upAmount) / 1e18;
+    trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
+    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)+Number(extraPrice))/1e18 * (trend.feeRatio / 1000)).toFixed(1);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
     console.log('randomEndTime:', trend.randomEndTime);
     this.setTrendInfo(trend);
+    this.flushTransactionHistory();
   }
 
   updateTrendInfoFromNode = async () => {
     let trend = Object.assign({}, this.state.trendInfo);
     let lotterySC = this.lotterySC;
+    let roundOld = trend.round;
 
     let awaitArray = [];
     awaitArray.push(lotterySC.methods.curUpDownRound().call());
     awaitArray.push(lotterySC.methods.curRandomRound().call());
     awaitArray.push(lotterySC.methods.updownGameMap(trend.round).call());
+    awaitArray.push(lotterySC.methods.randomGameMap(trend.lotteryRound).call());
+    awaitArray.push(lotterySC.methods.extraPrizeMap(trend.lotteryRound).call());
 
     let roundInfo = {};
-
-    [trend.round, trend.lotteryRound, roundInfo] = await Promise.all(awaitArray);
+    let randomInfo = {};
+    let extraPrice = 0;
+    
+    [trend.round, trend.lotteryRound, roundInfo, randomInfo, extraPrice] = await Promise.all(awaitArray);
 
     trend.round = Number(trend.round);
     trend.lotteryRound = Number(trend.lotteryRound);
 
     trend.startTime = trend.round * trend.timeSpan + trend.gameStartTime;
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
-    trend.upPoolAmount = Number(roundInfo.upAmount)/1e18;
-    trend.downPoolAmount = Number(roundInfo.downAmount)/1e18;
-    trend.randomPoolAmount = ((trend.upPoolAmount + trend.downPoolAmount) * (trend.feeRatio/1000)).toFixed(1);
+    trend.upPoolAmount = Number(roundInfo.upAmount) / 1e18;
+    trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
+    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)+Number(extraPrice))/1e18 * (trend.feeRatio / 1000)).toFixed(1);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
 
     this.setTrendInfo(trend);
     this.updateTrendHistoryFromNode();
     this.updateRandomHistoryFromNode();
+    if (roundOld != trend.round) {
+      console.log('round switch time up!');
+      this.flushTransactionHistory();
+    }
   }
 
   setTrendHistory = (trendHistory) => {
@@ -229,19 +250,19 @@ class IndexPage extends Component {
       if (roundArray.length === 0) {
         return;
       }
-      
+
       let lotterySC = this.lotterySC;
 
       for (let i = 0; i < roundArray.length; i++) {
         let ret = await lotterySC.methods.updownGameMap(roundArray[i]).call();
         trendHistory.push({
           round: roundArray[i],
-          startPrice: ret.openPrice/1e8,
-          endPrice: ret.closePrice/1e8,
-          result: (ret.openPrice > ret.closePrice) ? 'down' : 'up',
-          upAmount: ret.upAmount/1e18,
-          downAmount: ret.downAmount/1e18,
-          feeTotal: (ret.upAmount/1e18 + ret.downAmount/1e18) * this.state.trendInfo.feeRatio/1000,
+          startPrice: ret.openPrice / 1e8,
+          endPrice: ret.closePrice / 1e8,
+          result: (ret.openPrice > ret.closePrice) ? 'down' : (ret.openPrice < ret.closePrice) ? 'up' : 'draw',
+          upAmount: ret.upAmount / 1e18,
+          downAmount: ret.downAmount / 1e18,
+          feeTotal: (ret.upAmount / 1e18 + ret.downAmount / 1e18) * this.state.trendInfo.feeRatio / 1000,
         })
         if (trendHistory.length > 29) {
           trendHistory.splice(0, 1);
@@ -254,23 +275,30 @@ class IndexPage extends Component {
   }
 
   addRandomHistory = (randomHistories) => {
-    const stateHistory = this.state.lotteryHistory;
-    let history = [];
+    console.log('addRandomHistory:', randomHistories);
+    const stateHistory = Object.assign({}, this.state.lotteryHistory);
+    let history = {};
     if (stateHistory) {
-      history = stateHistory.slice();
+      history = stateHistory;
     }
+    console.log('history:', history);
     for (var i in randomHistories) {
-      history.push(randomHistories[i]);
+      console.log('i:', i, 'randomHistories[i]:', randomHistories[i]);
+      history[i] = randomHistories[i];
     }
-    this.setState({ transactionHistory: history });
+    console.log('history:', history);
+    this.setState({ lotteryHistory: history });
     window.localStorage.setItem('randomHistory', JSON.stringify(history));
   }
 
   updateRandomHistoryFromNode = async () => {
     try {
       let randomHistories = {};
+      console.log('random list:', this.state.lotteryHistory);
+      console.log('random scan start:', this.getRandomHistoryStartBlock());
 
       let roundArray = this.getRandomRoundRange();
+      console.log('random roundArray:', roundArray);
       if (roundArray.length === 0) {
         return;
       }
@@ -283,22 +311,27 @@ class IndexPage extends Component {
         toBlock: blockNumber
       });
 
+      console.log('events from', this.getRandomHistoryStartBlock(), 'to', blockNumber, events);
+
       if (events && events.length > 0) {
         for (let i = 0; i < events.length; i++) {
           if (!randomHistories[events[i].returnValues.round]) {
             randomHistories[events[i].returnValues.round] = [];
           }
-
+          let block = await this.web3.eth.getBlock(events[i].blockNumber);
           randomHistories[events[i].returnValues.round].push({
+            blockNumber: events[i].blockNumber,
+            time: (new Date(Number(block.timestamp) * 1000)).format("yyyy-MM-dd hh:mm:ss"),
             round: events[i].returnValues.round,
-            address: events[i].returnValues.staker,
+            address: events[i].returnValues.staker.toLowerCase(),
             amountBuy: '--',
-            amountPay: events[i].returnValues.prizeAmount,
+            amountPay: (Number(events[i].returnValues.prizeAmount)/1e18).toFixed(2),
           });
         }
+        console.log('randomHistories:', randomHistories);
+        this.addRandomHistory(randomHistories);
       }
 
-      this.addRandomHistory(randomHistories);
       this.setRandomHistoryStartBlock(blockNumber);
     } catch (err) {
       console.log(err);
@@ -395,20 +428,81 @@ class IndexPage extends Component {
       return JSON.parse(randomHistory);
     }
 
-    return {
-      '0': [
-        {
-          time: '2020-01-14 17:46:39',
-          address: '0x4cf0a877e906dead748a41ae7da8c220e4247d9e',
-          amountBuy: '1000',
-          amountPay: 100.1234,
-        },
-      ]
-    };
+    return {};
   }
 
-  flushTransactionHistory = () => {
+  flushTransactionHistory = async () => {
+    if (!this.getDataWait(() => { return this.state.trendInfo })) {
+      return;
+    }
 
+    if (!this.getDataWait(() => { return this.state.trendHistory })) {
+      return;
+    }
+
+    let history = this.getTransactionHistory();
+    let length = history.length;
+    let bChanged = false;
+    for (let i = 0; i < length; i++) {
+      if (history[i].result === 'To be settled') {
+        if ((history[i].type === 'UP' || history[i].type === 'DOWN')
+          && history[i].round < this.state.trendInfo.round) {
+          for (let m = 0; m < this.state.trendHistory.length; m++) {
+            if (this.state.trendHistory[m].round == history[i].round) {
+              if ((history[i].type.toLowerCase() == this.state.trendHistory[m].result) || (this.state.trendHistory[m].result === 'draw')) {
+                history.push({
+                  key: history[i].key + '_return',
+                  time: new Date().format("yyyy-MM-dd hh:mm:ss"),
+                  address: history[i].address,
+                  round: history[i].round,
+                  amount: this.getPayAmount(-1 * (history[i].amount), this.state.trendHistory[m]),
+                  type: 'RETURN',
+                  result: 'Done',
+                })
+              }
+              history[i].result = 'Done';
+              bChanged = true;
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    if (bChanged) {
+      this.setState({ transactionHistory: history });
+      window.localStorage.setItem('transactionHistory', JSON.stringify(history));
+    }
+  }
+
+  getPayAmount = (amount, trendHistoryOne) => {
+    if (trendHistoryOne.result === 'draw') {
+      return amount * 0.9
+    }
+
+    if (trendHistoryOne.result === 'up') {
+      let value = (trendHistoryOne.upAmount + trendHistoryOne.downAmount) * 0.9 / trendHistoryOne.upAmount * amount;
+      return Number(value.toFixed(1))
+    }
+
+    if (trendHistoryOne.result === 'down') {
+      let value = (trendHistoryOne.upAmount + trendHistoryOne.downAmount) * 0.9 / trendHistoryOne.downAmount * amount;
+      return Number(value.toFixed(1))
+    }
+    return 0
+  }
+
+  getDataWait = async (dataFunc) => {
+    let max = 60;
+    let i = 0;
+    while (i < max) {
+      if (dataFunc()) {
+        return dataFunc();
+      }
+      await sleep(1000);
+      i++;
+    }
+    return undefined
   }
 
   watchTransactionStatus = (txID, callback) => {
@@ -428,7 +522,7 @@ class IndexPage extends Component {
   estimateSendGas = async (value, selectUp) => {
     let lotterySC = this.lotterySC;
     try {
-      let ret = await lotterySC.methods.stakeIn(selectUp).estimateGas({gas: 10000000, value})
+      let ret = await lotterySC.methods.stakeIn(selectUp).estimateGas({ gas: 10000000, value })
       console.log('estimateGas:', ret + 30000);
       if (ret == 10000000) {
         return -1;
@@ -463,7 +557,7 @@ class IndexPage extends Component {
 
     try {
       let transactionID = await selectedWallet.sendTransaction(params);
-      let round = this.state.currentRound;
+      let round = this.state.trendInfo.round;
       this.watchTransactionStatus(transactionID, (ret) => {
         if (ret) {
           this.addTransactionHistory({
@@ -473,7 +567,7 @@ class IndexPage extends Component {
             round,
             amount: amount * -1,
             type: selectUp ? 'UP' : 'DOWN',
-            result: 'Done',
+            result: 'To be settled',
           });
         }
       });

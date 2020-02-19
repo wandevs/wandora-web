@@ -51,12 +51,13 @@ class TransactionHistory extends Component {
     this.props.transactionHistory.forEach(element => {
       total += element.amount;
     });
+    console.log('transaction:', this.props.transactionHistory);
     return (
       <div className={style.body}>
         <div className={style.title + ' ' + style.subLine}>
           <Icon type="history" className={style.logo} />
           <div className={style.subTitle}>Transaction History</div>
-          <div className={style.rightText}>Total: {total} WAN</div>
+          <div className={style.rightText}>Total: {total.toFixed(1)} WAN</div>
         </div>
         <Table columns={this.columns} dataSource={this.props.transactionHistory.slice().reverse()} pagination={{ pageSize: 4 }}/>
       </div>

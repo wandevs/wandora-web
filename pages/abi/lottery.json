@@ -103,6 +103,14 @@
       {
         "name": "finished",
         "type": "bool"
+      },
+      {
+        "name": "upStakersIdx",
+        "type": "uint256"
+      },
+      {
+        "name": "downStakersIdx",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -182,10 +190,29 @@
         "type": "uint256"
       }
     ],
+    "name": "randomMap",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "name": "randomGameMap",
     "outputs": [
       {
-        "name": "curRandomStakeIdx",
+        "name": "stakeAmount",
         "type": "uint256"
       },
       {
@@ -199,6 +226,14 @@
       {
         "name": "finished",
         "type": "bool"
+      },
+      {
+        "name": "stakingTimeIdx",
+        "type": "uint256"
+      },
+      {
+        "name": "accStakeRangeIdx",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -221,8 +256,41 @@
   },
   {
     "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "winnerMap",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [],
     "name": "winnerNum",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "calRoundNumber",
     "outputs": [
       {
         "name": "",
@@ -380,6 +448,28 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "staker",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "name": "prizeAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "name": "round",
+        "type": "uint256"
+      }
+    ],
+    "name": "UpDownReturn",
+    "type": "event"
+  },
+  {
     "constant": false,
     "inputs": [
       {
@@ -513,6 +603,66 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_curUpDownRound",
+        "type": "uint256"
+      },
+      {
+        "name": "_curRandomRound",
+        "type": "uint256"
+      }
+    ],
+    "name": "setFanalizeRoundNumber",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_randomRound",
+        "type": "uint256"
+      }
+    ],
+    "name": "genRandom",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_updownRound",
+        "type": "uint256"
+      }
+    ],
+    "name": "upDownLotteryGiveBack",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "chainEndTime",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   }
 ]
