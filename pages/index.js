@@ -600,7 +600,7 @@ class IndexPage extends Component {
         <div className={style.header}>
           <Wallet title="Wan Game" nodeUrl={window._nodeUrl} />
           <Icon className={style.logo} type="appstore" />
-          <div className={style.title}>Wandora box</div>
+          <div className={style.title}>Wandora Box</div>
           <div className={style.gameRule} onClick={this.showGameRule}>Game Rule</div>
           <WalletButton />
         </div>
