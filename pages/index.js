@@ -187,7 +187,6 @@ class IndexPage extends Component {
     trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
     trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(1);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
-    console.log('randomEndTime:', trend.randomEndTime);
     this.setTrendInfo(trend);
     this.flushTransactionHistory();
   }
@@ -224,7 +223,6 @@ class IndexPage extends Component {
     this.updateTrendHistoryFromNode();
     this.updateRandomHistoryFromNode();
     if (roundOld != trend.round) {
-      console.log('round switch time up!');
       this.flushTransactionHistory();
     }
   }
@@ -275,18 +273,14 @@ class IndexPage extends Component {
   }
 
   addRandomHistory = (randomHistories) => {
-    console.log('addRandomHistory:', randomHistories);
     const stateHistory = Object.assign({}, this.state.lotteryHistory);
     let history = {};
     if (stateHistory) {
       history = stateHistory;
     }
-    console.log('history:', history);
     for (var i in randomHistories) {
-      console.log('i:', i, 'randomHistories[i]:', randomHistories[i]);
       history[i] = randomHistories[i];
     }
-    console.log('history:', history);
     this.setState({ lotteryHistory: history });
     window.localStorage.setItem('randomHistory', JSON.stringify(history));
   }
@@ -296,11 +290,8 @@ class IndexPage extends Component {
       let randomHistories = {};
       const { selectedAccount } = this.props;
       const address = selectedAccount ? selectedAccount.get('address') : null;
-      console.log('random list:', this.state.lotteryHistory);
-      console.log('random scan start:', this.getRandomHistoryStartBlock());
 
       let roundArray = this.getRandomRoundRange();
-      console.log('random roundArray:', roundArray);
       if (roundArray.length === 0) {
         return;
       }
@@ -312,8 +303,6 @@ class IndexPage extends Component {
         fromBlock: this.getRandomHistoryStartBlock(),
         toBlock: blockNumber
       });
-
-      console.log('events from', this.getRandomHistoryStartBlock(), 'to', blockNumber, events);
 
       if (events && events.length > 0) {
         for (let i = 0; i < events.length; i++) {
@@ -342,7 +331,6 @@ class IndexPage extends Component {
             });
           }
         }
-        console.log('randomHistories:', randomHistories);
         this.addRandomHistory(randomHistories);
       }
 
@@ -537,7 +525,6 @@ class IndexPage extends Component {
     let lotterySC = this.lotterySC;
     try {
       let ret = await lotterySC.methods.stakeIn(selectUp).estimateGas({ gas: 10000000, value })
-      console.log('estimateGas:', ret + 30000);
       if (ret == 10000000) {
         return -1;
       }
@@ -551,7 +538,6 @@ class IndexPage extends Component {
   sendTransaction = async (amount, selectUp) => {
     const { selectedAccount, selectedWallet } = this.props;
     const address = selectedAccount ? selectedAccount.get('address') : null;
-    console.log('address:', address, 'amount:', amount, 'selectUp:', selectUp);
 
     const value = new BigNumber(amount).multipliedBy(Math.pow(10, 18)).toString();
 

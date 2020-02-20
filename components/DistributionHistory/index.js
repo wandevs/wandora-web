@@ -41,7 +41,6 @@ class DistributionHistory extends Component {
         this.infoSelection[title] = info;
       }
     }
-    console.log('this.infoSelection', this.infoSelection);
     let options = []
     for (var title in this.infoSelection) {
       options.push({value:title});
@@ -77,7 +76,6 @@ class DistributionHistory extends Component {
   ]
 
   selectChange = (value) => {
-    console.log('select change:', value);
     this.setState({dataSource: this.infoSelection[value]});
   }
 
@@ -87,7 +85,6 @@ class DistributionHistory extends Component {
     for (let i=0; i<this.state.dataSource.length; i++) {
       totalFee += Number(this.state.dataSource[i].amountPay)
     }
-    console.log('options:', this.state.options, 'dataSource:', this.state.dataSource);
     let defaultSelect = this.state.options.length > 0 ? this.state.options[0]:undefined;
     return (
       <div className={style.body}>

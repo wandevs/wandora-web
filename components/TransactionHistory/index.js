@@ -51,7 +51,6 @@ class TransactionHistory extends Component {
     this.props.transactionHistory.forEach(element => {
       total += Number(element.amount);
     });
-    console.log('transaction:', this.props.transactionHistory);
     return (
       <div className={style.body}>
         <div className={style.title + ' ' + style.subLine}>
