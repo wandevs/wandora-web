@@ -335,8 +335,8 @@ class IndexPage extends Component {
                 address: address.toLowerCase(),
                 round: events[i].returnValues.round,
                 amount: (Number(events[i].returnValues.prizeAmount) / 1e18).toFixed(2),
-                type: 'DISTRIBUTE',
-                result: 'DONE',
+                type: 'Distribute',
+                result: 'Done',
               });
             }
           }
@@ -457,7 +457,7 @@ class IndexPage extends Component {
     let bChanged = false;
     for (let i = 0; i < length; i++) {
       if (history[i].result === 'To be settled') {
-        if ((history[i].type === 'UP' || history[i].type === 'DOWN')
+        if ((history[i].type.toLowerCase() === 'up' || history[i].type.toLowerCase() === 'down')
           && history[i].round < this.state.trendInfo.round) {
           for (let m = 0; m < this.state.trendHistory.length; m++) {
             if (this.state.trendHistory[m].round == history[i].round) {
@@ -468,11 +468,11 @@ class IndexPage extends Component {
                   address: history[i].address,
                   round: history[i].round,
                   amount: this.getPayAmount(-1 * (history[i].amount), this.state.trendHistory[m]),
-                  type: 'RETURN',
-                  result: 'DONE',
+                  type: 'Return',
+                  result: 'Done',
                 })
               }
-              history[i].result = 'DONE';
+              history[i].result = 'Done';
               bChanged = true;
               break;
             }
@@ -576,7 +576,7 @@ class IndexPage extends Component {
             address,
             round,
             amount: amount * -1,
-            type: selectUp ? 'UP' : 'DOWN',
+            type: selectUp ? 'Up' : 'Down',
             result: 'To be settled',
           });
         }

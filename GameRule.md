@@ -10,7 +10,7 @@
 
 4) The remaining 90% shall be divided amongst the winners in each period. Losers will receive nothing and winners will receive an amount equal to the proportion of their bet vs the total amount of all winning bets.
 
-5) Regardless of winning or losing the. Up/Down bet, all winners have a chance of winning the rewards pot.
+5) Regardless of winning or losing the. Up/Down bet, all players have a chance of winning the rewards pot.
 
 6) Last bets must be placed 2 hours before the period begins.
 

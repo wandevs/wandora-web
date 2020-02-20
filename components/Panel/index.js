@@ -96,7 +96,7 @@ class Panel extends Component {
           <p>2) Users can place a bet on whether the price will go up or down within the period.</p>
           <p>3) 10% of the funds bet will be pooled in a rewards pot to be rewarded to several lucky users who participated in the game.</p>
           <p>4) The remaining 90% shall be divided amongst the winners in each period. Losers will receive nothing and winners will receive an amount equal to the proportion of their bet vs the total amount of all winning bets.</p>
-          <p>5) Regardless of winning or losing the. Up/Down bet, all winners have a chance of winning the rewards pot.</p>
+          <p>5) Regardless of winning or losing the. Up/Down bet, all players have a chance of winning the rewards pot.</p>
           <p>6) Last bets must be placed 2 hours before the period begins.</p>
         </div>
       ),
@@ -135,6 +135,8 @@ class Panel extends Component {
                 <div>The price of WAN at the end of the last round was </div>
                 <div className={style.bold}>{this.state.btcPriceStart} BTC</div>
                 <div>{' / WAN.'}</div>
+              </div>
+              <div className={style.subLine}>
                 <div>Place your predict whether the price will go up or down after</div>
                 <div className={style.boxText2}>{this.state.endLeft.h}h</div>
                 <div className={style.boxText2}>{this.state.endLeft.m}m</div>

@@ -41,7 +41,7 @@ class SendModalForm extends Component {
           confirmLoading: true,
         });
         setTimeout(async () => {
-          let ret = await this.props.sendTransaction(values.amount, this.props.type === 'Up' ? true : false);
+          let ret = await this.props.sendTransaction(values.amount, this.props.type.toLowerCase() === 'up' ? true : false);
           if (ret) {
             this.props.watchTransactionStatus(ret, this.okCallback)
           } else {
