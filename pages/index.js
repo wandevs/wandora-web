@@ -336,7 +336,7 @@ class IndexPage extends Component {
                 round: events[i].returnValues.round,
                 amount: (Number(events[i].returnValues.prizeAmount) / 1e18).toFixed(2),
                 type: 'DISTRIBUTE',
-                result: 'Done',
+                result: 'DONE',
               });
             }
           }
@@ -469,10 +469,10 @@ class IndexPage extends Component {
                   round: history[i].round,
                   amount: this.getPayAmount(-1 * (history[i].amount), this.state.trendHistory[m]),
                   type: 'RETURN',
-                  result: 'Done',
+                  result: 'DONE',
                 })
               }
-              history[i].result = 'Done';
+              history[i].result = 'DONE';
               bChanged = true;
               break;
             }
