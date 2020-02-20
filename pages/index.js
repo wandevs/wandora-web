@@ -11,6 +11,7 @@ import TrendHistory from '../components/TrendHistory';
 import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
 import sleep from 'ko-sleep';
+import logo from '../img/wandoraLogo.png';
 
 const lotterySCAddr = '0x0411d36b9b54890c5d697f33d76b31a4f7e83d95';
 
@@ -599,7 +600,8 @@ class IndexPage extends Component {
       <div className={style.app}>
         <div className={style.header}>
           <Wallet title="Wan Game" nodeUrl={window._nodeUrl} />
-          <Icon className={style.logo} type="appstore" />
+          {/* <Icon className={style.logo} type="appstore" /> */}
+          <img className={style.logo} width="28px" height="28px" src={logo} alt="Logo"/>
           <div className={style.title}>Wandora Box</div>
           <div className={style.gameRule} onClick={this.showGameRule}>Game Rule</div>
           <WalletButton />
