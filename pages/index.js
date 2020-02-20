@@ -320,15 +320,25 @@ class IndexPage extends Component {
           });
 
           if (address.toLowerCase() === events[i].returnValues.staker.toLowerCase()) {
-            this.addTransactionHistory({
-              key: events[i].transactionHash,
-              time: (new Date(Number(block.timestamp) * 1000)).format("yyyy-MM-dd hh:mm:ss"),
-              address: address.toLowerCase(),
-              round: events[i].returnValues.round,
-              amount: (Number(events[i].returnValues.prizeAmount) / 1e18).toFixed(2),
-              type: 'Distribute',
-              result: 'Done',
-            });
+            let txHistory = this.getTransactionHistory();
+            let bHave = false;
+            for (let h =0; h<txHistory.length; h++) {
+              if (txHistory[h].type == 'Distribute' && txHistory[h].round == events[i].returnValues.round) {
+                bHave = true;
+                break;
+              }
+            }
+            if (!bHave) {
+              this.addTransactionHistory({
+                key: events[i].transactionHash,
+                time: (new Date(Number(block.timestamp) * 1000)).format("yyyy-MM-dd hh:mm:ss"),
+                address: address.toLowerCase(),
+                round: events[i].returnValues.round,
+                amount: (Number(events[i].returnValues.prizeAmount) / 1e18).toFixed(2),
+                type: 'Distribute',
+                result: 'Done',
+              });
+            }
           }
         }
         this.addRandomHistory(randomHistories);
