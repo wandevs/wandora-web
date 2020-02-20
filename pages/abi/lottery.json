@@ -132,6 +132,34 @@
     "type": "function"
   },
   {
+    "constant": true,
+    "inputs": [],
+    "name": "calRandomRoundNumber",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "calUpDownRoundNumber",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": false,
     "inputs": [],
     "name": "acceptOwnership",
@@ -277,20 +305,6 @@
     "constant": true,
     "inputs": [],
     "name": "winnerNum",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "calRoundNumber",
     "outputs": [
       {
         "name": "",
