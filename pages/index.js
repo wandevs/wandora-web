@@ -323,7 +323,7 @@ class IndexPage extends Component {
             let txHistory = this.getTransactionHistory();
             let bHave = false;
             for (let h =0; h<txHistory.length; h++) {
-              if (txHistory[h].type == 'Distribute' && txHistory[h].round == events[i].returnValues.round) {
+              if (txHistory[h].type.toLowerCase() == 'distribute' && txHistory[h].round == events[i].returnValues.round) {
                 bHave = true;
                 break;
               }
@@ -335,7 +335,7 @@ class IndexPage extends Component {
                 address: address.toLowerCase(),
                 round: events[i].returnValues.round,
                 amount: (Number(events[i].returnValues.prizeAmount) / 1e18).toFixed(2),
-                type: 'Distribute',
+                type: 'DISTRIBUTE',
                 result: 'Done',
               });
             }
