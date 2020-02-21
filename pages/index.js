@@ -13,7 +13,8 @@ import DistributionHistory from '../components/DistributionHistory';
 import sleep from 'ko-sleep';
 import logo from '../img/wandoraLogo.png';
 
-const lotterySCAddr = '0x11d0fd8efacd0766cbd9b737f1b9f505034cd74c';
+// const lotterySCAddr = '0x11d0fd8efacd0766cbd9b737f1b9f505034cd74c';//testnet 8 hours smart contract
+const lotterySCAddr = '0x0411d36b9b54890c5d697f33d76b31a4f7e83d95';//testnet 10 mins smart contract
 
 var Web3 = require("web3");
 
@@ -616,6 +617,7 @@ class IndexPage extends Component {
           {/* <Icon className={style.logo} type="appstore" /> */}
           <img className={style.logo} width="28px" height="28px" src={logo} alt="Logo"/>
           <div className={style.title}>Wandora Box</div>
+          <img style={{height: "15px", margin: "8px"}} src='https://img.shields.io/badge/Wanchain-Testnet-green.svg'/>
           <div className={style.gameRule} onClick={this.showGameRule}>Game Rule</div>
           <WalletButton />
         </div>
