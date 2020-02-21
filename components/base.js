@@ -8,8 +8,8 @@ export class Component extends React.PureComponent {
 
   getTimeLeft(trendInfo) {
     if (trendInfo) {
-      let endLeft = this.getLastTime((trendInfo.startTime + trendInfo.timeSpan) - Date.now() / 1000);
-      let buyLeft = this.getLastTime((trendInfo.startTime + trendInfo.timeSpan - trendInfo.stopBefore) - Date.now() / 1000);
+      let endLeft = this.getLastTime((trendInfo.startTime + trendInfo.timeSpan) - trendInfo.chainEndTime);
+      let buyLeft = this.getLastTime((trendInfo.startTime + trendInfo.timeSpan - trendInfo.stopBefore) - trendInfo.chainEndTime);
       let nextStart = endLeft;
       let nextEnd = (new Date((trendInfo.startTime + trendInfo.timeSpan*2 - trendInfo.stopBefore)*1000)).format('hh:mm');
       return { endLeft, buyLeft, nextStart, nextEnd };

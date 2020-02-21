@@ -85,7 +85,7 @@ class DistributionHistory extends Component {
     for (let i=0; i<this.state.dataSource.length; i++) {
       totalFee += Number(this.state.dataSource[i].amountPay)
     }
-    let defaultSelect = this.state.options.length > 0 ? this.state.options[0]:undefined;
+    let defaultSelect = this.state.options.length > 0 ? this.state.options[0].value:undefined;
     return (
       <div className={style.body}>
         <div className={style.title + ' ' + style.subLine}>

@@ -38,7 +38,7 @@ class Panel extends Component {
   flushData = () => {
     const ret = this.props.trendInfo;
 
-    if (ret && ret.startTime !== 0 && ret.timeSpan !== 0 && ret.stopBefore !== 0 && (ret.startTime < (Date.now() / 1000))) {
+    if (ret && ret.startTime !== 0 && ret.timeSpan !== 0 && ret.stopBefore !== 0 && (ret.startTime < ret.chainEndTime)) {
       const { endLeft, buyLeft, nextStart, nextEnd } = this.getTimeLeft(ret);
       if (buyLeft.h == 0 && buyLeft.m == 0) {
         this.setState({
@@ -121,7 +121,7 @@ class Panel extends Component {
   }
 
   render() {
-    const { d, h } = this.getLastTimeDH(Number(this.props.trendInfo.randomEndTime) - Date.now() / 1000);
+    const { d, h } = this.getLastTimeDH(Number(this.props.trendInfo.randomEndTime) - this.props.trendInfo.chainEndTime);
     return (
       <div className={style.panel}>
         <div className={style.upBlock}>

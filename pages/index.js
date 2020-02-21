@@ -157,6 +157,7 @@ class IndexPage extends Component {
       downPoolAmount: 0,
       lotteryRound: 0,
       randomEndTime: 0,
+      chainEndTime: 0,
     };
     let lotterySC = this.lotterySC;
 
@@ -168,6 +169,8 @@ class IndexPage extends Component {
     awaitArray.push(lotterySC.methods.feeRatio().call());
     awaitArray.push(lotterySC.methods.upDownLtrstopTimeSpanInAdvance().call());
     awaitArray.push(lotterySC.methods.randomLotteryTimeCycle().call());
+    awaitArray.push(lotterySC.methods.chainEndTime().call());
+
 
     [
       trend.round,
@@ -177,6 +180,7 @@ class IndexPage extends Component {
       trend.feeRatio,
       trend.stopBefore,
       trend.randomTimeCycle,
+      trend.chainEndTime,
     ] = await Promise.all(awaitArray);
 
     trend.round = Number(trend.round);
@@ -186,6 +190,7 @@ class IndexPage extends Component {
     trend.feeRatio = Number(trend.feeRatio);
     trend.stopBefore = Number(trend.stopBefore);
     trend.randomTimeCycle = Number(trend.randomTimeCycle);
+    trend.chainEndTime = Number(trend.chainEndTime);
 
     awaitArray = []
     awaitArray.push(lotterySC.methods.updownGameMap(trend.round).call());
@@ -217,15 +222,17 @@ class IndexPage extends Component {
     awaitArray.push(lotterySC.methods.updownGameMap(trend.round).call());
     awaitArray.push(lotterySC.methods.randomGameMap(trend.lotteryRound).call());
     awaitArray.push(lotterySC.methods.extraPrizeMap(trend.lotteryRound).call());
+    awaitArray.push(lotterySC.methods.chainEndTime().call());
 
     let roundInfo = {};
     let randomInfo = {};
     let extraPrice = 0;
 
-    [trend.round, trend.lotteryRound, roundInfo, randomInfo, extraPrice] = await Promise.all(awaitArray);
+    [trend.round, trend.lotteryRound, roundInfo, randomInfo, extraPrice, trend.chainEndTime] = await Promise.all(awaitArray);
 
     trend.round = Number(trend.round);
     trend.lotteryRound = Number(trend.lotteryRound);
+    trend.chainEndTime = Number(trend.chainEndTime);
 
     trend.startTime = trend.round * trend.timeSpan + trend.gameStartTime;
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
@@ -269,6 +276,7 @@ class IndexPage extends Component {
       for (let i = 0; i < roundArray.length; i++) {
         let ret = await lotterySC.methods.updownGameMap(roundArray[i]).call();
         trendHistory.push({
+          key: roundArray[i],
           round: roundArray[i],
           startPrice: ret.openPrice / 1e8,
           endPrice: ret.closePrice / 1e8,
@@ -326,6 +334,7 @@ class IndexPage extends Component {
           }
           let block = await this.web3.eth.getBlock(events[i].blockNumber);
           randomHistories[events[i].returnValues.round].push({
+            key: events[i].returnValues.round,
             blockNumber: events[i].blockNumber,
             time: (new Date(Number(block.timestamp) * 1000)).format("yyyy-MM-dd hh:mm:ss"),
             round: events[i].returnValues.round,
@@ -476,7 +485,9 @@ class IndexPage extends Component {
           && history[i].round < this.state.trendInfo.round) {
           for (let m = 0; m < this.state.trendHistory.length; m++) {
             if (this.state.trendHistory[m].round == history[i].round) {
-              if ((history[i].type.toLowerCase() == this.state.trendHistory[m].result) || (this.state.trendHistory[m].result === 'draw')) {
+              if ((history[i].type.toLowerCase() == this.state.trendHistory[m].result)
+               || (this.state.trendHistory[m].result === 'draw')
+               || (this.isLoseRound(history[i].type.toLowerCase(), this.state.trendHistory[m].upAmount, this.state.trendHistory[m].downAmount))) {
                 history.push({
                   key: history[i].key + '_return',
                   time: new Date().format("yyyy-MM-dd hh:mm:ss"),
@@ -502,8 +513,28 @@ class IndexPage extends Component {
     }
   }
 
+  isLoseRound = (type, upAmount, downAmount) => {
+    if (type == 'up' && downAmount == 0) {
+      return true;
+    }
+
+    if (type == 'down' && upAmount == 0) {
+      return true;
+    }
+
+    return false;
+  }
+
   getPayAmount = (amount, trendHistoryOne) => {
     if (trendHistoryOne.result === 'draw') {
+      return amount * 0.9
+    }
+
+    if (trendHistoryOne.result === 'up' && trendHistoryOne.upAmount == 0) {
+      return amount * 0.9
+    }
+
+    if (trendHistoryOne.result === 'down' && trendHistoryOne.downAmount == 0) {
       return amount * 0.9
     }
 
@@ -553,7 +584,8 @@ class IndexPage extends Component {
       if (ret == 10000000) {
         return -1;
       }
-      return '0x' + (ret + 30000).toString(16);
+      console.log('gasLimit:', ret + 100000);
+      return '0x' + (ret + 100000).toString(16);
     } catch (err) {
       console.log(err);
       return -1;
