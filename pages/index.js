@@ -12,6 +12,7 @@ import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
 import sleep from 'ko-sleep';
 import logo from '../img/wandoraLogo.png';
+import { selectWalletType } from "wan-dex-sdk-wallet/build/actions/wallet";
 
 // const lotterySCAddr = '0xf7091b5ab0ee33e9811e1864891228b75178937b';//testnet 8 hours smart contract
 const lotterySCAddr = '0xe74065cef562c2d64398badfab26bacb57564b5d';//testnet 10 mins smart contract
@@ -584,8 +585,8 @@ class IndexPage extends Component {
       if (ret == 10000000) {
         return -1;
       }
-      console.log('gasLimit:', ret + 100000);
-      return '0x' + (ret + 100000).toString(16);
+      console.log('gasLimit:', ret + 30000);
+      return '0x' + (ret + 30000).toString(16);
     } catch (err) {
       console.log(err);
       return -1;
@@ -603,10 +604,14 @@ class IndexPage extends Component {
       data: selectUp ? '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000001' : '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000000',
       value,
       gasPrice: "0x29E8D60800",
-      gasLimit: "0x87A23",
+      // gasLimit: "0x87A23",
     };
 
-    params.gasLimit = await this.estimateSendGas(value, selectUp);
+    if (selectedWallet.type() == "EXTENSION") {
+      params.gas = await this.estimateSendGas(value, selectUp);
+    } else {
+      params.gasLimit = await this.estimateSendGas(value, selectUp);
+    }
     if (params.gasLimit == -1) {
       window.alertAntd('Estimate Gas Error. Maybe out of time range.');
       return false;
