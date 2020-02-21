@@ -13,7 +13,7 @@ import DistributionHistory from '../components/DistributionHistory';
 import sleep from 'ko-sleep';
 import logo from '../img/wandoraLogo.png';
 
-const lotterySCAddr = '0x0411d36b9b54890c5d697f33d76b31a4f7e83d95';
+const lotterySCAddr = '0x11d0fd8efacd0766cbd9b737f1b9f505034cd74c';
 
 var Web3 = require("web3");
 
@@ -39,6 +39,8 @@ class IndexPage extends Component {
     this.state = {};
     // window._nodeUrl = "https://demodex.wandevs.org:48545";
     window._nodeUrl = "https://mywanwallet.io/testnet";
+
+    this.checkSCUpdate();
 
     window.alertAntd = alertAntd;
 
@@ -94,6 +96,17 @@ class IndexPage extends Component {
         }
       }
       return fmt;
+    }
+  }
+
+  checkSCUpdate() {
+    let scOld = window.localStorage.getItem('lotterySmartContract');
+    if (!scOld || scOld !== lotterySCAddr) {
+      console.log('Detect smart contract update.');
+      window.localStorage.setItem('lotterySmartContract', lotterySCAddr);
+      window.localStorage.removeItem('trendHistory');
+      window.localStorage.removeItem('randomHistory');
+      window.localStorage.removeItem('currentHistory');
     }
   }
 
