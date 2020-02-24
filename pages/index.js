@@ -655,7 +655,7 @@ class IndexPage extends Component {
           <img className={style.logo} width="28px" height="28px" src={logo} alt="Logo"/>
           <div className={style.title}>Wandora Box</div>
           <img style={{height: "15px", margin: "8px"}} src='https://img.shields.io/badge/Wanchain-Testnet-green.svg'/>
-          <div className={style.gameRule} onClick={this.showGameRule}>Game Rule</div>
+          <div className={style.gameRule} onClick={this.showGameRule}>Game Rules</div>
           <WalletButton />
         </div>
         <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} />

@@ -149,7 +149,7 @@ class Panel extends Component {
             </div>
             <div className={style.secondLine}>
               <div className={style.subLine}>
-                <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours later）</div>
+                <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours)</div>
                 <Tooltip title={"Show Help"}>
                   <Icon type="question-circle" onClick={this.showHelp2} className={style.helpIcon} style={{ color: 'gray', fontSize: '16px' }} />
                 </Tooltip>
