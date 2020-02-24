@@ -92,7 +92,7 @@ class Panel extends Component {
       title: 'Rules of Up and Down Forecast Game',
       content: (
         <div>
-          <p>1) Users predict whether the price of WAN/BTC will rise or fall within a time period.</p>
+          <p>1) Users predict whether the price of WAN/BTC will rise or fall within a time period.(8 hours)</p>
           <p>2) Users can place a bet on whether the price will go up or down within the period.</p>
           <p>3) 10% of the funds bet will be pooled in a rewards pot to be rewarded to several lucky users who participated in the game.</p>
           <p>4) The remaining 90% shall be divided amongst the winners in each period. Losers will receive nothing and winners will receive an amount equal to the proportion of their bet vs the total amount of all winning bets.</p>
@@ -110,7 +110,7 @@ class Panel extends Component {
       content: (
         <div>
           <p>1) 10% of each bet is intered into a rewards pot to be paid out to one user at random.</p>
-          <p>2) Each few days there will be several winners.</p>
+          <p>2) Each days there will be one winners.</p>
           <p>3) Wanchain's on chain random number generation will be used to decide the winners.</p>
           <p>4) The probability of winning is directly proportional to the amount bet with 1 WAN counting as 1 bet.</p>
           <p>5) The winners share the whole rewards pot according to their betting ratio.</p>
@@ -137,7 +137,7 @@ class Panel extends Component {
                 <div>{' / WAN.'}</div>
               </div>
               <div className={style.subLine}>
-                <div>Place your predict whether the price will go up or down after</div>
+                <div>Place your prediction whether the price will go up or down after</div>
                 <div className={style.boxText2}>{this.state.endLeft.h}h</div>
                 <div className={style.boxText2}>{this.state.endLeft.m}m</div>
                 {/* <div className={style.boxText2}>{this.state.endLeft.s}s</div> */}
@@ -149,7 +149,8 @@ class Panel extends Component {
             </div>
             <div className={style.secondLine}>
               <div className={style.subLine}>
-                <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours)</div>
+                <div className={style.subLine2}>The total prize pot in this period（to be distributed after {d} days {h} hours).</div>
+                {/* <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours)</div> */}
                 <Tooltip title={"Show Help"}>
                   <Icon type="question-circle" onClick={this.showHelp2} className={style.helpIcon} style={{ color: 'gray', fontSize: '16px' }} />
                 </Tooltip>

@@ -14,8 +14,8 @@ import sleep from 'ko-sleep';
 import logo from '../img/wandoraLogo.png';
 import { selectWalletType } from "wan-dex-sdk-wallet/build/actions/wallet";
 
-// const lotterySCAddr = '0xf7091b5ab0ee33e9811e1864891228b75178937b';//testnet 8 hours smart contract
-const lotterySCAddr = '0xe74065cef562c2d64398badfab26bacb57564b5d';//testnet 10 mins smart contract
+const lotterySCAddr = '0xf7091b5ab0ee33e9811e1864891228b75178937b';//testnet 8 hours smart contract
+// const lotterySCAddr = '0xe74065cef562c2d64398badfab26bacb57564b5d';//testnet 10 mins smart contract
 
 var Web3 = require("web3");
 
