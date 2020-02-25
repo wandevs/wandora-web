@@ -10,7 +10,7 @@ class Panel extends Component {
     this.state = {
       endLeft: { h: '0', m: '0', s: '0' },
       buyLeft: { h: '0', m: '0', s: '0' },
-      nextStart: {h: '0', m: '0', s: '0'},
+      nextStart: { h: '0', m: '0', s: '0' },
       nextEnd: '00:00',
       modalVisible: false,
       startTime: 0,
@@ -149,31 +149,40 @@ class Panel extends Component {
             </div>
             <div className={style.secondLine}>
               <div className={style.subLine}>
-                <div className={style.subLine2}>The total prize pot in this period（to be distributed after {d} days {h} hours).</div>
-                {/* <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours)</div> */}
-                <Tooltip title={"Show Help"}>
-                  <Icon type="question-circle" onClick={this.showHelp2} className={style.helpIcon} style={{ color: 'gray', fontSize: '16px' }} />
-                </Tooltip>
-              </div>
-              <div className={style.subLine}>
-                <div className={style.poolValue}>{this.state.randomPoolAmount}</div>
-                <div className={style.unitText}>WAN</div>
-                {this.state.disable
-                  ? <div className={style.upButtonDisable}>
-                    <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
+                <div>
+                  {this.state.disable
+                    ? <div className={style.upButtonDisable}>
+                      <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
+                    </div>
+                    : <div className={style.upButton} onClick={this.onUpClick}>
+                      <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
+                    </div>
+                  }
+                  {this.state.disable
+                    ? <div className={style.downButtonDisable}>
+                      <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
+                    </div>
+                    : <div className={style.downButton} onClick={this.onDownClick}>
+                      <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
+                    </div>
+                  }
+                </div>
+                <div>
+                  <div className={style.subLine}>
+                    <div className={style.poolValue}>{this.state.randomPoolAmount}</div>
+                    <div className={style.unitText}>WAN</div>
                   </div>
-                  : <div className={style.upButton} onClick={this.onUpClick}>
-                    <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
+                  <div style={{margin: "26px 0px 0px 100px"}}>
+                    <div className={style.subLine}>
+                      <div className={style.subLine2}>The total prize pot in this period.</div>
+                      {/* <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours)</div> */}
+                      <Tooltip title={"Show Help"}>
+                        <Icon type="question-circle" onClick={this.showHelp2} className={style.helpIcon} style={{ color: 'gray', fontSize: '16px' }} />
+                      </Tooltip>
+                    </div>
+                    <div className={style.subLine2}>(To be distributed after {d} days {h} hours)</div>
                   </div>
-                }
-                {this.state.disable
-                  ? <div className={style.downButtonDisable}>
-                    <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
-                  </div>
-                  : <div className={style.downButton} onClick={this.onDownClick}>
-                    <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
-                  </div>
-                }
+                </div>
               </div>
             </div>
           </div>
