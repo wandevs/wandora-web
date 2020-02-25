@@ -92,12 +92,11 @@ class Panel extends Component {
       title: 'Rules of Up and Down Forecast Game',
       content: (
         <div>
-          <p>1) Users predict whether the price of WAN/BTC will rise or fall within a time period.(8 hours)</p>
-          <p>2) Users can place a bet on whether the price will go up or down within the period.</p>
-          <p>3) 10% of the funds bet will be pooled in a rewards pot to be rewarded to several lucky users who participated in the game.</p>
-          <p>4) The remaining 90% shall be divided amongst the winners in each period. Losers will receive nothing and winners will receive an amount equal to the proportion of their bet vs the total amount of all winning bets.</p>
-          <p>5) Regardless of winning or losing the. Up/Down bet, all players have a chance of winning the rewards pot.</p>
-          <p>6) Last bets must be placed 2 hours before the period begins.</p>
+          <p>1. Users predict whether the price of WAN/BTC will rise or fall within a time period (8 hours).</p>
+          <p>2. Users can place a bet on whether the price will go up or down within the first 6 hours of the period.</p>
+          <p>3. Betting is closed 2 hours before the end of the period.</p>
+          <p>4. If the price rises during the 8 hour period, users who bet "UP" win, if the price falls during the period, users who bet "DOWN" win.</p>
+          <p>5. The losing side's bets are distributed to the winning side in proportion to the size of each individual's bet vs the total bets for the winning side.</p>
         </div>
       ),
       onOk() { },
@@ -109,11 +108,10 @@ class Panel extends Component {
       title: 'Rules of Random Lottery Game',
       content: (
         <div>
-          <p>1) 10% of each bet is intered into a rewards pot to be paid out to one user at random.</p>
-          <p>2) Each days there will be one winners.</p>
-          <p>3) Wanchain's on chain random number generation will be used to decide the winners.</p>
-          <p>4) The probability of winning is directly proportional to the amount bet with 1 WAN counting as 1 bet.</p>
-          <p>5) The winners share the whole rewards pot according to their betting ratio.</p>
+          <p>1. 10% of the each bet will be pooled in a prize pot to be rewarded once per day to one lucky user who participated in the game.</p>
+          <p>2. The remaining 90% shall be divided amongst the winners in each period. Losers will receive nothing and winners will receive an amount equal to the proportion of their bet vs the total amount of all winning bets. </p>
+          <p>3. Regardless of winning or losing the Up/Down bet, all players have a chance of winning the prize pot.</p>
+          <p>4. Wanchain's on chain random number generation will be used to decide the prize pot winners.</p>
         </div>
       ),
       onOk() { },
@@ -172,7 +170,7 @@ class Panel extends Component {
                     <div className={style.poolValue}>{this.state.randomPoolAmount}</div>
                     <div className={style.unitText}>WAN</div>
                   </div>
-                  <div style={{margin: "26px 0px 0px 100px"}}>
+                  <div style={{ margin: "26px 0px 0px 100px" }}>
                     <div className={style.subLine}>
                       <div className={style.subLine2}>The total prize pot in this period.</div>
                       {/* <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours)</div> */}
