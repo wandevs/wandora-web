@@ -1,59 +1,59 @@
 .body {
-    height: 264px;
-    margin: 20px;
+    height   : 264px;
+    margin   : 20px;
     min-width: 1156px;
 }
 
 .title {
-    font-size:18px;
-    font-family:RobotoCondensed-Bold;
-    font-weight:400;
-    color:rgba(255,255,255,1);
-    line-height:18px;
-    text-align: left;
+    font-size  : 18px;
+    font-family: RobotoCondensed-Bold;
+    font-weight: 400;
+    color      : rgba(255, 255, 255, 1);
+    line-height: 18px;
+    text-align : left;
 }
 
 .subLine {
-    display: flex;
+    display        : flex;
     justify-content: flex-start;
 }
 
 .colTitle {
-    width:127px;
-    height:16px;
-    font-size:20px;
-    font-family:RobotoCondensed-Bold;
-    font-weight:bold;
-    color:rgba(255,255,255,1);
-    opacity:0.3;
-    margin-top: 20px;
+    width        : 127px;
+    height       : 16px;
+    font-size    : 20px;
+    font-family  : RobotoCondensed-Bold;
+    font-weight  : bold;
+    color        : rgba(255, 255, 255, 1);
+    opacity      : 0.3;
+    margin-top   : 20px;
     margin-bottom: 40px;
 }
 
 .colLine1 {
-    height:60px;
-    background:rgba(31,32,52,1);
-    border-radius:4px;
-    font-size:18px;
-    font-family:RobotoCondensed-Bold;
-    font-weight:bold;
-    color:rgba(255,255,255,1);
-    line-height:46px;
-    margin-bottom:15px;
-    padding-top:6px;
+    height       : 60px;
+    background   : rgba(31, 32, 52, 1);
+    border-radius: 4px;
+    font-size    : 18px;
+    font-family  : RobotoCondensed-Bold;
+    font-weight  : bold;
+    color        : rgba(255, 255, 255, 1);
+    line-height  : 46px;
+    margin-bottom: 15px;
+    padding-top  : 6px;
 }
 
 .colLine2 {
-    height:60px;
-    background:rgba(31,32,52,1);
+    height          : 60px;
+    background      : rgba(31, 32, 52, 1);
     // border-radius:4px;
-    font-size:18px;
-    font-family:RobotoCondensed-Bold;
-    font-weight:bold;
-    color:rgba(255,255,255,1);
-    line-height:46px;
-    margin-bottom:15px;
-    padding-top:6px;
+    font-size       : 18px;
+    font-family     : RobotoCondensed-Bold;
+    font-weight     : bold;
+    color           : rgba(255, 255, 255, 1);
+    line-height     : 46px;
+    margin-bottom   : 15px;
+    padding-top     : 6px;
 }
 
 .scrollHistory {
@@ -61,29 +61,34 @@
 }
 
 .ball {
-    width:10px;
-    height:10px;
-    background:linear-gradient(45deg,rgba(26,144,252,1) 0%,rgba(0,174,255,1) 100%);
-    border-radius:50%;
-    margin-left: 59px;
-    margin-top: 19px;
+    width        : 10px;
+    height       : 10px;
+    background   : linear-gradient(45deg, rgba(26, 144, 252, 1) 0%, rgba(0, 174, 255, 1) 100%);
+    border-radius: 50%;
+    margin-left  : 59px;
+    margin-top   : 19px;
 }
 
-// :global {
-//     ::-webkit-scrollbar {
-//         width: 12px;
-//         background-color: rgb(26, 27, 44);
-//     }
-    
-//     ::-webkit-scrollbar-track {
-//         box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//         border-radius: 50%;
-//         background-color: rgb(26, 27, 44);
-//     }
-    
-//     ::-webkit-scrollbar-thumb {
-//         border-radius: 6px;
-//         box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-//         background-color: #555;
-//     }
-// }
+:global {
+    ::-webkit-scrollbar {
+        width           : 6px;
+        height          : 6px;
+        background-color: rgb(26, 27, 44);
+    }
+
+    ::-webkit-scrollbar-track {
+        box-shadow      : inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius   : 3px;
+        background-color: rgb(26, 27, 44);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius   : 3px;
+        box-shadow      : inset 0 0 6px rgba(0, 0, 0, .3);
+        background-color: #555;
+    }
+
+    ::-webkit-scrollbar-corner {
+        background-color: rgb(26, 27, 44);
+    }
+}
