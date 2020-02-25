@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { Component } from "../components/base";
-import { Icon, message, Modal } from 'antd';
+import { message } from 'antd';
 import BigNumber from 'bignumber.js';
 import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet, getTransactionReceipt } from "wan-dex-sdk-wallet";
 import "wan-dex-sdk-wallet/index.css";
@@ -12,7 +12,6 @@ import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
 import sleep from 'ko-sleep';
 import logo from '../img/wandoraLogo.png';
-import { selectWalletType } from "wan-dex-sdk-wallet/build/actions/wallet";
 
 const lotterySCAddr = '0xf7091b5ab0ee33e9811e1864891228b75178937b';//testnet 8 hours smart contract
 // const lotterySCAddr = '0xe74065cef562c2d64398badfab26bacb57564b5d';//testnet 10 mins smart contract
