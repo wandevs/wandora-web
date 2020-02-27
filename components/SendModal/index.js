@@ -56,6 +56,14 @@ class SendModalForm extends Component {
     this.props.hideModal();
   };
 
+  amountValidator = (rule, value, callback) => {
+    if (Number(value) < 1) {
+      callback("Must larger than 1.");
+    } else {
+      callback();
+    }
+  }
+
   render() {
     const { confirmLoading, ModalText, fields } = this.state;
     const WalletButton = this.props.walletButton;
@@ -83,7 +91,7 @@ class SendModalForm extends Component {
                     return convertedValue;
                   }
                 },
-                rules: [{ required: true, type: 'integer' }],
+                rules: [{ required: true, type: 'integer', validator: this.amountValidator }],
                 initialValue: 1
               })(
                 <Input
