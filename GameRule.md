@@ -1,4 +1,4 @@
-# Game Rule
+# Game Rules
 
 ![GameRuleImg](./img/gameRule.png)
 
