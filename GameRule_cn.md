@@ -1,5 +1,7 @@
 # 遊戲規則說明
 
+![GameRuleImg](./img/gameRule.png)
+
 此DApp 主要包含 2 項遊戲內容:
 
 1)價格漲跌預測;
