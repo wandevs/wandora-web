@@ -2,6 +2,8 @@
 
 ![GameRuleImg](./img/gameRule.png)
 
+[遊戲規則說明](./GameRule_cn.md)
+
 1. Users predict whether the price of WAN/BTC will rise or fall within a time period (8 hours).
 
 2. Users can place a bet on whether the price will go up or down within the first 6 hours of the period.
