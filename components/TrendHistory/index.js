@@ -68,7 +68,7 @@ class TrendHistory extends Component {
                 );
 
                 return (
-                  <Tooltip title={info}>
+                  <Tooltip title={info} key={i.toString()}>
                     <div key={i.toString()}>
                       <div className={style.colTitle}>{round}</div>
                       <div className={style.colLine2}>{up}</div>

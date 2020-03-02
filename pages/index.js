@@ -13,8 +13,8 @@ import DistributionHistory from '../components/DistributionHistory';
 import sleep from 'ko-sleep';
 import logo from '../img/wandoraLogo.png';
 
-const lotterySCAddr = '0xf7091b5ab0ee33e9811e1864891228b75178937b';//testnet 8 hours smart contract
-// const lotterySCAddr = '0xe74065cef562c2d64398badfab26bacb57564b5d';//testnet 10 mins smart contract
+const lotterySCAddr = '0x73a99a82f1b95bfd55a5820a7342758ceca80b33';//testnet 8 hours smart contract
+// const lotterySCAddr = '0x46099974b59c8266ba39674a7a0fa948cd457097';//testnet 10 mins smart contract
 
 var Web3 = require("web3");
 
@@ -104,10 +104,11 @@ class IndexPage extends Component {
     let scOld = window.localStorage.getItem('lotterySmartContract');
     if (!scOld || scOld !== lotterySCAddr) {
       console.log('Detect smart contract update.');
+      // window.localStorage.clear();
       window.localStorage.setItem('lotterySmartContract', lotterySCAddr);
       window.localStorage.removeItem('trendHistory');
       window.localStorage.removeItem('randomHistory');
-      window.localStorage.removeItem('currentHistory');
+      window.localStorage.removeItem('currentTrend');
     }
   }
 
@@ -326,8 +327,10 @@ class IndexPage extends Component {
         fromBlock: this.getRandomHistoryStartBlock(),
         toBlock: blockNumber
       });
+      console.log('scan event, filter:round:', roundArray, 'fromBlock:', this.getRandomHistoryStartBlock(), 'toBlock:', blockNumber);
 
       if (events && events.length > 0) {
+        console.log("found event:", events);
         for (let i = 0; i < events.length; i++) {
           if (!randomHistories[events[i].returnValues.round]) {
             randomHistories[events[i].returnValues.round] = [];
@@ -344,16 +347,24 @@ class IndexPage extends Component {
           });
 
           if (address.toLowerCase() === events[i].returnValues.staker.toLowerCase()) {
+            console.log("found myself:", address);
+
             let txHistory = this.getTransactionHistory();
             let bHave = false;
             for (let h =0; h<txHistory.length; h++) {
-              if (txHistory[h].type.toLowerCase() == 'distribute' && txHistory[h].round == events[i].returnValues.round) {
+              if (txHistory[h].type.toLowerCase() == 'distribute' 
+                && txHistory[h].round == events[i].returnValues.round
+                && txHistory[h].lotterySCAddr == lotterySCAddr) {
                 bHave = true;
+                console.log("found exist:", txHistory[h].round);
+
                 break;
               }
             }
             if (!bHave) {
+              console.log("add distribute history");
               this.addTransactionHistory({
+                lotterySCAddr,
                 key: events[i].transactionHash,
                 time: (new Date(Number(block.timestamp) * 1000)).format("yyyy-MM-dd hh:mm:ss"),
                 address: address.toLowerCase(),
@@ -401,10 +412,9 @@ class IndexPage extends Component {
     if (this.state.trendInfo) {
       currentRound = this.state.trendInfo.lotteryRound;
     }
-
     let startRound = currentRound - 7 > 0 ? (currentRound - 7) : 0;
     let maxKey = 1;
-    if (this.state.lotteryHistory && this.state.lotteryHistory.length > 0 && startRound > 0) {
+    if (this.state.lotteryHistory && currentRound > 0) {
       for (var i in this.state.lotteryHistory) {
         if (Number(i) > maxKey) {
           maxKey = Number(i);
