@@ -6,7 +6,7 @@
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "wan-dex-sdk-wallet": "^0.0.127",
+    "wan-dex-sdk-wallet": "^0.0.130",
     "web3": "^1.2.4"
   },
   "devDependencies": {
@@ -29,6 +29,7 @@
     "dev:test": "cross-env PORT=9090 WATCH_FILES=none BROWSER=none CLEAR_CONSOLE=none COMPILE_ON_DEMAND=none COVERAGE=true umi dev",
     "test": "macaca run -d ./test --verbose",
     "serve": "npm run dev:test &",
-    "ci": "npm run serve && npm test"
+    "ci": "npm run serve && npm test",
+    "analyze": "cross-env ANALYZE=1 umi build"
   }
 }
