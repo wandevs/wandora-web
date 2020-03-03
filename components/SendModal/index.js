@@ -59,6 +59,8 @@ class SendModalForm extends Component {
   amountValidator = (rule, value, callback) => {
     if (Number(value) < 1) {
       callback("Must larger than 1.");
+    } else if (Number(value) > 1000) {
+      callback("We limit max amount to 1000 wan.");
     } else {
       callback();
     }
