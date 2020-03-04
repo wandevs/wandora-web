@@ -622,6 +622,7 @@ class IndexPage extends Component {
     }
 
     const value = this.web3.utils.toHex(new BigNumber(amount).multipliedBy(Math.pow(10, 18)));
+    console.log('value:', value);
 
     let params = {
       to: lotterySCAddr,
