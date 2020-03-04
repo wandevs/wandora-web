@@ -6,8 +6,8 @@ export default {
       minSize: 30000,
       maxSize: 0,
       minChunks: 1,
-      maxAsyncRequests: 10,
-      maxInitialRequests: 5,
+      maxAsyncRequests: 20,
+      maxInitialRequests: 20,
       automaticNameDelimiter: '~',
       name: true,
       cacheGroups: {
@@ -21,7 +21,7 @@ export default {
           name: 'antdesigns',
           chunks: 'all',
           test: /[\\/]node_modules[\\/](@ant-design|antd)[\\/]/,
-          priority: -11,
+          priority: -10,
         },
         ethers: {
           name: 'ethers',
@@ -32,7 +32,37 @@ export default {
         charts: {
           name: 'charts',
           chunks: 'all',
-          test: /[\\/]node_modules[\\/](@antv|bizcharts)[\\/]/,
+          test: /[\\/]node_modules[\\/](bizcharts)[\\/]/,
+          priority: -11,
+        },
+        antv: {
+          name: 'antv',
+          chunks: 'all',
+          test: /[\\/]node_modules[\\/](@antv)[\\/]/,
+          priority: -11,
+        },
+        idna: {
+          name: 'idna',
+          chunks: 'all',
+          test: /[\\/]node_modules[\\/](idna-uts46-hx)[\\/]/,
+          priority: -11,
+        },
+        walletsdk: {
+          name: 'walletsdk',
+          chunks: 'all',
+          test: /[\\/]node_modules[\\/](wan-dex-sdk-wallet)[\\/]/,
+          priority: -11,
+        },
+        mimedb: {
+          name: 'mimedb',
+          chunks: 'all',
+          test: /[\\/]node_modules[\\/](mime-db)[\\/]/,
+          priority: -11,
+        },
+        psl: {
+          name: 'psl',
+          chunks: 'all',
+          test: /[\\/]node_modules[\\/](psl)[\\/]/,
           priority: -11,
         },
       },
@@ -44,7 +74,7 @@ export default {
       {
         dva: false,
         antd: true,
-        chunks: ['vendors','antdesigns', 'ethers', 'charts', 'umi']
+        chunks: ['vendors','antdesigns', 'ethers', 'charts', 'antv', 'idna', 'walletsdk', 'mimedb', 'psl', 'umi']
       }
     ],
     "./umi-plugin-entry.js"
