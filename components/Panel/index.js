@@ -1,5 +1,5 @@
 import { Component } from "../base";
-import { Icon, Tooltip, Modal } from 'antd';
+import { Icon, Tooltip, Modal, Spin } from 'antd';
 import style from './style.less';
 import SendModal from '../SendModal';
 import PieChart from '../PieChart';
@@ -120,84 +120,89 @@ class Panel extends Component {
 
   render() {
     const { d, h } = this.getLastTimeDH(Number(this.props.trendInfo.randomEndTime) - this.props.trendInfo.chainEndTime);
+    let distrbuteText = "To be distributed after {"+d+"} days {"+h+"} hours";
+    if (d == 0 && h == 0) {
+      distrbuteText = "(To be distributed in 1 hours)"
+    }
     return (
       <div className={style.panel}>
-        <div className={style.upBlock}>
-          <div className={style.pieChart}>
-            <PieChart upCnt={this.state.upPoolAmount} downCnt={this.state.downPoolAmount} />
-          </div>
-
-          <div className={style.rightBlock}>
-            <div className={style.firstLine}>
-              <div className={style.subLine}>
-                <div>The price of WAN at the end of the last round was </div>
-                <div className={style.bold}>{this.state.btcPriceStart} BTC</div>
-                <div>{' / WAN.'}</div>
-              </div>
-              <div className={style.subLine}>
-                <div>Place your prediction whether the price will go up or down after</div>
-                <div className={style.boxText2}>{this.state.endLeft.h}h</div>
-                <div className={style.boxText2}>{this.state.endLeft.m}m</div>
-                {/* <div className={style.boxText2}>{this.state.endLeft.s}s</div> */}
-                <div style={{ marginLeft: '10px' }}>later.</div>
-                <Tooltip title={"Show Help"}>
-                  <Icon type="question-circle" onClick={this.showHelp1} className={style.helpIcon} style={{ margin: '13px', color: 'gray', fontSize: '16px' }} />
-                </Tooltip>
-              </div>
+        <Spin size="large" tip="The contract is being settled, please hold on..." spinning={this.state.endLeft.h==0 && this.state.endLeft.m==0}>
+          <div className={style.upBlock}>
+            <div className={style.pieChart}>
+              <PieChart upCnt={this.state.upPoolAmount} downCnt={this.state.downPoolAmount} />
             </div>
-            <div className={style.secondLine}>
-              <div className={style.subLine}>
-                <div>
-                  {this.state.disable
-                    ? <div className={style.upButtonDisable}>
-                      <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
-                    </div>
-                    : <div className={style.upButton} onClick={this.onUpClick}>
-                      <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
-                    </div>
-                  }
-                  {this.state.disable
-                    ? <div className={style.downButtonDisable}>
-                      <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
-                    </div>
-                    : <div className={style.downButton} onClick={this.onDownClick}>
-                      <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
-                    </div>
-                  }
+
+            <div className={style.rightBlock}>
+              <div className={style.firstLine}>
+                <div className={style.subLine}>
+                  <div>The price of WAN at the end of the last round was </div>
+                  <div className={style.bold}>{this.state.btcPriceStart} BTC</div>
+                  <div>{' / WAN.'}</div>
                 </div>
-                <div>
-                  <div className={style.subLine}>
-                    <div className={style.poolValue}>{this.state.randomPoolAmount}</div>
-                    <div className={style.unitText}>WAN</div>
+                <div className={style.subLine}>
+                  <div>Place your prediction whether the price will go up or down after</div>
+                  <div className={style.boxText2}>{this.state.endLeft.h}h</div>
+                  <div className={style.boxText2}>{this.state.endLeft.m}m</div>
+                  {/* <div className={style.boxText2}>{this.state.endLeft.s}s</div> */}
+                  <div style={{ marginLeft: '10px' }}>later.</div>
+                  <Tooltip title={"Show Help"}>
+                    <Icon type="question-circle" onClick={this.showHelp1} className={style.helpIcon} style={{ margin: '13px', color: 'gray', fontSize: '16px' }} />
+                  </Tooltip>
+                </div>
+              </div>
+              <div className={style.secondLine}>
+                <div className={style.subLine}>
+                  <div>
+                    {this.state.disable
+                      ? <div className={style.upButtonDisable}>
+                        <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
+                      </div>
+                      : <div className={style.upButton} onClick={this.onUpClick}>
+                        <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
+                      </div>
+                    }
+                    {this.state.disable
+                      ? <div className={style.downButtonDisable}>
+                        <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
+                      </div>
+                      : <div className={style.downButton} onClick={this.onDownClick}>
+                        <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
+                      </div>
+                    }
                   </div>
-                  <div style={{ margin: "26px 0px 0px 100px" }}>
+                  <div>
                     <div className={style.subLine}>
-                      <div className={style.subLine2}>The total prize pot in this period.</div>
-                      {/* <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours)</div> */}
-                      <Tooltip title={"Show Help"}>
-                        <Icon type="question-circle" onClick={this.showHelp2} className={style.helpIcon} style={{ color: 'gray', fontSize: '16px' }} />
-                      </Tooltip>
+                      <div className={style.poolValue}>{this.state.randomPoolAmount}</div>
+                      <div className={style.unitText}>WAN</div>
                     </div>
-                    <div className={style.subLine2}>(To be distributed after {d} days {h} hours)</div>
+                    <div style={{ margin: "26px 0px 0px 100px" }}>
+                      <div className={style.subLine}>
+                        <div className={style.subLine2}>The total prize pot in this period.</div>
+                        {/* <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours)</div> */}
+                        <Tooltip title={"Show Help"}>
+                          <Icon type="question-circle" onClick={this.showHelp2} className={style.helpIcon} style={{ color: 'gray', fontSize: '16px' }} />
+                        </Tooltip>
+                      </div>
+                      <div className={style.subLine2}>{distrbuteText}</div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className={style.bottomLine}>
-          <Icon type="bulb" style={{ color: '#40DABF', fontSize: '16px' }} />
-          <div className={style.bottomText}>Buying in this round will be closed in</div>
-          <div className={style.boxText}>{this.state.buyLeft.h}h</div>
-          <div className={style.boxText}>{this.state.buyLeft.m}m</div>
-          {/* <div className={style.boxText}>{this.state.buyLeft.s}s</div> */}
-          <span />
-          <div className={style.bottomText}>The next round begins in</div>
-          <div className={style.boxText}>{this.state.nextStart.h}h</div>
-          <div className={style.boxText}>{this.state.nextStart.m}m</div>
-          <div className={style.bottomText}> and ends at {this.state.nextEnd}.</div>
-        </div>
-
+          <div className={style.bottomLine}>
+            <Icon type="bulb" style={{ color: '#40DABF', fontSize: '16px' }} />
+            <div className={style.bottomText}>Buying in this round will be closed in</div>
+            <div className={style.boxText}>{this.state.buyLeft.h}h</div>
+            <div className={style.boxText}>{this.state.buyLeft.m}m</div>
+            {/* <div className={style.boxText}>{this.state.buyLeft.s}s</div> */}
+            <span />
+            <div className={style.bottomText}>The next round begins in</div>
+            <div className={style.boxText}>{this.state.nextStart.h}h</div>
+            <div className={style.boxText}>{this.state.nextStart.m}m</div>
+            <div className={style.bottomText}> and ends at {this.state.nextEnd}.</div>
+          </div>
+        </Spin>
         <SendModal sendTransaction={this.props.sendTransaction} watchTransactionStatus={this.props.watchTransactionStatus} visible={this.state.modalVisible} hideModal={this.hideModal} type={this.type} walletButton={this.props.walletButton} />
       </div>
     );

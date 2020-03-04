@@ -109,6 +109,7 @@ class IndexPage extends Component {
       window.localStorage.removeItem('trendHistory');
       window.localStorage.removeItem('randomHistory');
       window.localStorage.removeItem('currentTrend');
+      window.localStorage.removeItem('RandomHistoryStartBlock');
     }
   }
 
