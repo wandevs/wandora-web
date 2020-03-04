@@ -606,6 +606,11 @@ class IndexPage extends Component {
     const { selectedAccount, selectedWallet } = this.props;
     const address = selectedAccount ? selectedAccount.get('address') : null;
 
+    if (!address || address.length<20) {
+      window.alertAntd('Please first to Select a wallet address.');
+      return false
+    }
+
     const value = new BigNumber(amount).multipliedBy(Math.pow(10, 18)).toString();
 
     let params = {
