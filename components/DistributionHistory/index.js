@@ -17,6 +17,12 @@ class DistributionHistory extends Component {
     this.updateData();
   }
 
+  componentWillUnmount() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+  }
+
   infoSelection = {};
 
   updateData = () => {
@@ -49,7 +55,7 @@ class DistributionHistory extends Component {
       this.setState({options:options.slice().reverse(), dataSource: defaultData});
     }
 
-    setTimeout(this.updateData, 30000);
+    this.timer = setTimeout(this.updateData, 30000);
   }
 
   columns = [

@@ -29,6 +29,8 @@ class TrendHistory extends Component {
         upAmount: this.props.trendInfo.upPoolAmount,
         downAmount: this.props.trendInfo.downPoolAmount, 
         feeTotal: this.props.trendInfo.feeRatio/1000*(this.props.trendInfo.upPoolAmount + this.props.trendInfo.downPoolAmount),
+        startTime: this.props.trendInfo.round*this.props.trendInfo.timeSpan + this.props.trendInfo.gameStartTime,
+        endTime: (this.props.trendInfo.round+1)*this.props.trendInfo.timeSpan + this.props.trendInfo.gameStartTime,
       });
     }
     const { endLeft } = this.getTimeLeft(this.props.trendInfo);
@@ -61,9 +63,11 @@ class TrendHistory extends Component {
                   <div>
                     Start Price:{v.startPrice}<br />
                     End Price:{v.endPrice}<br />
-                    Up Amount:{v.upAmount}<br />
-                    Down Amount:{v.downAmount}<br />
-                    Fee Total:{v.feeTotal}
+                    Up Amount:{(+v.upAmount).toFixed(0)}<br />
+                    Down Amount:{(+v.downAmount).toFixed(0)}<br />
+                    Fee Total:{(+v.feeTotal).toFixed(1)}<br />
+                    Start Time: {v.startTime && (new Date(v.startTime*1000)).toLocaleString()}<br />
+                    End Time: {v.endTime && (new Date(v.endTime*1000)).toLocaleString()}
                     </div>
                 );
 

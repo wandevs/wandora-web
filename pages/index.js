@@ -286,6 +286,8 @@ class IndexPage extends Component {
           upAmount: ret.upAmount / 1e18,
           downAmount: ret.downAmount / 1e18,
           feeTotal: (ret.upAmount / 1e18 + ret.downAmount / 1e18) * this.state.trendInfo.feeRatio / 1000,
+          startTime: this.state.trendInfo.gameStartTime + roundArray[i]*this.state.trendInfo.timeSpan,
+          endTime: this.state.trendInfo.gameStartTime + (roundArray[i]+1)*this.state.trendInfo.timeSpan,
         })
         if (trendHistory.length > 29) {
           trendHistory.splice(0, 1);

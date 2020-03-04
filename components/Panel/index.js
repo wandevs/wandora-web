@@ -120,7 +120,7 @@ class Panel extends Component {
 
   render() {
     const { d, h } = this.getLastTimeDH(Number(this.props.trendInfo.randomEndTime) - this.props.trendInfo.chainEndTime);
-    let distrbuteText = "To be distributed after {"+d+"} days {"+h+"} hours";
+    let distrbuteText = "To be distributed after "+d+" days "+h+" hours";
     if (d == 0 && h == 0) {
       distrbuteText = "(To be distributed in 1 hours)"
     }
