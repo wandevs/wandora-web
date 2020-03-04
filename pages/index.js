@@ -620,8 +620,8 @@ class IndexPage extends Component {
       window.alertAntd('Please select a wallet address first.');
       return false
     }
-
-    const value = this.web3.utils.toHex(new BigNumber(amount).multipliedBy(Math.pow(10, 18)));
+    console.log('amount', amount);
+    const value = this.web3.utils.toWei(amount.toString());
     console.log('value:', value);
 
     let params = {
