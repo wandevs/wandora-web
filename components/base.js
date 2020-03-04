@@ -11,7 +11,8 @@ export class Component extends React.PureComponent {
       let endLeft = this.getLastTime((trendInfo.startTime + trendInfo.timeSpan) - trendInfo.chainEndTime);
       let buyLeft = this.getLastTime((trendInfo.startTime + trendInfo.timeSpan - trendInfo.stopBefore) - trendInfo.chainEndTime);
       let nextStart = endLeft;
-      let nextEnd = (new Date((trendInfo.startTime + trendInfo.timeSpan*2 - trendInfo.stopBefore)*1000)).format('hh:mm');
+      let timeNextEnd = (new Date((trendInfo.startTime + trendInfo.timeSpan*2 - trendInfo.stopBefore)*1000)).toString().split(' ');
+      let nextEnd = ' ' + timeNextEnd[1] + ' ' + timeNextEnd[2] + ' ' + timeNextEnd[4].substr(0, 5) + ' ' + timeNextEnd[5];
       return { endLeft, buyLeft, nextStart, nextEnd };
     }
 

@@ -413,7 +413,7 @@ class IndexPage extends Component {
       currentRound = this.state.trendInfo.lotteryRound;
     }
     let startRound = currentRound - 7 > 0 ? (currentRound - 7) : 0;
-    let maxKey = 1;
+    let maxKey = -1;
     if (this.state.lotteryHistory && currentRound > 0) {
       for (var i in this.state.lotteryHistory) {
         if (Number(i) > maxKey) {
@@ -607,11 +607,11 @@ class IndexPage extends Component {
     const address = selectedAccount ? selectedAccount.get('address') : null;
 
     if (!address || address.length<20) {
-      window.alertAntd('Please first to Select a wallet address.');
+      window.alertAntd('Please select a wallet address first.');
       return false
     }
 
-    const value = new BigNumber(amount).multipliedBy(Math.pow(10, 18)).toString();
+    const value = this.web3.utils.toHex(new BigNumber(amount).multipliedBy(Math.pow(10, 18)));
 
     let params = {
       to: lotterySCAddr,
