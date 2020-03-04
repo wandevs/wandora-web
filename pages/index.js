@@ -311,12 +311,17 @@ class IndexPage extends Component {
 
   updateRandomHistoryFromNode = async () => {
     try {
+      if (this.randomHistoryScanStart) {
+        return
+      }
+      this.randomHistoryScanStart = true;
       let randomHistories = {};
       const { selectedAccount } = this.props;
       const address = selectedAccount ? selectedAccount.get('address') : null;
 
       let roundArray = this.getRandomRoundRange();
       if (roundArray.length === 0) {
+        this.randomHistoryScanStart = false;
         return;
       }
 
@@ -332,6 +337,7 @@ class IndexPage extends Component {
       if (events && events.length > 0) {
         console.log("found event:", events);
         for (let i = 0; i < events.length; i++) {
+          console.log('i', i, 'len', events.length);
           if (!randomHistories[events[i].returnValues.round]) {
             randomHistories[events[i].returnValues.round] = [];
           }
@@ -376,12 +382,15 @@ class IndexPage extends Component {
             }
           }
         }
+        console.log('ready to add addRandomHistory');
         this.addRandomHistory(randomHistories);
       }
 
       this.setRandomHistoryStartBlock(blockNumber);
+      this.randomHistoryScanStart = false;
     } catch (err) {
       console.log(err);
+      this.randomHistoryScanStart = false;
     }
   }
 
