@@ -66,8 +66,8 @@ class TrendHistory extends Component {
                     Up Amount:{(+v.upAmount).toFixed(0)}<br />
                     Down Amount:{(+v.downAmount).toFixed(0)}<br />
                     Fee Total:{(+v.feeTotal).toFixed(1)}<br />
-                    Start Time: {v.startTime && (new Date(v.startTime*1000)).toLocaleString()}<br />
-                    End Time: {v.endTime && (new Date(v.endTime*1000)).toLocaleString()}
+                    Start Time: {v.startTime && (new Date(v.startTime*1000)).toLocaleString('en')}<br />
+                    End Time: {v.endTime && (new Date(v.endTime*1000)).toLocaleString('en')}
                     </div>
                 );
 
