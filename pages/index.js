@@ -340,7 +340,6 @@ class IndexPage extends Component {
       if (events && events.length > 0) {
         console.log("found event:", events);
         for (let i = 0; i < events.length; i++) {
-          console.log('i', i, 'len', events.length);
           if (!randomHistories[events[i].returnValues.round]) {
             randomHistories[events[i].returnValues.round] = [];
           }

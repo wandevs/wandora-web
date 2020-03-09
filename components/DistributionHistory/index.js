@@ -91,8 +91,7 @@ class DistributionHistory extends Component {
     for (let i=0; i<this.state.dataSource.length; i++) {
       totalFee += Number(this.state.dataSource[i].amountPay)
     }
-    let defaultSelect = this.state.options.length > 0 ? this.state.options[0].value:undefined;
-    console.log('dataSource', this.state.dataSource, 'defaultSelect', defaultSelect);
+    // let defaultSelect = this.state.options.length > 0 ? this.state.options[0].value:undefined;
     return (
       <div className={style.body}>
         <div className={style.title + ' ' + style.subLine}>
@@ -104,7 +103,6 @@ class DistributionHistory extends Component {
             onChange={this.selectChange}>
             {
               this.state.options.map((v,i) => {
-                console.log('v,i', v, i);
                 return (<Option value={i} key={v.value}>{v.value}</Option>);
               })
             }
