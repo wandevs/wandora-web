@@ -7,7 +7,7 @@ const { Option } = Select;
 class DistributionHistory extends Component {
   constructor(props) {
     super(props);
-    this.state = { dataSource: [], options:[] };
+    this.state = { dataSource: [], options:[], selectIndex: 0 };
     this.web3 = props.web3;
   }
 
@@ -52,7 +52,7 @@ class DistributionHistory extends Component {
       options.push({value:title});
     }
     if (defaultData) {
-      this.setState({options:options.slice().reverse(), dataSource: defaultData});
+      this.setState({options:options.slice().reverse(), dataSource: defaultData, selectIndex: 0});
     }
 
     this.timer = setTimeout(this.updateData, 30000);
@@ -82,7 +82,7 @@ class DistributionHistory extends Component {
   ]
 
   selectChange = (value) => {
-    this.setState({dataSource: this.infoSelection[value]});
+    this.setState({dataSource: this.infoSelection[this.state.options[value].value], selectIndex: value});
   }
 
   render() {
@@ -92,15 +92,20 @@ class DistributionHistory extends Component {
       totalFee += Number(this.state.dataSource[i].amountPay)
     }
     let defaultSelect = this.state.options.length > 0 ? this.state.options[0].value:undefined;
+    console.log('dataSource', this.state.dataSource, 'defaultSelect', defaultSelect);
     return (
       <div className={style.body}>
         <div className={style.title + ' ' + style.subLine}>
           <Icon type="history" className={style.logo} />
           <div className={style.subTitle}>Distribution History</div>
-          <Select className={style.subSelect} defaultValue={defaultSelect} onChange={this.selectChange}>
+          <Select className={style.subSelect}
+            // defaultValue={0}
+            value={this.state.selectIndex}
+            onChange={this.selectChange}>
             {
               this.state.options.map((v,i) => {
-                return (<Option value={v.value} key={v.value}>{v.value}</Option>);
+                console.log('v,i', v, i);
+                return (<Option value={i} key={v.value}>{v.value}</Option>);
               })
             }
           </Select>

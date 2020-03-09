@@ -346,7 +346,7 @@ class IndexPage extends Component {
           }
           let block = await this.web3.eth.getBlock(events[i].blockNumber);
           randomHistories[events[i].returnValues.round].push({
-            key: events[i].returnValues.round,
+            key: events[i].returnValues.round.toString() + i.toString(),
             blockNumber: events[i].blockNumber,
             time: (new Date(Number(block.timestamp) * 1000)).format("yyyy-MM-dd hh:mm:ss"),
             round: events[i].returnValues.round,
