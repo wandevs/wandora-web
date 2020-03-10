@@ -1,6 +1,15 @@
 
 export default {
   chainWebpack(config) {
+    config.module
+      .rule('exclude')
+      .use('url-loader')
+      .tap(options => {
+        return {
+          ...options,
+          limit: 4096,
+        };
+      });
     config.optimization.splitChunks({
       chunks: 'async',
       minSize: 30000,
@@ -66,7 +75,7 @@ export default {
           priority: -11,
         },
       },
-     });
+    });
   },
   plugins: [
     [
@@ -74,7 +83,7 @@ export default {
       {
         dva: false,
         antd: true,
-        chunks: ['vendors','antdesigns', 'ethers', 'charts', 'antv', 'idna', 'walletsdk', 'mimedb', 'psl', 'umi']
+        chunks: ['vendors', 'antdesigns', 'ethers', 'charts', 'antv', 'idna', 'walletsdk', 'mimedb', 'psl', 'umi']
       }
     ],
     "./umi-plugin-entry.js"
