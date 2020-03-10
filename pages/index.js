@@ -13,7 +13,7 @@ import DistributionHistory from '../components/DistributionHistory';
 import sleep from 'ko-sleep';
 import logo from '../img/wandoraLogo.png';
 
-const lotterySCAddr = '0x5e1794cb827af141e5e7c801b019316efefe70dd';//testnet 8 hours smart contract
+const lotterySCAddr = '0xe87db9727577eeebb1d28e5a4893c2b320a79770';//testnet 8 hours smart contract
 // const lotterySCAddr = '0x78c5a76c22260f64150bd7df4d63c1b6aac18cda';//testnet 10 mins smart contract
 
 var Web3 = require("web3");
