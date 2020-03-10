@@ -120,11 +120,11 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "updownLotteryStartRN",
+    "name": "operator",
     "outputs": [
       {
         "name": "",
-        "type": "uint256"
+        "type": "address"
       }
     ],
     "payable": false,
@@ -271,7 +271,7 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "randomLotteryStartRN",
+    "name": "randomLotteryTileMul",
     "outputs": [
       {
         "name": "",
@@ -480,6 +480,28 @@
         "type": "uint256"
       }
     ],
+    "name": "UpDownGiveBack",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "staker",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "name": "prizeAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "name": "round",
+        "type": "uint256"
+      }
+    ],
     "name": "UpDownReturn",
     "type": "event"
   },
@@ -613,6 +635,20 @@
     "constant": false,
     "inputs": [
       {
+        "name": "_operator",
+        "type": "address"
+      }
+    ],
+    "name": "setOperator",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
         "name": "_curUpDownRound",
         "type": "uint256"
       },
@@ -650,6 +686,24 @@
       }
     ],
     "name": "upDownLotteryGiveBack",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "halt",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "unHalt",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
