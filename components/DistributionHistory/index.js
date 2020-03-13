@@ -44,6 +44,15 @@ class DistributionHistory extends Component {
 
         dataArray[dateStr].count++;
         let title = dataArray[dateStr].count + 'th ' + dateStr;
+        if (dataArray[dateStr].count == 1) {
+          title = dataArray[dateStr].count + 'st ' + dateStr;
+        }
+        if (dataArray[dateStr].count == 2) {
+          title = dataArray[dateStr].count + 'nd ' + dateStr;
+        }
+        if (dataArray[dateStr].count == 3) {
+          title = dataArray[dateStr].count + 'rd ' + dateStr;
+        }
         this.infoSelection[title] = info;
       }
     }
