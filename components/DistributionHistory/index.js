@@ -1,5 +1,5 @@
 import { Component } from "../base";
-import { Icon, Table, Select } from 'antd';
+import { Icon, Table, Select, Spin } from 'antd';
 import style from './style.less';
 
 const { Option } = Select;
@@ -7,7 +7,7 @@ const { Option } = Select;
 class DistributionHistory extends Component {
   constructor(props) {
     super(props);
-    this.state = { dataSource: [], options:[], selectIndex: 0 };
+    this.state = { dataSource: [], options: [], selectIndex: 0 };
     this.web3 = props.web3;
   }
 
@@ -58,10 +58,10 @@ class DistributionHistory extends Component {
     }
     let options = []
     for (var title in this.infoSelection) {
-      options.push({value:title});
+      options.push({ value: title });
     }
     if (defaultData) {
-      this.setState({options:options.slice().reverse(), dataSource: defaultData, selectIndex: 0});
+      this.setState({ options: options.slice().reverse(), dataSource: defaultData, selectIndex: 0 });
     }
 
     this.timer = setTimeout(this.updateData, 30000);
@@ -91,38 +91,40 @@ class DistributionHistory extends Component {
   ]
 
   selectChange = (value) => {
-    this.setState({dataSource: this.infoSelection[this.state.options[value].value], selectIndex: value});
+    this.setState({ dataSource: this.infoSelection[this.state.options[value].value], selectIndex: value });
   }
 
   render() {
     let addressCnt = this.state.dataSource.length;
     let totalFee = 0;
-    for (let i=0; i<this.state.dataSource.length; i++) {
+    for (let i = 0; i < this.state.dataSource.length; i++) {
       totalFee += Number(this.state.dataSource[i].amountPay)
     }
     // let defaultSelect = this.state.options.length > 0 ? this.state.options[0].value:undefined;
     return (
       <div className={style.body}>
-        <div className={style.title + ' ' + style.subLine}>
-          <Icon type="history" className={style.logo} />
-          <div className={style.subTitle}>Distribution History</div>
-          <Select className={style.subSelect}
-            // defaultValue={0}
-            value={this.state.selectIndex}
-            onChange={this.selectChange}>
-            {
-              this.state.options.map((v,i) => {
-                return (<Option value={i} key={v.value}>{v.value}</Option>);
-              })
-            }
-          </Select>
-          
-          
-          <div className={style.rightText}>Address Count: {addressCnt}</div>
-          {/* <div className={style.rightText}>Amount: N/A WAN</div> */}
-          <div className={style.rightText}>Total Fee: {totalFee.toFixed(1)} WAN</div>
-        </div>
-        <Table columns={this.columns} dataSource={this.state.dataSource} pagination={{ pageSize: 4 }}/>
+        <Spin spinning={this.state.dataSource.length == 0}>
+          <div className={style.title + ' ' + style.subLine}>
+            <Icon type="history" className={style.logo} />
+            <div className={style.subTitle}>Distribution History</div>
+            <Select className={style.subSelect}
+              // defaultValue={0}
+              value={this.state.selectIndex}
+              onChange={this.selectChange}>
+              {
+                this.state.options.map((v, i) => {
+                  return (<Option value={i} key={v.value}>{v.value}</Option>);
+                })
+              }
+            </Select>
+
+
+            <div className={style.rightText}>Address Count: {addressCnt}</div>
+            {/* <div className={style.rightText}>Amount: N/A WAN</div> */}
+            <div className={style.rightText}>Total Fee: {totalFee.toFixed(1)} WAN</div>
+          </div>
+          <Table columns={this.columns} dataSource={this.state.dataSource} pagination={{ pageSize: 4 }} />
+        </Spin>
       </div>
     );
   }
