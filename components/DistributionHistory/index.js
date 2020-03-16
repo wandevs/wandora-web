@@ -100,10 +100,12 @@ class DistributionHistory extends Component {
     for (let i = 0; i < this.state.dataSource.length; i++) {
       totalFee += Number(this.state.dataSource[i].amountPay)
     }
+
+    const spinning = this.state.dataSource.length == 0 || this.props.spinning;
     // let defaultSelect = this.state.options.length > 0 ? this.state.options[0].value:undefined;
     return (
       <div className={style.body}>
-        <Spin spinning={this.state.dataSource.length == 0}>
+        <Spin spinning={spinning}>
           <div className={style.title + ' ' + style.subLine}>
             <Icon type="history" className={style.logo} />
             <div className={style.subTitle}>Distribution History</div>

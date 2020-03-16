@@ -74,6 +74,7 @@ class IndexPage extends Component {
       trendHistory: trendHistory,
       transactionHistory: this.getTransactionHistory(),
       lotteryHistory: this.getLotteryHistory(),
+      randomSpinning: false,
     }
 
     window.debugState = this.state;
@@ -339,6 +340,7 @@ class IndexPage extends Component {
 
       if (events && events.length > 0) {
         console.log("found event:", events);
+        this.setState({randomSpinning: true});
         for (let i = 0; i < events.length; i++) {
           if (!randomHistories[events[i].returnValues.round]) {
             randomHistories[events[i].returnValues.round] = [];
@@ -394,6 +396,8 @@ class IndexPage extends Component {
       console.log(err);
       this.randomHistoryScanStart = false;
     }
+
+    this.setState({randomSpinning: false});
   }
 
   getUpDownRoundRange = () => {
@@ -687,7 +691,7 @@ class IndexPage extends Component {
         <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} />
         <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} />
         <TransactionHistory transactionHistory={this.state.transactionHistory} />
-        <DistributionHistory lotteryHistory={this.state.lotteryHistory} />
+        <DistributionHistory lotteryHistory={this.state.lotteryHistory} spinning={this.state.randomSpinning}/>
       </div>
     );
   }
