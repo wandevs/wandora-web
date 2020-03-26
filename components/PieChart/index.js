@@ -76,10 +76,16 @@ class PieChart extends React.Component {
             tooltip={[
               "item*percent",
               (item, percent) => {
-                percent = (percent * 100).toFixed(1) + "%";
+                let value = "";
+                if (data[0].item == item) {
+                  value = data[0].count + " WAN";
+                }
+                if (data[1].item == item) {
+                  value = data[1].count + " WAN";
+                }
                 return {
                   name: item,
-                  value: percent
+                  value
                 };
               }
             ]}
