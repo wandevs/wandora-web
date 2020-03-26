@@ -14,7 +14,7 @@
 
 5. The losing side's bets are distributed to the winning side in proportion to the size of each individual's bet vs the total bets for the winning side.
 
-6. 10% of the each bet will be pooled in a prize pot to be rewarded once per day to one lucky user who participated in the game.
+6. 10% of the each bet will be pooled in a prize pot to be rewarded once per 3 days to 20 lucky users who participated in the game.
 
 7. The remaining 90% shall be divided amongst the winners in each period. Losers will receive nothing and winners will receive an amount equal to the proportion of their bet vs the total amount of all winning bets. 
 

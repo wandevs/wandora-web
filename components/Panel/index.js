@@ -108,7 +108,7 @@ class Panel extends Component {
       title: 'Rules of Random Lottery Game',
       content: (
         <div>
-          <p>1. 10% of the each bet will be pooled in a prize pot to be rewarded once per day to one lucky user who participated in the game.</p>
+          <p>1. 10% of the each bet will be pooled in a prize pot to be rewarded once per 3 days to 20 lucky users who participated in the game.</p>
           <p>2. The remaining 90% shall be divided amongst the winners in each period. Losers will receive nothing and winners will receive an amount equal to the proportion of their bet vs the total amount of all winning bets. </p>
           <p>3. Regardless of winning or losing the Up/Down bet, all players have a chance of winning the prize pot.</p>
           <p>4. Wanchain's on chain random number generation will be used to decide the prize pot winners.</p>
