@@ -101,7 +101,7 @@ class DistributionHistory extends Component {
       totalFee += Number(this.state.dataSource[i].amountPay)
     }
 
-    const spinning = this.state.dataSource.length == 0 || this.props.spinning;
+    const spinning = this.props.spinning;
     // let defaultSelect = this.state.options.length > 0 ? this.state.options[0].value:undefined;
     return (
       <div className={style.body}>
