@@ -677,7 +677,6 @@ class IndexPage extends Component {
   }
 
   render() {
-    console.log("networkId:", this.props.networkId, networkId,this.props.selectedAccountID);
     return (
       <div className={style.app}>
         <div className={style.header}>
