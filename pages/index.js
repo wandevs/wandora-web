@@ -14,6 +14,7 @@ import sleep from 'ko-sleep';
 import logo from '../img/wandoraLogo.png';
 
 const lotterySCAddr = '0xdfad0145311acb8f0e0305aceef5d11a05df9aa0';//mainnet 8 hours smart contract
+const networkId = 1;
 
 var Web3 = require("web3");
 
@@ -676,6 +677,7 @@ class IndexPage extends Component {
   }
 
   render() {
+    console.log("networkId:", this.props.networkId, networkId,this.props.selectedAccountID);
     return (
       <div className={style.app}>
         <div className={style.header}>
@@ -687,6 +689,11 @@ class IndexPage extends Component {
           <div className={style.gameRule} onClick={this.showGameRule}>Game Rules</div>
           <WalletButton />
         </div>
+        {this.props.selectedAccountID === 'EXTENSION' && parseInt(this.props.networkId, 10) !== parseInt(networkId, 10) && (
+          <div className="network-warning bg-warning text-white text-center" style={{ padding: 4, backgroundColor: "red"  }}>
+            Please be noted that you are currently choosing the Testnet for WanMask and shall switch to Mainnet for playing Wandora.
+          </div>
+        )}
         <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} />
         <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} />
         <TransactionHistory transactionHistory={this.state.transactionHistory} />
@@ -696,10 +703,15 @@ class IndexPage extends Component {
   }
 }
 
-export default connect(state => ({
-  selectedAccount: getSelectedAccount(state),
-  selectedWallet: getSelectedAccountWallet(state),
-}))(IndexPage);
+export default connect(state => {
+  const selectedAccountID = state.WalletReducer.get('selectedAccountID');
+  return {
+    selectedAccount: getSelectedAccount(state),
+    selectedWallet: getSelectedAccountWallet(state),
+    networkId: state.WalletReducer.getIn(['accounts', selectedAccountID, 'networkId']),
+    selectedAccountID,
+  }
+})(IndexPage);
 
 
 
