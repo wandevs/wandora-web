@@ -39,8 +39,8 @@ class IndexPage extends Component {
     super(props);
     this.state = {};
     // window._nodeUrl = "https://demodex.wandevs.org:48545";
-    window._nodeUrl = "https://mywanwallet.io/api";
-    // window._nodeUrl = "http://gwan.wandevs.org:26891";
+    // window._nodeUrl = "https://mywanwallet.io/api";
+    window._nodeUrl = "https://gwan-ssl.wandevs.org:56891";
 
     this.checkSCUpdate();
 
