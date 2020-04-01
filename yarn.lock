@@ -21746,10 +21746,10 @@ walletlink@^1.0.0:
     eth-eip712-util "^2.3.0"
     keccak "^2.0.0"
 
-wan-dex-sdk-wallet@0.0.134:
-  version "0.0.134"
-  resolved "https://registry.npmjs.org/wan-dex-sdk-wallet/-/wan-dex-sdk-wallet-0.0.134.tgz#7aec1175eb2daf492517eb3d3e86819c16a16b71"
-  integrity sha512-GvdIdbYQIb3rEm7xZ974fB+SntSZyW+pqU5z3TAc+htSFR08RVRjBsjGKK1F2RRBU0rI4hkR6T66chHDjJOjTQ==
+wan-dex-sdk-wallet@0.0.136:
+  version "0.0.136"
+  resolved "https://registry.npmjs.org/wan-dex-sdk-wallet/-/wan-dex-sdk-wallet-0.0.136.tgz#19d71b42acfe87f21f8faed516c9347d5053664c"
+  integrity sha512-z0LWULvzsvy1kcYWucVAIkt2lWnMeJaRFmHsS7+VKPfHKKamL8tC6iB0574zTPwMYk9AblOS5BJR4xEWp9AZlg==
   dependencies:
     "@ledgerhq/hw-app-eth" "^4.46.0"
     "@ledgerhq/hw-transport-u2f" "^4.46.0"
