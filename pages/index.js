@@ -16,7 +16,8 @@ import logo from '../img/wandoraLogo.png';
 const mainnetSCAddr = '0xdfad0145311acb8f0e0305aceef5d11a05df9aa0';//mainnet 8 hours smart contract
 const testnetSCAddr = '0x6e1f4097ec38965256a17a9c8ed3ef38162647ad';//testnet 8 hours smart contract
 
-const networkId = 1;
+// change networkId to switch network
+const networkId = 1; //1:mainnet, 3:testnet;
 
 const lotterySCAddr = networkId == 1 ? mainnetSCAddr : testnetSCAddr;
 
