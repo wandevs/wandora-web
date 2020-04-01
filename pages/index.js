@@ -19,6 +19,8 @@ const testnetSCAddr = '0x6e1f4097ec38965256a17a9c8ed3ef38162647ad';//testnet 8 h
 // change networkId to switch network
 const networkId = 1; //1:mainnet, 3:testnet;
 
+const networkLogo = networkId == 1 ? 'https://img.shields.io/badge/Wanchain-Mainnet-green.svg' : 'https://img.shields.io/badge/Wanchain-Testnet-green.svg';
+
 const lotterySCAddr = networkId == 1 ? mainnetSCAddr : testnetSCAddr;
 
 var Web3 = require("web3");
@@ -43,7 +45,7 @@ class IndexPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    
+
     window._nodeUrl = networkId == 1 ? "https://gwan-ssl.wandevs.org:56891" : "https://demodex.wandevs.org:48545";
 
     this.checkSCUpdate();
@@ -689,7 +691,7 @@ class IndexPage extends Component {
           {/* <Icon className={style.logo} type="appstore" /> */}
           <img className={style.logo} width="28px" height="28px" src={logo} alt="Logo" />
           <div className={style.title}>Wandora Box</div>
-          <img style={{ height: "25px", margin: "3px 8px 3px 3px" }} src='https://img.shields.io/badge/Wanchain-Mainnet-green.svg' />
+          <img style={{ height: "25px", margin: "3px 8px 3px 3px" }} src={networkLogo} />
           <div className={style.gameRule} onClick={this.showGameRule}>Game Rules</div>
           <WalletButton />
         </div>
