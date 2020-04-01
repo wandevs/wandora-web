@@ -21,3 +21,5 @@
 8. Regardless of winning or losing the Up/Down bet, all players have a chance of winning the prize pot.
 
 9. Wanchain's on chain random number generation will be used to decide the prize pot winners.
+
+10. When no one wins, the funds in the fluctuation pool are returned to the original account.
