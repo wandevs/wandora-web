@@ -13,8 +13,12 @@ import DistributionHistory from '../components/DistributionHistory';
 import sleep from 'ko-sleep';
 import logo from '../img/wandoraLogo.png';
 
-const lotterySCAddr = '0xdfad0145311acb8f0e0305aceef5d11a05df9aa0';//mainnet 8 hours smart contract
+const mainnetSCAddr = '0xdfad0145311acb8f0e0305aceef5d11a05df9aa0';//mainnet 8 hours smart contract
+const testnetSCAddr = '0x6e1f4097ec38965256a17a9c8ed3ef38162647ad';//testnet 8 hours smart contract
+
 const networkId = 1;
+
+const lotterySCAddr = networkId == 1 ? mainnetSCAddr : testnetSCAddr;
 
 var Web3 = require("web3");
 
@@ -38,9 +42,8 @@ class IndexPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    // window._nodeUrl = "https://demodex.wandevs.org:48545";
-    // window._nodeUrl = "https://mywanwallet.io/api";
-    window._nodeUrl = "https://gwan-ssl.wandevs.org:56891";
+    
+    window._nodeUrl = networkId == 1 ? "https://gwan-ssl.wandevs.org:56891" : "https://demodex.wandevs.org:48545";
 
     this.checkSCUpdate();
 
@@ -288,8 +291,8 @@ class IndexPage extends Component {
           upAmount: ret.upAmount / 1e18,
           downAmount: ret.downAmount / 1e18,
           feeTotal: (ret.upAmount / 1e18 + ret.downAmount / 1e18) * this.state.trendInfo.feeRatio / 1000,
-          startTime: this.state.trendInfo.gameStartTime + roundArray[i]*this.state.trendInfo.timeSpan,
-          endTime: this.state.trendInfo.gameStartTime + (roundArray[i]+1)*this.state.trendInfo.timeSpan,
+          startTime: this.state.trendInfo.gameStartTime + roundArray[i] * this.state.trendInfo.timeSpan,
+          endTime: this.state.trendInfo.gameStartTime + (roundArray[i] + 1) * this.state.trendInfo.timeSpan,
         })
         if (trendHistory.length > 29) {
           trendHistory.splice(0, 1);
@@ -341,7 +344,7 @@ class IndexPage extends Component {
 
       if (events && events.length > 0) {
         console.log("found event:", events);
-        this.setState({randomSpinning: true});
+        this.setState({ randomSpinning: true });
         for (let i = 0; i < events.length; i++) {
           if (!randomHistories[events[i].returnValues.round]) {
             randomHistories[events[i].returnValues.round] = [];
@@ -362,8 +365,8 @@ class IndexPage extends Component {
 
             let txHistory = this.getTransactionHistory();
             let bHave = false;
-            for (let h =0; h<txHistory.length; h++) {
-              if (txHistory[h].type.toLowerCase() == 'distribute' 
+            for (let h = 0; h < txHistory.length; h++) {
+              if (txHistory[h].type.toLowerCase() == 'distribute'
                 && txHistory[h].round == events[i].returnValues.round
                 && txHistory[h].lotterySCAddr == lotterySCAddr) {
                 bHave = true;
@@ -398,7 +401,7 @@ class IndexPage extends Component {
       this.randomHistoryScanStart = false;
     }
 
-    this.setState({randomSpinning: false});
+    this.setState({ randomSpinning: false });
   }
 
   getUpDownRoundRange = () => {
@@ -512,8 +515,8 @@ class IndexPage extends Component {
           for (let m = 0; m < this.state.trendHistory.length; m++) {
             if (this.state.trendHistory[m].round == history[i].round) {
               if ((history[i].type.toLowerCase() == this.state.trendHistory[m].result)
-               || (this.state.trendHistory[m].result === 'draw')
-               || (this.isLoseRound(history[i].type.toLowerCase(), this.state.trendHistory[m].upAmount, this.state.trendHistory[m].downAmount))) {
+                || (this.state.trendHistory[m].result === 'draw')
+                || (this.isLoseRound(history[i].type.toLowerCase(), this.state.trendHistory[m].upAmount, this.state.trendHistory[m].downAmount))) {
                 history.push({
                   key: history[i].key + '_return',
                   time: new Date().format("yyyy-MM-dd hh:mm:ss"),
@@ -622,7 +625,7 @@ class IndexPage extends Component {
     const { selectedAccount, selectedWallet } = this.props;
     const address = selectedAccount ? selectedAccount.get('address') : null;
 
-    if (!address || address.length<20) {
+    if (!address || address.length < 20) {
       window.alertAntd('Please select a wallet address first.');
       return false
     }
@@ -674,7 +677,7 @@ class IndexPage extends Component {
   }
 
   showGameRule = () => {
-    window.open("https://github.com/wandevs/wan-game/blob/master/GameRule.md"); 
+    window.open("https://github.com/wandevs/wan-game/blob/master/GameRule.md");
   }
 
   render() {
@@ -683,21 +686,21 @@ class IndexPage extends Component {
         <div className={style.header}>
           <Wallet title="Wan Game" nodeUrl={window._nodeUrl} />
           {/* <Icon className={style.logo} type="appstore" /> */}
-          <img className={style.logo} width="28px" height="28px" src={logo} alt="Logo"/>
+          <img className={style.logo} width="28px" height="28px" src={logo} alt="Logo" />
           <div className={style.title}>Wandora Box</div>
-          <img style={{height: "25px", margin: "3px 8px 3px 3px"}} src='https://img.shields.io/badge/Wanchain-Mainnet-green.svg'/>
+          <img style={{ height: "25px", margin: "3px 8px 3px 3px" }} src='https://img.shields.io/badge/Wanchain-Mainnet-green.svg' />
           <div className={style.gameRule} onClick={this.showGameRule}>Game Rules</div>
           <WalletButton />
         </div>
         {this.props.selectedAccountID === 'EXTENSION' && parseInt(this.props.networkId, 10) !== parseInt(networkId, 10) && (
-          <div className="network-warning bg-warning text-white text-center" style={{ padding: 4, backgroundColor: "red"  }}>
+          <div className="network-warning bg-warning text-white text-center" style={{ padding: 4, backgroundColor: "red" }}>
             Please be noted that you are currently choosing the Testnet for WanMask and shall switch to Mainnet for playing Wandora.
           </div>
         )}
         <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} />
         <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} />
         <TransactionHistory transactionHistory={this.state.transactionHistory} />
-        <DistributionHistory lotteryHistory={this.state.lotteryHistory} spinning={this.state.randomSpinning}/>
+        <DistributionHistory lotteryHistory={this.state.lotteryHistory} spinning={this.state.randomSpinning} />
       </div>
     );
   }

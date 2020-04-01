@@ -14380,22 +14380,6 @@ node-notifier@^5.4.1, node-notifier@^5.4.2:
     shellwords "^0.1.1"
     which "^1.3.0"
 
-node-pre-gyp@*:
-  version "0.14.0"
-  resolved "https://registry.npmjs.org/node-pre-gyp/-/node-pre-gyp-0.14.0.tgz#9a0596533b877289bcad4e143982ca3d904ddc83"
-  integrity sha512-+CvDC7ZttU/sSt9rFjix/P05iS43qHCOOGzcr3Ry99bXG7VX953+vFyEuph/tfqoYu8dttBkE86JSKBO2OzcxA==
-  dependencies:
-    detect-libc "^1.0.2"
-    mkdirp "^0.5.1"
-    needle "^2.2.1"
-    nopt "^4.0.1"
-    npm-packlist "^1.1.6"
-    npmlog "^4.0.2"
-    rc "^1.2.7"
-    rimraf "^2.6.1"
-    semver "^5.3.0"
-    tar "^4.4.2"
-
 node-pre-gyp@^0.11.0:
   version "0.11.0"
   resolved "https://registry.npmjs.org/node-pre-gyp/-/node-pre-gyp-0.11.0.tgz#db1f33215272f692cd38f03238e3e9b47c5dd054"
@@ -20093,7 +20077,7 @@ tar-stream@~1.1.0:
     readable-stream "~1.0.33"
     xtend "^4.0.0"
 
-tar@^4, tar@^4.0.2, tar@^4.4.2:
+tar@^4, tar@^4.0.2:
   version "4.4.13"
   resolved "https://registry.npmjs.org/tar/-/tar-4.4.13.tgz#43b364bc52888d555298637b10d60790254ab525"
   integrity sha512-w2VwSrBoHa5BsSyH+KxEqeQBAllHhccyMFVHtGtdMpF4W7IRWfZjFiQceJPChOeTsSDVUpER2T8FA93pr0L+QA==
@@ -21762,10 +21746,10 @@ walletlink@^1.0.0:
     eth-eip712-util "^2.3.0"
     keccak "^2.0.0"
 
-wan-dex-sdk-wallet@0.0.133:
-  version "0.0.133"
-  resolved "https://registry.npmjs.org/wan-dex-sdk-wallet/-/wan-dex-sdk-wallet-0.0.133.tgz#17aa2b912ec031d638c964c598259dd6b38e7831"
-  integrity sha512-dU0n5Mw1/ZaqVlcKK/G6P+esBNlDkpOvhf8jY4SBgkHoixbDw4QrisLvfPQzunhQT6Y+1OEf/fyoEi7pWJSBQQ==
+wan-dex-sdk-wallet@0.0.134:
+  version "0.0.134"
+  resolved "https://registry.npmjs.org/wan-dex-sdk-wallet/-/wan-dex-sdk-wallet-0.0.134.tgz#7aec1175eb2daf492517eb3d3e86819c16a16b71"
+  integrity sha512-GvdIdbYQIb3rEm7xZ974fB+SntSZyW+pqU5z3TAc+htSFR08RVRjBsjGKK1F2RRBU0rI4hkR6T66chHDjJOjTQ==
   dependencies:
     "@ledgerhq/hw-app-eth" "^4.46.0"
     "@ledgerhq/hw-transport-u2f" "^4.46.0"
