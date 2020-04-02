@@ -347,6 +347,7 @@ class IndexPage extends Component {
 
       if (events && events.length > 0) {
         console.log("found event:", events);
+        let addrTotal = {};
         this.setState({ randomSpinning: true });
         for (let i = 0; i < events.length; i++) {
           if (!randomHistories[events[i].returnValues.round]) {
@@ -362,37 +363,56 @@ class IndexPage extends Component {
             amountBuy: '--',
             amountPay: (Number(events[i].returnValues.prizeAmount) / 1e18).toFixed(2),
           });
-
-          if (address.toLowerCase() === events[i].returnValues.staker.toLowerCase()) {
-            console.log("found myself:", address);
-
-            let txHistory = this.getTransactionHistory();
-            let bHave = false;
-            for (let h = 0; h < txHistory.length; h++) {
-              if (txHistory[h].type.toLowerCase() == 'distribute'
-                && txHistory[h].round == events[i].returnValues.round
-                && txHistory[h].lotterySCAddr == lotterySCAddr) {
-                bHave = true;
-                console.log("found exist:", txHistory[h].round);
-
-                break;
+          let addr = events[i].returnValues.staker.toLowerCase();
+          let amount = (Number(events[i].returnValues.prizeAmount) / 1e18).toFixed(2);
+          let round = events[i].returnValues.round;
+          if (!addrTotal[addr]) {
+            addrTotal[addr] = {};
+            addrTotal[addr].rounds = {};
+          }
+          if (!addrTotal[addr].rounds[round]) {
+            addrTotal[addr].rounds[round] = {};
+            addrTotal[addr].rounds[round].amount = 0;
+            addrTotal[addr].rounds[round].key = events[i].transactionHash;
+            addrTotal[addr].rounds[round].time = (new Date(Number(block.timestamp) * 1000)).format("yyyy-MM-dd hh:mm:ss");
+          }
+         
+          addrTotal[addr].rounds[round].amount += Number(amount);
+        }
+        console.log('addrTotal', addrTotal);
+        for (var addr in addrTotal) {
+          if (address.toLowerCase() === addr) {
+            for (var round in addrTotal[addr].rounds) {
+              console.log("found myself:", address, "round", round);
+              let txHistory = this.getTransactionHistory();
+              let bHave = false;
+              for (let h = 0; h < txHistory.length; h++) {
+                if (txHistory[h].type.toLowerCase() == 'distribute'
+                  && txHistory[h].round == round
+                  && txHistory[h].lotterySCAddr == lotterySCAddr) {
+                  bHave = true;
+                  console.log("found exist:", txHistory[h].round);
+                  break;
+                }
               }
-            }
-            if (!bHave) {
-              console.log("add distribute history");
-              this.addTransactionHistory({
-                lotterySCAddr,
-                key: events[i].transactionHash,
-                time: (new Date(Number(block.timestamp) * 1000)).format("yyyy-MM-dd hh:mm:ss"),
-                address: address.toLowerCase(),
-                round: events[i].returnValues.round,
-                amount: (Number(events[i].returnValues.prizeAmount) / 1e18).toFixed(2),
-                type: 'Distribute',
-                result: 'Done',
-              });
+  
+              if (!bHave) {
+                console.log("add distribute history");
+                this.addTransactionHistory({
+                  lotterySCAddr,
+                  key: addrTotal[addr].rounds[round].key,
+                  time: addrTotal[addr].rounds[round].time,
+                  address: address.toLowerCase(),
+                  round: round,
+                  amount: addrTotal[addr].rounds[round].amount.toFixed(2),
+                  type: 'Distribute',
+                  result: 'Done',
+                });
+              }
             }
           }
         }
+
         console.log('ready to add addRandomHistory');
         this.addRandomHistory(randomHistories);
       }
