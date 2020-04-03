@@ -343,10 +343,8 @@ class IndexPage extends Component {
         fromBlock: this.getRandomHistoryStartBlock(),
         toBlock: blockNumber
       });
-      console.log('scan event, filter:round:', roundArray, 'fromBlock:', this.getRandomHistoryStartBlock(), 'toBlock:', blockNumber);
 
       if (events && events.length > 0) {
-        console.log("found event:", events);
         let addrTotal = {};
         this.setState({ randomSpinning: true });
         for (let i = 0; i < events.length; i++) {
@@ -379,11 +377,9 @@ class IndexPage extends Component {
          
           addrTotal[addr].rounds[round].amount += Number(amount);
         }
-        console.log('addrTotal', addrTotal);
         for (var addr in addrTotal) {
           if (address.toLowerCase() === addr) {
             for (var round in addrTotal[addr].rounds) {
-              console.log("found myself:", address, "round", round);
               let txHistory = this.getTransactionHistory();
               let bHave = false;
               for (let h = 0; h < txHistory.length; h++) {
@@ -391,13 +387,11 @@ class IndexPage extends Component {
                   && txHistory[h].round == round
                   && txHistory[h].lotterySCAddr == lotterySCAddr) {
                   bHave = true;
-                  console.log("found exist:", txHistory[h].round);
                   break;
                 }
               }
   
               if (!bHave) {
-                console.log("add distribute history");
                 this.addTransactionHistory({
                   lotterySCAddr,
                   key: addrTotal[addr].rounds[round].key,
@@ -413,7 +407,6 @@ class IndexPage extends Component {
           }
         }
 
-        console.log('ready to add addRandomHistory');
         this.addRandomHistory(randomHistories);
       }
 
@@ -636,7 +629,6 @@ class IndexPage extends Component {
       if (ret == 10000000) {
         return -1;
       }
-      console.log('gasLimit:', ret + 30000);
       return '0x' + (ret + 30000).toString(16);
     } catch (err) {
       console.log(err);
@@ -652,15 +644,13 @@ class IndexPage extends Component {
       window.alertAntd('Please select a wallet address first.');
       return false
     }
-    console.log('amount', amount);
     const value = this.web3.utils.toWei(amount.toString());
-    console.log('value:', value);
 
     let params = {
       to: lotterySCAddr,
       data: selectUp ? '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000001' : '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000000',
       value,
-      // gasPrice: "0x29E8D60800",
+      // gasPrice: "0x2540BE400",
       // gasLimit: "0x87A23",
     };
 
@@ -668,6 +658,7 @@ class IndexPage extends Component {
       params.gas = await this.estimateSendGas(value, selectUp);
     } else {
       params.gasLimit = await this.estimateSendGas(value, selectUp);
+      params.gasPrice = "0x2540BE400";
     }
     if (params.gasLimit == -1) {
       window.alertAntd('Estimate Gas Error. Maybe out of time range.');
