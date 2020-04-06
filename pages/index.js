@@ -650,7 +650,7 @@ class IndexPage extends Component {
       to: lotterySCAddr,
       data: selectUp ? '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000001' : '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000000',
       value,
-      // gasPrice: "0x2540BE400",
+      gasPrice: "0x29E8D60800",
       // gasLimit: "0x87A23",
     };
 
@@ -658,7 +658,7 @@ class IndexPage extends Component {
       params.gas = await this.estimateSendGas(value, selectUp);
     } else {
       params.gasLimit = await this.estimateSendGas(value, selectUp);
-      params.gasPrice = "0x2540BE400";
+      // params.gasPrice = "0x2540BE400";
     }
     if (params.gasLimit == -1) {
       window.alertAntd('Estimate Gas Error. Maybe out of time range.');
