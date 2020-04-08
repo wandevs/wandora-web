@@ -637,8 +637,13 @@ class IndexPage extends Component {
   }
 
   sendTransaction = async (amount, selectUp) => {
-    const { selectedAccount, selectedWallet } = this.props;
+    const { selectedAccount, selectedWallet, wanBalance } = this.props;
     const address = selectedAccount ? selectedAccount.get('address') : null;
+
+    if (wanBalance <= amount) {
+      window.alertAntd('Out of balance.');
+      return false;
+    }
 
     if (!address || address.length < 20) {
       window.alertAntd('Please select a wallet address first.');
@@ -720,6 +725,10 @@ class IndexPage extends Component {
   }
 }
 
+const toUnitAmount = (amount, decimals) => {
+  return new BigNumber(amount).div(Math.pow(10, decimals));
+};
+
 export default connect(state => {
   const selectedAccountID = state.WalletReducer.get('selectedAccountID');
   return {
@@ -727,6 +736,7 @@ export default connect(state => {
     selectedWallet: getSelectedAccountWallet(state),
     networkId: state.WalletReducer.getIn(['accounts', selectedAccountID, 'networkId']),
     selectedAccountID,
+    wanBalance: toUnitAmount(state.WalletReducer.getIn(['accounts', selectedAccountID, 'balance']), 18),
   }
 })(IndexPage);
 
