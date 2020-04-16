@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import { Component } from "../components/base";
-import { message } from 'antd';
 import BigNumber from 'bignumber.js';
 import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet, getTransactionReceipt } from "wan-dex-sdk-wallet";
 import "wan-dex-sdk-wallet/index.css";
@@ -10,16 +9,10 @@ import Panel from '../components/Panel';
 import TrendHistory from '../components/TrendHistory';
 import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
+import UserPanel from '../components/UserPanel';
 import sleep from 'ko-sleep';
-import logo from '../img/wandoraLogo.png';
-
-const mainnetSCAddr = '0xdfad0145311acb8f0e0305aceef5d11a05df9aa0';//mainnet 8 hours smart contract
-const testnetSCAddr = '0x6e1f4097ec38965256a17a9c8ed3ef38162647ad';//testnet 8 hours smart contract
-
-// change networkId to switch network
-const networkId = 1; //1:mainnet, 3:testnet;
-
-const networkLogo = networkId == 1 ? 'https://img.shields.io/badge/Wanchain-Mainnet-green.svg' : 'https://img.shields.io/badge/Wanchain-Testnet-green.svg';
+import { alertAntd, toUnitAmount } from '../utils/utils.js';
+import { mainnetSCAddr, testnetSCAddr, networkId, nodeUrl } from '../conf/config.js';
 
 const lotterySCAddr = networkId == 1 ? mainnetSCAddr : testnetSCAddr;
 
@@ -27,26 +20,11 @@ var Web3 = require("web3");
 
 let debugStartTime = (Date.now() / 1000)
 
-function alertAntd(info) {
-  if (typeof (info) === "string" && !info.includes('Error')) {
-    message.success(info, 10);
-  } else {
-    if (info.toString().includes("Error")) {
-      message.error(info.toString(), 10);
-    } else if (info.hasOwnProperty('tip')) {
-      message.info(info.tip, 5);
-    } else {
-      message.info(JSON.stringify(info), 10);
-    }
-  }
-}
 
 class IndexPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-
-    window._nodeUrl = networkId == 1 ? "https://gwan-ssl.wandevs.org:56891" : "https://demodex.wandevs.org:48545";
 
     this.checkSCUpdate();
 
@@ -82,6 +60,20 @@ class IndexPage extends Component {
       transactionHistory: this.getTransactionHistory(),
       lotteryHistory: this.getLotteryHistory(),
       randomSpinning: false,
+      amountInfo: {
+        upAmount: 0,
+        downAmount: 0,
+        upOdds: 0.9,
+        downOdds: 0.9,
+        expectReturn: 0,
+      },
+      lastRoundAmountInfo: {
+        upAmount: 0,
+        downAmount: 0,
+        upOdds: 0.9,
+        downOdds: 0.9,
+        expectReturn: 0,
+      },
     }
 
     window.debugState = this.state;
@@ -123,14 +115,14 @@ class IndexPage extends Component {
 
   async componentDidMount() {
     var web3 = new Web3();
-    web3.setProvider(new Web3.providers.HttpProvider(window._nodeUrl));
+    web3.setProvider(new Web3.providers.HttpProvider(nodeUrl));
     this.web3 = web3;
     this.lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
 
 
     await this.getOnce();
     await this.updateTrendInfoFromNode();
-    this.timerTrendInfo = setInterval(this.updateTrendInfoFromNode, 5000);
+    this.timerTrendInfo = setInterval(this.updateTrendInfoFromNode, 20000);
 
     this.timerTrendHistory = setInterval(this.updateTrendHistoryFromNode, 60 * 1000);
     this.timerTrendHistory = setInterval(this.flushTransactionHistory, 100 * 1000);
@@ -219,6 +211,8 @@ class IndexPage extends Component {
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
     this.setTrendInfo(trend);
     this.flushTransactionHistory();
+    this.getAmountInfo();
+    this.getLastRoundAmountInfo();
   }
 
   updateTrendInfoFromNode = async () => {
@@ -257,6 +251,8 @@ class IndexPage extends Component {
     if (roundOld != trend.round) {
       this.flushTransactionHistory();
     }
+    this.getAmountInfo();
+    this.getLastRoundAmountInfo();
   }
 
   setTrendHistory = (trendHistory) => {
@@ -374,7 +370,7 @@ class IndexPage extends Component {
             addrTotal[addr].rounds[round].key = events[i].transactionHash;
             addrTotal[addr].rounds[round].time = (new Date(Number(block.timestamp) * 1000)).format("yyyy-MM-dd hh:mm:ss");
           }
-         
+
           addrTotal[addr].rounds[round].amount += Number(amount);
         }
         for (var addr in addrTotal) {
@@ -390,7 +386,7 @@ class IndexPage extends Component {
                   break;
                 }
               }
-  
+
               if (!bHave) {
                 this.addTransactionHistory({
                   lotterySCAddr,
@@ -492,6 +488,8 @@ class IndexPage extends Component {
     history.push(singleHistory);
     this.setState({ transactionHistory: history });
     window.localStorage.setItem('transactionHistory', JSON.stringify(history));
+    this.getAmountInfo();
+    this.getLastRoundAmountInfo();
   }
 
   getTransactionHistory = () => {
@@ -699,35 +697,95 @@ class IndexPage extends Component {
     window.open("https://github.com/wandevs/wan-game/blob/master/GameRule.md");
   }
 
+  getAmountInfo = () => {
+    let history = this.getTransactionHistory();
+    let length = history.length;
+    let upAmount = Number(0)
+    let downAmount = Number(0)
+    for (let i = 0; i < length; i++) {
+      if (history[i].result === 'To be settled' && history[i].round === this.state.trendInfo.round) {
+        if (history[i].type.toLowerCase() === 'up') {
+          upAmount += -1 * Number(history[i].amount);
+        }
+
+        if (history[i].type.toLowerCase() === 'down') {
+          downAmount += -1 * Number(history[i].amount);
+        }
+      }
+    }
+
+    let upOdds = Number(this.state.trendInfo.upPoolAmount) === 0 ? "NA" : (Number(this.state.trendInfo.downPoolAmount) / Number(this.state.trendInfo.upPoolAmount) * 0.9).toFixed(1);
+    let downOdds = Number(this.state.trendInfo.downPoolAmount) === 0 ? "NA" : (Number(this.state.trendInfo.upPoolAmount) / Number(this.state.trendInfo.downPoolAmount) * 0.9).toFixed(1);
+    let expectReturn = Math.abs(upAmount * Number(upOdds) - downAmount * Number(downOdds)).toFixed(1);
+
+    this.setState({
+      amountInfo: {
+        upAmount,
+        downAmount,
+        upOdds,
+        downOdds,
+        expectReturn,
+      }
+    });
+  }
+
+  getLastRoundAmountInfo = () => {
+    let history = this.state.trendHistory;
+    let length = history.length;
+    let upAmount = Number(0)
+    let downAmount = Number(0)
+    let winSide = 'up';
+    console.log('trendHistory', this.state.trendHistory);
+    for (let i = 0; i < length; i++) {
+      if (Number(history[i].round) === (Number(this.state.trendInfo.round) - 1)) {
+        if (history[i].type.toLowerCase() === 'up') {
+          upAmount += -1 * Number(history[i].amount);
+        }
+
+        if (history[i].type.toLowerCase() === 'down') {
+          downAmount += -1 * Number(history[i].amount);
+        }
+
+        if (history[i].openPrice > history[i].closePrice) {
+          winSide = 'up';
+        } else if (history[i].openPrice < history[i].closePrice) {
+          winSide = 'down';
+        } else {
+          winSide = 'draw';
+        }
+      }
+    }
+
+    let upOdds = Number(this.state.trendInfo.upPoolAmount) === 0 ? "NA" : (Number(this.state.trendInfo.downPoolAmount) / Number(this.state.trendInfo.upPoolAmount) * 0.9).toFixed(1);
+    let downOdds = Number(this.state.trendInfo.downPoolAmount) === 0 ? "NA" : (Number(this.state.trendInfo.upPoolAmount) / Number(this.state.trendInfo.downPoolAmount) * 0.9).toFixed(1);
+    let expectReturn = (winSide === 'up')?(upAmount * Number(upOdds) - downAmount * Number(downOdds)):((winSide === 'down')?(downAmount * Number(downOdds) - upAmount * Number(upOdds)):(upAmount + downAmount)*0.9);
+    expectReturn = expectReturn.toFixed(1);
+    this.setState({
+      lastRoundAmountInfo: {
+        upAmount,
+        downAmount,
+        upOdds,
+        downOdds,
+        expectReturn,
+      }
+    });
+
+    console.log('lastRoundAmountInfo', this.state.lastRoundAmountInfo);
+
+  }
+
   render() {
     return (
       <div className={style.app}>
-        <div className={style.header}>
-          <Wallet title="Wan Game" nodeUrl={window._nodeUrl} />
-          {/* <Icon className={style.logo} type="appstore" /> */}
-          <img className={style.logo} width="28px" height="28px" src={logo} alt="Logo" />
-          <div className={style.title}>Wandora Box</div>
-          <img style={{ height: "25px", margin: "3px 8px 3px 3px" }} src={networkLogo} />
-          <div className={style.gameRule} onClick={this.showGameRule}>Game Rules</div>
-          <WalletButton />
-        </div>
-        {this.props.selectedAccountID === 'EXTENSION' && parseInt(this.props.networkId, 10) !== parseInt(networkId, 10) && (
-          <div className="network-warning bg-warning text-white text-center" style={{ padding: 4, backgroundColor: "red" }}>
-            Please be noted that you are currently choosing the Testnet for WanMask and shall switch to Mainnet for playing Wandora.
-          </div>
-        )}
-        <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} />
+        <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} amountInfo={this.state.amountInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} />
         <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} />
+        <UserPanel lastRoundAmountInfo={this.state.lastRoundAmountInfo} />
         <TransactionHistory transactionHistory={this.state.transactionHistory} />
         <DistributionHistory lotteryHistory={this.state.lotteryHistory} spinning={this.state.randomSpinning} />
       </div>
     );
   }
 }
-
-const toUnitAmount = (amount, decimals) => {
-  return new BigNumber(amount).div(Math.pow(10, decimals));
-};
 
 export default connect(state => {
   const selectedAccountID = state.WalletReducer.get('selectedAccountID');

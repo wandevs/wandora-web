@@ -3,6 +3,10 @@ import { Icon, Tooltip, Modal, Spin } from 'antd';
 import style from './style.less';
 import SendModal from '../SendModal';
 import PieChart from '../PieChart';
+import upArrow from '../../img/up-icon.png';
+import downArrow from '../../img/down-icon.png';
+import bigUpArrow from '../../img/big-up-arrow.png';
+import bigDownArrow from '../../img/big-down-arrow.png';
 
 class Panel extends Component {
   constructor(props) {
@@ -120,16 +124,31 @@ class Panel extends Component {
 
   render() {
     const { d, h } = this.getLastTimeDH(Number(this.props.trendInfo.randomEndTime) - this.props.trendInfo.chainEndTime);
-    let distrbuteText = "To be distributed after "+d+" days "+h+" hours";
+    let distrbuteText = "To be distributed after " + d + " days " + h + " hours";
     if (d == 0 && h == 0) {
       distrbuteText = "(To be distributed in 1 hours)"
     }
     return (
       <div className={style.panel}>
-        <Spin size="large" tip="The contract is being settled, please hold on..." spinning={this.state.endLeft.h==0 && this.state.endLeft.m==0}>
+        <Spin size="large" tip="The contract is being settled, please hold on..." spinning={this.state.endLeft.h == 0 && this.state.endLeft.m == 0}>
           <div className={style.upBlock}>
             <div className={style.pieChart}>
               <PieChart upCnt={this.state.upPoolAmount} downCnt={this.state.downPoolAmount} />
+            </div>
+            <div className={style.middleBlock}>
+              <div className={style.middleBlockText}>My Prediction</div>
+              <div className={style.middleBlockContent}>
+                <img src={upArrow} width="6" height="6" style={{marginRight:"5px"}} />
+                {this.props.amountInfo.upAmount + " ("+ this.props.amountInfo.upOdds +")"}
+              </div>
+              <div className={style.middleBlockContent} style={{ color: "#E30079" }}>
+                <img src={downArrow} width="6" height="6" style={{marginRight:"5px"}}/>
+                {this.props.amountInfo.downAmount + " ("+ this.props.amountInfo.downOdds +")"}
+              </div>
+              <div className={style.middleBlockText}>Expected Return</div>
+              <div className={style.middleBlockContent} style={{ color: "#0CA0FE" }}>
+                {this.props.amountInfo.expectReturn}
+              </div>
             </div>
 
             <div className={style.rightBlock}>
@@ -155,18 +174,18 @@ class Panel extends Component {
                   <div>
                     {this.state.disable
                       ? <div className={style.upButtonDisable}>
-                        <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
+                        <div className={style.btText}><img src={bigUpArrow} width="15px" height="18px" style={{ margin: '2px 5px 0px 0px' }} />UP</div>
                       </div>
                       : <div className={style.upButton} onClick={this.onUpClick}>
-                        <div className={style.btText}><Icon type="arrow-up" style={{ fontSize: '20px', marginRight: '3px' }} />UP</div>
+                        <div className={style.btText}><img src={bigUpArrow} width="15px" height="18px" style={{ margin: '2px 5px 0px 0px' }} />UP</div>
                       </div>
                     }
                     {this.state.disable
                       ? <div className={style.downButtonDisable}>
-                        <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
+                        <div className={style.btText}><img src={bigDownArrow} width="15px" height="18px" style={{ margin: '2px 5px 0px 0px' }} />DOWN</div>
                       </div>
                       : <div className={style.downButton} onClick={this.onDownClick}>
-                        <div className={style.btText}><Icon type="arrow-down" style={{ fontSize: '20px', marginRight: '3px' }} />DOWN</div>
+                        <div className={style.btText}><img src={bigDownArrow} width="15px" height="18px" style={{ margin: '2px 5px 0px 0px' }} />DOWN</div>
                       </div>
                     }
                   </div>
@@ -177,7 +196,7 @@ class Panel extends Component {
                     </div>
                     <div style={{ margin: "26px 0px 0px 100px" }}>
                       <div className={style.subLine}>
-                        <div className={style.subLine2}>The total prize pot in this period.</div>
+                        <div className={style.subLine2}>The total lottery pool in this period.</div>
                         {/* <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours)</div> */}
                         <Tooltip title={"Show Help"}>
                           <Icon type="question-circle" onClick={this.showHelp2} className={style.helpIcon} style={{ color: 'gray', fontSize: '16px' }} />
