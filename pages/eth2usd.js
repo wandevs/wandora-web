@@ -21,7 +21,7 @@ var Web3 = require("web3");
 let debugStartTime = (Date.now() / 1000)
 
 
-class Eth2UsdPage extends Component {
+class IndexPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -74,6 +74,17 @@ class Eth2UsdPage extends Component {
         downOdds: 0.9,
         expectReturn: 0,
       },
+      lastRoundLotteryInfo: {
+        eachAmount: 0,
+        winTimes: 0,
+        totalWin: 0,
+      },
+      totalHistory: {
+        totalBuy: 0,
+        inReturn: 0,
+        fromLottery: 0,
+        totalAmount: 0
+      }
     }
 
     window.debugState = this.state;
@@ -125,7 +136,7 @@ class Eth2UsdPage extends Component {
     this.timerTrendInfo = setInterval(this.updateTrendInfoFromNode, 20000);
 
     this.timerTrendHistory = setInterval(this.updateTrendHistoryFromNode, 60 * 1000);
-    this.timerTrendHistory = setInterval(this.flushTransactionHistory, 100 * 1000);
+    this.timerTransactionHistory = setInterval(this.flushTransactionHistory, 100 * 1000);
   }
 
   componentWillUnmount() {
@@ -135,6 +146,10 @@ class Eth2UsdPage extends Component {
 
     if (this.timerTrendHistory) {
       clearInterval(this.timerTrendHistory);
+    }
+
+    if (this.timerTransactionHistory) {
+      clearInterval(this.timerTransactionHistory);
     }
   }
 
@@ -211,8 +226,8 @@ class Eth2UsdPage extends Component {
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
     this.setTrendInfo(trend);
     this.flushTransactionHistory();
-    this.getAmountInfo();
-    this.getLastRoundAmountInfo();
+    
+    this.getUserPanalInfo();
   }
 
   updateTrendInfoFromNode = async () => {
@@ -251,8 +266,7 @@ class Eth2UsdPage extends Component {
     if (roundOld != trend.round) {
       this.flushTransactionHistory();
     }
-    this.getAmountInfo();
-    this.getLastRoundAmountInfo();
+    this.getUserPanalInfo();
   }
 
   setTrendHistory = (trendHistory) => {
@@ -488,8 +502,7 @@ class Eth2UsdPage extends Component {
     history.push(singleHistory);
     this.setState({ transactionHistory: history });
     window.localStorage.setItem('transactionHistory', JSON.stringify(history));
-    this.getAmountInfo();
-    this.getLastRoundAmountInfo();
+    this.getUserPanalInfo();
   }
 
   getTransactionHistory = () => {
@@ -769,7 +782,7 @@ class Eth2UsdPage extends Component {
 
     let upOdds = Number(upPoolAmount) === 0 ? "NA" : (Number(downPoolAmount) / Number(upPoolAmount) * 0.9).toFixed(1);
     let downOdds = Number(downPoolAmount) === 0 ? "NA" : (Number(upPoolAmount) / Number(downPoolAmount) * 0.9).toFixed(1);
-    let expectReturn = (winSide === 'up')?(upAmount * Number(upOdds) - downAmount * Number(downOdds)):((winSide === 'down')?(downAmount * Number(downOdds) - upAmount * Number(upOdds)):(upAmount + downAmount)*0.9);
+    let expectReturn = (winSide === 'up') ? (upAmount * Number(upOdds) - downAmount * Number(downOdds)) : ((winSide === 'down') ? (downAmount * Number(downOdds) - upAmount * Number(upOdds)) : (upAmount + downAmount) * 0.9);
     expectReturn = expectReturn >= 0 ? "+" + expectReturn.toFixed(1) : expectReturn.toFixed(1);
     this.setState({
       lastRoundAmountInfo: {
@@ -784,12 +797,94 @@ class Eth2UsdPage extends Component {
     console.log('lastRoundAmountInfo', this.state.lastRoundAmountInfo);
   }
 
+  getLastLotteryInfo = () => {
+    let lastRound = 0;
+    if (this.state.trendInfo) {
+      lastRound = this.state.trendInfo.lotteryRound - 1;
+      if (lastRound < 0) {
+        return;
+      }
+    }
+
+    let lastRoundLotteryInfo = {
+      eachAmount: 0,
+      winTimes: 0,
+      totalWin: 0,
+    }
+
+    for (var i in this.state.lotteryHistory) {
+      if (i === lastRound) {
+        let winners = this.state.lotteryHistory[i];
+        lastRoundLotteryInfo.eachAmount = winners[0].amountPay;
+        break;
+      }
+    }
+
+    let history = this.getTransactionHistory();
+    let length = history.length;
+    let m = 0;
+    for (m = 0; m < length; m++) {
+      if (history[m].type.toLowerCase() === 'distribute' && history[m].round === lastRound) {
+        lastRoundLotteryInfo.totalWin = Number(history[m].amount);
+        break;
+      }
+    }
+
+    if (m === length) {
+      return;
+    }
+
+    lastRoundLotteryInfo.winTimes = Number(lastRoundLotteryInfo.totalWin / lastRoundLotteryInfo.eachAmount).toFixed(0)
+
+    this.setState({ lastRoundLotteryInfo });
+  }
+
+  getTotalHistoryInfo = () => {
+    let totalHistory = {
+      totalBuy: 0,
+      inReturn: 0,
+      fromLottery: 0,
+      totalAmount: 0
+    }
+    let history = this.getTransactionHistory();
+    let length = history.length;
+    let m = 0;
+    for (m = 0; m < length; m++) {
+      if (history[m].type.toLowerCase() === 'distribute') {
+        totalHistory.fromLottery += Number(history[m].amount);
+      }
+
+      if (history[m].type.toLowerCase() === 'up') {
+        totalHistory.totalBuy += Number(history[m].amount);
+      }
+
+      if (history[m].type.toLowerCase() === 'down') {
+        totalHistory.totalBuy += Number(history[m].amount);
+      }
+
+      if (history[m].type.toLowerCase() === 'return') {
+        totalHistory.inReturn += Number(history[m].amount);
+      }
+    }
+
+    totalHistory.totalAmount = totalHistory.totalBuy + totalHistory.inReturn + totalHistory.fromLottery;
+
+    this.setState({ totalHistory });
+  }
+
+  getUserPanalInfo = () => {
+    this.getAmountInfo();
+    this.getLastRoundAmountInfo();
+    this.getLastLotteryInfo();
+    this.getTotalHistoryInfo();
+  }
+
   render() {
     return (
       <div className={style.app}>
         <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} amountInfo={this.state.amountInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} />
         <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} />
-        <UserPanel lastRoundAmountInfo={this.state.lastRoundAmountInfo} />
+        <UserPanel lastRoundAmountInfo={this.state.lastRoundAmountInfo} totalHistory={this.state.totalHistory} lastRoundLotteryInfo={this.state.lastRoundLotteryInfo} />
         <TransactionHistory transactionHistory={this.state.transactionHistory} />
         <DistributionHistory lotteryHistory={this.state.lotteryHistory} spinning={this.state.randomSpinning} />
       </div>
@@ -806,9 +901,4 @@ export default connect(state => {
     selectedAccountID,
     wanBalance: toUnitAmount(state.WalletReducer.getIn(['accounts', selectedAccountID, 'balance']), 18),
   }
-})(Eth2UsdPage);
-
-
-
-
-
+})(IndexPage);

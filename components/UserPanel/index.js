@@ -18,6 +18,9 @@ class UserPanel extends Component {
 
   render() {
     const amountInfo = this.props.lastRoundAmountInfo;
+    const lastRoundLotteryInfo = this.props.lastRoundLotteryInfo;
+    const totalHistory = this.props.totalHistory;
+
     return (
       <div className={style.body}>
         <div className={style.title}>
@@ -48,8 +51,8 @@ class UserPanel extends Component {
               Last Lottery</div>
             <div className={style.blockBody}>
               <div className={style.subLine}>
-                <div className={style.blockBodyContent}>10.5</div>
-                <div className={style.blockBodyContent} style={{ color: "#E30079" }}>2</div>
+                <div className={style.blockBodyContent}>{lastRoundLotteryInfo.eachAmount}</div>
+                <div className={style.blockBodyContent} style={{ color: "#E30079" }}>{lastRoundLotteryInfo.winTimes}</div>
               </div>
               <div className={style.subLine}>
                 <div className={style.blockBodyTitle}>For Each Address</div>
@@ -57,7 +60,7 @@ class UserPanel extends Component {
               </div>
             </div>
             <div className={style.blockBottom + ' ' + style.subLine}>
-              <div className={style.blockBottomValue} style={{ color: "#2AC9AD" }}>+ 10000</div>
+              <div className={style.blockBottomValue} style={{ color: "#2AC9AD" }}>{"+ " + lastRoundLotteryInfo.totalWin}</div>
               <div className={style.blockBottomTail}>In Last Round Lottery</div>
             </div>
           </div>
@@ -68,23 +71,23 @@ class UserPanel extends Component {
             <div className={style.blockBody}>
               <div className={style.subLine}>
                 <div className={style.blockBodyContent}>
-                  -10.5</div>
+                  {totalHistory.totalBuy}</div>
                 <div className={style.blockBodyContent} style={{ color: "#E30079" }}>
-                  +2</div>
+                  {"+ " + totalHistory.inReturn}</div>
               </div>
               <div className={style.subLine}>
                 <div className={style.blockBodyTitle}>For Buying</div>
-                <div className={style.blockBodyTitle}>In Return</div>
+                <div className={style.blockBodyTitle} style={{ marginLeft: "60px" }}>In Return</div>
               </div>
               <div className={style.subLine}>
-                <div className={style.blockBodyContent}>+10.5</div>
+                <div className={style.blockBodyContent}>{"+ " + totalHistory.fromLottery}</div>
               </div>
               <div className={style.subLine}>
                 <div className={style.blockBodyTitle}>From Lottery</div>
               </div>
             </div>
             <div className={style.blockBottom + ' ' + style.subLine}>
-              <div className={style.blockBottomValue} style={{ color: "#0CA0FE" }}>+ 10000</div>
+              <div className={style.blockBottomValue} style={{ color: "#0CA0FE" }}>{totalHistory.totalAmount}</div>
               <div className={style.blockBottomTail}>In My History</div>
             </div>
           </div>
