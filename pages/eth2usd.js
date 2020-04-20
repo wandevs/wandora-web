@@ -12,9 +12,9 @@ import DistributionHistory from '../components/DistributionHistory';
 import UserPanel from '../components/UserPanel';
 import sleep from 'ko-sleep';
 import { alertAntd, toUnitAmount } from '../utils/utils.js';
-import { mainnetSCAddr, testnetSCAddr, networkId, nodeUrl } from '../conf/config.js';
+import { mainnetSCAddrWan2Btc, testnetSCAddrWan2Btc, networkId, nodeUrl } from '../conf/config.js';
 
-const lotterySCAddr = networkId == 1 ? mainnetSCAddr : testnetSCAddr;
+const lotterySCAddr = networkId == 1 ? mainnetSCAddrWan2Btc : testnetSCAddrWan2Btc;
 
 var Web3 = require("web3");
 
@@ -867,8 +867,7 @@ class IndexPage extends Component {
       }
     }
 
-    totalHistory.totalAmount = totalHistory.totalBuy + totalHistory.inReturn + totalHistory.fromLottery;
-
+    totalHistory.totalAmount = (totalHistory.totalBuy + totalHistory.inReturn + totalHistory.fromLottery).toFixed(2);
     this.setState({ totalHistory });
   }
 

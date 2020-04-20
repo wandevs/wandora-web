@@ -12,10 +12,10 @@ import DistributionHistory from '../components/DistributionHistory';
 import UserPanel from '../components/UserPanel';
 import sleep from 'ko-sleep';
 import { alertAntd, toUnitAmount } from '../utils/utils.js';
-import { mainnetSCAddr, testnetSCAddr, networkId, nodeUrl } from '../conf/config.js';
+import { mainnetSCAddrBtc2Usd, testnetSCAddrBtc2Usd, networkId, nodeUrl } from '../conf/config.js';
 
-const lotterySCAddr = networkId == 1 ? mainnetSCAddr : testnetSCAddr;
-
+const lotterySCAddr = networkId == 1 ? mainnetSCAddrBtc2Usd : testnetSCAddrBtc2Usd;
+const storagePrefix = 'btc2usd_';
 var Web3 = require("web3");
 
 let debugStartTime = (Date.now() / 1000)
@@ -30,7 +30,7 @@ class IndexPage extends Component {
 
     window.alertAntd = alertAntd;
 
-    let trendStr = window.localStorage.getItem('currentTrend');
+    let trendStr = window.localStorage.getItem(storagePrefix+'currentTrend');
     let trend = null;
     if (trendStr) {
       trend = JSON.parse(trendStr);
@@ -48,7 +48,7 @@ class IndexPage extends Component {
       };
     }
 
-    let trendHistoryStr = window.localStorage.getItem('trendHistory');
+    let trendHistoryStr = window.localStorage.getItem(storagePrefix+'trendHistory');
     let trendHistory = [];
     if (trendHistoryStr) {
       trendHistory = JSON.parse(trendHistoryStr);
@@ -112,15 +112,15 @@ class IndexPage extends Component {
   }
 
   checkSCUpdate() {
-    let scOld = window.localStorage.getItem('lotterySmartContract');
+    let scOld = window.localStorage.getItem(storagePrefix+'lotterySmartContract');
     if (!scOld || scOld !== lotterySCAddr) {
       console.log('Detect smart contract update.');
       // window.localStorage.clear();
-      window.localStorage.setItem('lotterySmartContract', lotterySCAddr);
-      window.localStorage.removeItem('trendHistory');
-      window.localStorage.removeItem('randomHistory');
-      window.localStorage.removeItem('currentTrend');
-      window.localStorage.removeItem('RandomHistoryStartBlock');
+      window.localStorage.setItem(storagePrefix+'lotterySmartContract', lotterySCAddr);
+      window.localStorage.removeItem(storagePrefix+'trendHistory');
+      window.localStorage.removeItem(storagePrefix+'randomHistory');
+      window.localStorage.removeItem(storagePrefix+'currentTrend');
+      window.localStorage.removeItem(storagePrefix+'RandomHistoryStartBlock');
     }
   }
 
@@ -158,7 +158,7 @@ class IndexPage extends Component {
     let inComeTrend = JSON.stringify(trendInfo);
     if (stateTrend !== inComeTrend) {
       this.setState({ trendInfo });
-      window.localStorage.setItem('currentTrend', inComeTrend);
+      window.localStorage.setItem(storagePrefix+'currentTrend', inComeTrend);
     }
   }
 
@@ -274,7 +274,7 @@ class IndexPage extends Component {
     let inComeValue = JSON.stringify(trendHistory);
     if (stateValue !== inComeValue) {
       this.setState({ trendHistory });
-      window.localStorage.setItem('trendHistory', inComeValue);
+      window.localStorage.setItem(storagePrefix+'trendHistory', inComeValue);
     }
   }
 
@@ -327,7 +327,7 @@ class IndexPage extends Component {
       history[i] = randomHistories[i];
     }
     this.setState({ lotteryHistory: history });
-    window.localStorage.setItem('randomHistory', JSON.stringify(history));
+    window.localStorage.setItem(storagePrefix+'randomHistory', JSON.stringify(history));
   }
 
   updateRandomHistoryFromNode = async () => {
@@ -480,7 +480,7 @@ class IndexPage extends Component {
   }
 
   getRandomHistoryStartBlock = () => {
-    let startBlock = window.localStorage.getItem('RandomHistoryStartBlock');
+    let startBlock = window.localStorage.getItem(storagePrefix+'RandomHistoryStartBlock');
     if (startBlock && startBlock.length > 0) {
       return Number(startBlock);
     }
@@ -490,7 +490,7 @@ class IndexPage extends Component {
   }
 
   setRandomHistoryStartBlock = (blockNumber) => {
-    window.localStorage.setItem('RandomHistoryStartBlock', blockNumber.toString());
+    window.localStorage.setItem(storagePrefix+'RandomHistoryStartBlock', blockNumber.toString());
   }
 
   addTransactionHistory = (singleHistory) => {
@@ -501,12 +501,12 @@ class IndexPage extends Component {
     }
     history.push(singleHistory);
     this.setState({ transactionHistory: history });
-    window.localStorage.setItem('transactionHistory', JSON.stringify(history));
+    window.localStorage.setItem(storagePrefix+'transactionHistory', JSON.stringify(history));
     this.getUserPanalInfo();
   }
 
   getTransactionHistory = () => {
-    let transactionHistory = window.localStorage.getItem('transactionHistory');
+    let transactionHistory = window.localStorage.getItem(storagePrefix+'transactionHistory');
     if (transactionHistory) {
       return JSON.parse(transactionHistory);
     }
@@ -515,7 +515,7 @@ class IndexPage extends Component {
   }
 
   getLotteryHistory = () => {
-    let randomHistory = window.localStorage.getItem('randomHistory');
+    let randomHistory = window.localStorage.getItem(storagePrefix+'randomHistory');
     if (randomHistory) {
       return JSON.parse(randomHistory);
     }
@@ -565,7 +565,7 @@ class IndexPage extends Component {
 
     if (bChanged) {
       this.setState({ transactionHistory: history });
-      window.localStorage.setItem('transactionHistory', JSON.stringify(history));
+      window.localStorage.setItem(storagePrefix+'transactionHistory', JSON.stringify(history));
     }
   }
 
