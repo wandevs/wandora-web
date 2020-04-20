@@ -793,8 +793,6 @@ class IndexPage extends Component {
         expectReturn,
       }
     });
-
-    console.log('lastRoundAmountInfo', this.state.lastRoundAmountInfo);
   }
 
   getLastLotteryInfo = () => {
@@ -868,7 +866,6 @@ class IndexPage extends Component {
     }
 
     totalHistory.totalAmount = (totalHistory.totalBuy + totalHistory.inReturn + totalHistory.fromLottery).toFixed(2);
-    console.log("totalHistory",totalHistory);
 
     this.setState({ totalHistory });
   }

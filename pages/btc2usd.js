@@ -129,8 +129,6 @@ class IndexPage extends Component {
     web3.setProvider(new Web3.providers.HttpProvider(nodeUrl));
     this.web3 = web3;
     this.lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
-
-
     await this.getOnce();
     await this.updateTrendInfoFromNode();
     this.timerTrendInfo = setInterval(this.updateTrendInfoFromNode, 20000);
@@ -199,6 +197,7 @@ class IndexPage extends Component {
       trend.randomTimeCycle,
       trend.chainEndTime,
     ] = await Promise.all(awaitArray);
+
 
     trend.round = Number(trend.round);
     trend.lotteryRound = Number(trend.lotteryRound);
@@ -793,8 +792,6 @@ class IndexPage extends Component {
         expectReturn,
       }
     });
-
-    console.log('lastRoundAmountInfo', this.state.lastRoundAmountInfo);
   }
 
   getLastLotteryInfo = () => {
