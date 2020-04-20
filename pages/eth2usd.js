@@ -864,7 +864,7 @@ class IndexPage extends Component {
       }
     }
 
-    totalHistory.totalAmount = totalHistory.totalBuy + totalHistory.inReturn + totalHistory.fromLottery;
+    totalHistory.totalAmount = (totalHistory.totalBuy + totalHistory.inReturn + totalHistory.fromLottery).toFixed(2);
 
     this.setState({ totalHistory });
   }
@@ -879,7 +879,7 @@ class IndexPage extends Component {
   render() {
     return (
       <div className={style.app}>
-        <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} amountInfo={this.state.amountInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} />
+        <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} amountInfo={this.state.amountInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} symbol={'ETH'} unit={'USD / ETH'}/>
         <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} />
         <UserPanel lastRoundAmountInfo={this.state.lastRoundAmountInfo} totalHistory={this.state.totalHistory} lastRoundLotteryInfo={this.state.lastRoundLotteryInfo} />
         <TransactionHistory transactionHistory={this.state.transactionHistory} />

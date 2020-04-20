@@ -154,9 +154,9 @@ class Panel extends Component {
             <div className={style.rightBlock}>
               <div className={style.firstLine}>
                 <div className={style.subLine}>
-                  <div>The price of WAN at the end of the last round was </div>
-                  <div className={style.bold}>{this.state.btcPriceStart} BTC</div>
-                  <div>{' / WAN.'}</div>
+                  <div>The price of {this.props.symbol} at the end of the last round was </div>
+                  <div className={style.bold}>{this.state.btcPriceStart}</div>
+                  <div>{this.props.unit}</div>
                 </div>
                 <div className={style.subLine}>
                   <div>Place your prediction whether the price will go up or down after</div>
