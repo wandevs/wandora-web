@@ -138,15 +138,7 @@ class IndexPage extends Component {
     } catch (err) {
       console.log(err);
       console.log('rpc error, switch to backup rpc.');
-      web3 = new Web3();
-      web3.setProvider(new Web3.providers.HttpProvider(nodeUrlBak));
-      this.web3 = web3;
-      this.lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
-      await this.getOnce();
-      await this.updateTrendInfoFromNode();
-      this.timerTrendInfo = setInterval(this.updateTrendInfoFromNode, 20000);
-      this.timerTrendHistory = setInterval(this.updateTrendHistoryFromNode, 60 * 1000);
-      this.timerTransactionHistory = setInterval(this.flushTransactionHistory, 100 * 1000);
+      nodeUrl = nodeUrlBak;
     }
 
   }
