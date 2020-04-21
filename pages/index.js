@@ -12,7 +12,7 @@ import DistributionHistory from '../components/DistributionHistory';
 import UserPanel from '../components/UserPanel';
 import sleep from 'ko-sleep';
 import { alertAntd, toUnitAmount } from '../utils/utils.js';
-import { mainnetSCAddrWan2Btc, testnetSCAddrWan2Btc, networkId, nodeUrl, nodeUrlBak } from '../conf/config.js';
+import { mainnetSCAddrWan2Btc, testnetSCAddrWan2Btc, networkId, nodeUrl } from '../conf/config.js';
 
 const lotterySCAddr = networkId == 1 ? mainnetSCAddrWan2Btc : testnetSCAddrWan2Btc;
 
@@ -138,8 +138,7 @@ class IndexPage extends Component {
       this.timerTransactionHistory = setInterval(this.flushTransactionHistory, 100 * 1000);
     } catch (err) {
       console.log(err);
-      console.log('rpc error, switch to backup rpc.');
-      nodeUrl = nodeUrlBak;
+      alertAntd('rpc node server Error, please try later.');
     }
   }
 
