@@ -198,6 +198,7 @@ class IndexPage extends Component {
       trend.chainEndTime,
     ] = await Promise.all(awaitArray);
 
+    console.log('trend:', trend);
 
     trend.round = Number(trend.round);
     trend.lotteryRound = Number(trend.lotteryRound);

@@ -1,5 +1,6 @@
 
 export default {
+  history: 'hash',
   chainWebpack(config) {
     config.module
       .rule('exclude')

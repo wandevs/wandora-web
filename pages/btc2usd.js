@@ -12,7 +12,7 @@ import DistributionHistory from '../components/DistributionHistory';
 import UserPanel from '../components/UserPanel';
 import sleep from 'ko-sleep';
 import { alertAntd, toUnitAmount } from '../utils/utils.js';
-import { mainnetSCAddrBtc2Usd, testnetSCAddrBtc2Usd, networkId, nodeUrl } from '../conf/config.js';
+import { mainnetSCAddrBtc2Usd, testnetSCAddrBtc2Usd, networkId, nodeUrl, nodeUrlBak } from '../conf/config.js';
 
 const lotterySCAddr = networkId == 1 ? mainnetSCAddrBtc2Usd : testnetSCAddrBtc2Usd;
 const storagePrefix = 'btc2usd_';
@@ -30,7 +30,7 @@ class IndexPage extends Component {
 
     window.alertAntd = alertAntd;
 
-    let trendStr = window.localStorage.getItem(storagePrefix+'currentTrend');
+    let trendStr = window.localStorage.getItem(storagePrefix + 'currentTrend');
     let trend = null;
     if (trendStr) {
       trend = JSON.parse(trendStr);
@@ -48,7 +48,7 @@ class IndexPage extends Component {
       };
     }
 
-    let trendHistoryStr = window.localStorage.getItem(storagePrefix+'trendHistory');
+    let trendHistoryStr = window.localStorage.getItem(storagePrefix + 'trendHistory');
     let trendHistory = [];
     if (trendHistoryStr) {
       trendHistory = JSON.parse(trendHistoryStr);
@@ -112,15 +112,15 @@ class IndexPage extends Component {
   }
 
   checkSCUpdate() {
-    let scOld = window.localStorage.getItem(storagePrefix+'lotterySmartContract');
+    let scOld = window.localStorage.getItem(storagePrefix + 'lotterySmartContract');
     if (!scOld || scOld !== lotterySCAddr) {
       console.log('Detect smart contract update.');
       // window.localStorage.clear();
-      window.localStorage.setItem(storagePrefix+'lotterySmartContract', lotterySCAddr);
-      window.localStorage.removeItem(storagePrefix+'trendHistory');
-      window.localStorage.removeItem(storagePrefix+'randomHistory');
-      window.localStorage.removeItem(storagePrefix+'currentTrend');
-      window.localStorage.removeItem(storagePrefix+'RandomHistoryStartBlock');
+      window.localStorage.setItem(storagePrefix + 'lotterySmartContract', lotterySCAddr);
+      window.localStorage.removeItem(storagePrefix + 'trendHistory');
+      window.localStorage.removeItem(storagePrefix + 'randomHistory');
+      window.localStorage.removeItem(storagePrefix + 'currentTrend');
+      window.localStorage.removeItem(storagePrefix + 'RandomHistoryStartBlock');
     }
   }
 
@@ -129,12 +129,26 @@ class IndexPage extends Component {
     web3.setProvider(new Web3.providers.HttpProvider(nodeUrl));
     this.web3 = web3;
     this.lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
-    await this.getOnce();
-    await this.updateTrendInfoFromNode();
-    this.timerTrendInfo = setInterval(this.updateTrendInfoFromNode, 20000);
+    try {
+      await this.getOnce();
+      await this.updateTrendInfoFromNode();
+      this.timerTrendInfo = setInterval(this.updateTrendInfoFromNode, 20000);
+      this.timerTrendHistory = setInterval(this.updateTrendHistoryFromNode, 60 * 1000);
+      this.timerTransactionHistory = setInterval(this.flushTransactionHistory, 100 * 1000);
+    } catch (err) {
+      console.log(err);
+      console.log('rpc error, switch to backup rpc.');
+      web3 = new Web3();
+      web3.setProvider(new Web3.providers.HttpProvider(nodeUrlBak));
+      this.web3 = web3;
+      this.lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
+      await this.getOnce();
+      await this.updateTrendInfoFromNode();
+      this.timerTrendInfo = setInterval(this.updateTrendInfoFromNode, 20000);
+      this.timerTrendHistory = setInterval(this.updateTrendHistoryFromNode, 60 * 1000);
+      this.timerTransactionHistory = setInterval(this.flushTransactionHistory, 100 * 1000);
+    }
 
-    this.timerTrendHistory = setInterval(this.updateTrendHistoryFromNode, 60 * 1000);
-    this.timerTransactionHistory = setInterval(this.flushTransactionHistory, 100 * 1000);
   }
 
   componentWillUnmount() {
@@ -156,7 +170,7 @@ class IndexPage extends Component {
     let inComeTrend = JSON.stringify(trendInfo);
     if (stateTrend !== inComeTrend) {
       this.setState({ trendInfo });
-      window.localStorage.setItem(storagePrefix+'currentTrend', inComeTrend);
+      window.localStorage.setItem(storagePrefix + 'currentTrend', inComeTrend);
     }
   }
 
@@ -225,7 +239,7 @@ class IndexPage extends Component {
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
     this.setTrendInfo(trend);
     this.flushTransactionHistory();
-    
+
     this.getUserPanalInfo();
   }
 
@@ -273,7 +287,7 @@ class IndexPage extends Component {
     let inComeValue = JSON.stringify(trendHistory);
     if (stateValue !== inComeValue) {
       this.setState({ trendHistory });
-      window.localStorage.setItem(storagePrefix+'trendHistory', inComeValue);
+      window.localStorage.setItem(storagePrefix + 'trendHistory', inComeValue);
     }
   }
 
@@ -326,7 +340,7 @@ class IndexPage extends Component {
       history[i] = randomHistories[i];
     }
     this.setState({ lotteryHistory: history });
-    window.localStorage.setItem(storagePrefix+'randomHistory', JSON.stringify(history));
+    window.localStorage.setItem(storagePrefix + 'randomHistory', JSON.stringify(history));
   }
 
   updateRandomHistoryFromNode = async () => {
@@ -479,7 +493,7 @@ class IndexPage extends Component {
   }
 
   getRandomHistoryStartBlock = () => {
-    let startBlock = window.localStorage.getItem(storagePrefix+'RandomHistoryStartBlock');
+    let startBlock = window.localStorage.getItem(storagePrefix + 'RandomHistoryStartBlock');
     if (startBlock && startBlock.length > 0) {
       return Number(startBlock);
     }
@@ -489,7 +503,7 @@ class IndexPage extends Component {
   }
 
   setRandomHistoryStartBlock = (blockNumber) => {
-    window.localStorage.setItem(storagePrefix+'RandomHistoryStartBlock', blockNumber.toString());
+    window.localStorage.setItem(storagePrefix + 'RandomHistoryStartBlock', blockNumber.toString());
   }
 
   addTransactionHistory = (singleHistory) => {
@@ -500,12 +514,12 @@ class IndexPage extends Component {
     }
     history.push(singleHistory);
     this.setState({ transactionHistory: history });
-    window.localStorage.setItem(storagePrefix+'transactionHistory', JSON.stringify(history));
+    window.localStorage.setItem(storagePrefix + 'transactionHistory', JSON.stringify(history));
     this.getUserPanalInfo();
   }
 
   getTransactionHistory = () => {
-    let transactionHistory = window.localStorage.getItem(storagePrefix+'transactionHistory');
+    let transactionHistory = window.localStorage.getItem(storagePrefix + 'transactionHistory');
     if (transactionHistory) {
       return JSON.parse(transactionHistory);
     }
@@ -514,7 +528,7 @@ class IndexPage extends Component {
   }
 
   getLotteryHistory = () => {
-    let randomHistory = window.localStorage.getItem(storagePrefix+'randomHistory');
+    let randomHistory = window.localStorage.getItem(storagePrefix + 'randomHistory');
     if (randomHistory) {
       return JSON.parse(randomHistory);
     }
@@ -564,7 +578,7 @@ class IndexPage extends Component {
 
     if (bChanged) {
       this.setState({ transactionHistory: history });
-      window.localStorage.setItem(storagePrefix+'transactionHistory', JSON.stringify(history));
+      window.localStorage.setItem(storagePrefix + 'transactionHistory', JSON.stringify(history));
     }
   }
 
@@ -879,7 +893,7 @@ class IndexPage extends Component {
   render() {
     return (
       <div className={style.app}>
-        <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} amountInfo={this.state.amountInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} symbol={'BTC'} unit={'USD / BTC'}/>
+        <Panel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} amountInfo={this.state.amountInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} symbol={'BTC'} unit={'USD / BTC'} />
         <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} />
         <UserPanel lastRoundAmountInfo={this.state.lastRoundAmountInfo} totalHistory={this.state.totalHistory} lastRoundLotteryInfo={this.state.lastRoundLotteryInfo} />
         <TransactionHistory transactionHistory={this.state.transactionHistory} />

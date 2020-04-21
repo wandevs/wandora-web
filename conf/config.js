@@ -15,4 +15,6 @@ export const networkId = 3; //1:mainnet, 3:testnet;
 // export const nodeUrl = networkId == 1 ? "https://gwan-ssl.wandevs.org:56891" : "http://192.168.1.179:54320";
 
 export const nodeUrl = networkId == 1 ? "https://gwan-ssl.wandevs.org:56891" : "https://gwan-ssl.wandevs.org:46891";
+export const nodeUrlBak = networkId == 1 ? "https://mywanwallet.io/api" : "https://demodex.wandevs.org:48545";
+
 // export const nodeUrl = networkId == 1 ? "https://gwan-ssl.wandevs.org:56891" : "https://demodex.wandevs.org:48545";
