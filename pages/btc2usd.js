@@ -817,7 +817,7 @@ class IndexPage extends Component {
     for (var i in this.state.lotteryHistory) {
       if (i === lastRound) {
         let winners = this.state.lotteryHistory[i];
-        lastRoundLotteryInfo.eachAmount = winners[0].amountPay;
+        lastRoundLotteryInfo.eachAmount = Number(winners[0].amountPay).toFixed(2);
         break;
       }
     }
@@ -827,7 +827,7 @@ class IndexPage extends Component {
     let m = 0;
     for (m = 0; m < length; m++) {
       if (history[m].type.toLowerCase() === 'distribute' && history[m].round === lastRound) {
-        lastRoundLotteryInfo.totalWin = Number(history[m].amount);
+        lastRoundLotteryInfo.totalWin = Number(history[m].amount).toFixed(2);
         break;
       }
     }
@@ -870,6 +870,10 @@ class IndexPage extends Component {
     }
 
     totalHistory.totalAmount = (totalHistory.totalBuy + totalHistory.inReturn + totalHistory.fromLottery).toFixed(2);
+
+    totalHistory.totalBuy = Number(totalHistory.totalBuy).toFixed(0);
+    totalHistory.inReturn = Number(totalHistory.inReturn).toFixed(2);
+    totalHistory.fromLottery = Number(totalHistory.fromLottery).toFixed(2);
 
     this.setState({ totalHistory });
   }
