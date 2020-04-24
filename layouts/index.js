@@ -22,6 +22,10 @@ class Layout extends Component {
 
   }
 
+  showGameRule = () => {
+    window.open("https://github.com/wandevs/wan-game/blob/master/GameRule.md");
+  }
+
   render() {
     const props = this.props;
     let active = style.menuItem + ' ' + style.menuItemActive;

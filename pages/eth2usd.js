@@ -710,10 +710,6 @@ class IndexPage extends Component {
     }
   }
 
-  showGameRule = () => {
-    window.open("https://github.com/wandevs/wan-game/blob/master/GameRule.md");
-  }
-
   getAmountInfo = () => {
     let history = this.getTransactionHistory();
     let length = history.length;
