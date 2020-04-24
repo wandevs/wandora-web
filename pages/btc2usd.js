@@ -811,7 +811,7 @@ class IndexPage extends Component {
     }
 
     for (var i in this.state.lotteryHistory) {
-      if (i === lastRound) {
+      if (i.toString() === lastRound.toString()) {
         let winners = this.state.lotteryHistory[i];
         lastRoundLotteryInfo.eachAmount = Number(winners[0].amountPay).toFixed(2);
         break;
@@ -822,14 +822,10 @@ class IndexPage extends Component {
     let length = history.length;
     let m = 0;
     for (m = 0; m < length; m++) {
-      if (history[m].type.toLowerCase() === 'distribute' && history[m].round === lastRound) {
+      if (history[m].type.toLowerCase() === 'distribute' && history[m].round.toString() === lastRound.toString()) {
         lastRoundLotteryInfo.totalWin = Number(history[m].amount).toFixed(2);
         break;
       }
-    }
-
-    if (m === length) {
-      return;
     }
 
     lastRoundLotteryInfo.winTimes = Number(lastRoundLotteryInfo.totalWin / lastRoundLotteryInfo.eachAmount).toFixed(0)
