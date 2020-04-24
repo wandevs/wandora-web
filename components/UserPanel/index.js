@@ -60,7 +60,7 @@ class UserPanel extends Component {
               </div>
             </div>
             <div className={style.blockBottom + ' ' + style.subLine}>
-              <div className={style.blockBottomValue} style={{ color: "#2AC9AD" }}>{"+ " + lastRoundLotteryInfo.totalWin}</div>
+              <div className={style.blockBottomValue} style={{ color: "#2AC9AD" }}>{"+ " + Number(lastRoundLotteryInfo.totalWin).toFixed(2)}</div>
               <div className={style.blockBottomTail}>In Last Round Lottery</div>
             </div>
           </div>

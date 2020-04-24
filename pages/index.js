@@ -786,7 +786,7 @@ class IndexPage extends Component {
     let upOdds = Number(upPoolAmount) === 0 ? "NA" : (Number(downPoolAmount) / Number(upPoolAmount) * 0.9).toFixed(1);
     let downOdds = Number(downPoolAmount) === 0 ? "NA" : (Number(upPoolAmount) / Number(downPoolAmount) * 0.9).toFixed(1);
     let expectReturn = (winSide === 'up') ? (upAmount * Number(upOdds) - downAmount * Number(downOdds)) : ((winSide === 'down') ? (downAmount * Number(downOdds) - upAmount * Number(upOdds)) : (upAmount + downAmount) * 0.9);
-    expectReturn = expectReturn >= 0 ? "+" + expectReturn.toFixed(1) : expectReturn.toFixed(1);
+    expectReturn = expectReturn >= 0 ? "+" + expectReturn.toFixed(2) : expectReturn.toFixed(2);
     this.setState({
       lastRoundAmountInfo: {
         upAmount,
