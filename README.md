@@ -1,4 +1,8 @@
-# A Game of Wanchain
+# Wandora Box
+
+Wandora Box is a DApp in wanchain.
+
+The game rules please look at the GameRule.md.
 
 ---
 

@@ -69,3 +69,12 @@
 9. Wanchain's on chain random number generation will be used to decide the prize pot winners.
 
 10. When no one wins, the funds in the fluctuation pool are returned to the original account.
+
+# Smart Contract
+
+Mainnet smart contract address: '0xdfad0145311acb8f0e0305aceef5d11a05df9aa0'; (WAN/BTC)
+
+Testnet smart contract address: '0x6e1f4097ec38965256a17a9c8ed3ef38162647ad'; (WAN/BTC)
+
+Smart Contract Open Source URL: https://github.com/wandevs/wan-game-contracts
+
