@@ -123,7 +123,7 @@ class DistributionHistory extends Component {
 
             <div className={style.rightText}>Address Count: {addressCnt}</div>
             {/* <div className={style.rightText}>Amount: N/A WAN</div> */}
-            <div className={style.rightText}>Total Fee: {totalFee.toFixed(1)} WAN</div>
+            <div className={style.rightText}>Total Fee: {totalFee.toFixed(2)} WAN</div>
           </div>
           <Table columns={this.columns} dataSource={this.state.dataSource} pagination={{ pageSize: 20 }} />
         </Spin>

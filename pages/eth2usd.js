@@ -223,7 +223,7 @@ class IndexPage extends Component {
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
     trend.upPoolAmount = Number(roundInfo.upAmount) / 1e18;
     trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
-    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(1);
+    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(2);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
     this.setTrendInfo(trend);
     this.flushTransactionHistory();
@@ -258,7 +258,7 @@ class IndexPage extends Component {
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
     trend.upPoolAmount = Number(roundInfo.upAmount) / 1e18;
     trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
-    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(1);
+    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(2);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
 
     this.setTrendInfo(trend);
@@ -584,25 +584,25 @@ class IndexPage extends Component {
 
   getPayAmount = (amount, trendHistoryOne) => {
     if (trendHistoryOne.result === 'draw') {
-      return amount * 0.9
+      return amount * 0.99
     }
 
     if (trendHistoryOne.result === 'up' && trendHistoryOne.upAmount == 0) {
-      return amount * 0.9
+      return amount * 0.99
     }
 
     if (trendHistoryOne.result === 'down' && trendHistoryOne.downAmount == 0) {
-      return amount * 0.9
+      return amount * 0.99
     }
 
     if (trendHistoryOne.result === 'up') {
-      let value = (trendHistoryOne.upAmount + trendHistoryOne.downAmount) * 0.9 / trendHistoryOne.upAmount * amount;
-      return Number(value.toFixed(1))
+      let value = (trendHistoryOne.upAmount + trendHistoryOne.downAmount) * 0.99 / trendHistoryOne.upAmount * amount;
+      return Number(value.toFixed(2))
     }
 
     if (trendHistoryOne.result === 'down') {
-      let value = (trendHistoryOne.upAmount + trendHistoryOne.downAmount) * 0.9 / trendHistoryOne.downAmount * amount;
-      return Number(value.toFixed(1))
+      let value = (trendHistoryOne.upAmount + trendHistoryOne.downAmount) * 0.99 / trendHistoryOne.downAmount * amount;
+      return Number(value.toFixed(2))
     }
     return 0
   }
@@ -724,9 +724,9 @@ class IndexPage extends Component {
       }
     }
 
-    let upOdds = Number(this.state.trendInfo.upPoolAmount) === 0 ? "NA" : (Number(this.state.trendInfo.downPoolAmount) / Number(this.state.trendInfo.upPoolAmount) * 0.9).toFixed(1);
-    let downOdds = Number(this.state.trendInfo.downPoolAmount) === 0 ? "NA" : (Number(this.state.trendInfo.upPoolAmount) / Number(this.state.trendInfo.downPoolAmount) * 0.9).toFixed(1);
-    let expectReturn = Math.abs(upAmount * Number(upOdds) - downAmount * Number(downOdds)).toFixed(1);
+    let upOdds = Number(this.state.trendInfo.upPoolAmount) === 0 ? "NA" : (Number(this.state.trendInfo.downPoolAmount) / Number(this.state.trendInfo.upPoolAmount) * 0.99).toFixed(2);
+    let downOdds = Number(this.state.trendInfo.downPoolAmount) === 0 ? "NA" : (Number(this.state.trendInfo.upPoolAmount) / Number(this.state.trendInfo.downPoolAmount) * 0.99).toFixed(2);
+    let expectReturn = Math.abs(upAmount * Number(upOdds) - downAmount * Number(downOdds)).toFixed(2);
 
     this.setState({
       amountInfo: {
@@ -777,9 +777,9 @@ class IndexPage extends Component {
       }
     }
 
-    let upOdds = Number(upPoolAmount) === 0 ? "NA" : (Number(downPoolAmount) / Number(upPoolAmount) * 0.9).toFixed(1);
-    let downOdds = Number(downPoolAmount) === 0 ? "NA" : (Number(upPoolAmount) / Number(downPoolAmount) * 0.9).toFixed(1);
-    let expectReturn = (winSide === 'up') ? (upAmount * Number(upOdds) - downAmount * Number(downOdds)) : ((winSide === 'down') ? (downAmount * Number(downOdds) - upAmount * Number(upOdds)) : (upAmount + downAmount) * 0.9);
+    let upOdds = Number(upPoolAmount) === 0 ? "NA" : (Number(downPoolAmount) / Number(upPoolAmount) * 0.99).toFixed(2);
+    let downOdds = Number(downPoolAmount) === 0 ? "NA" : (Number(upPoolAmount) / Number(downPoolAmount) * 0.99).toFixed(2);
+    let expectReturn = (winSide === 'up') ? (upAmount * Number(upOdds) - downAmount * Number(downOdds)) : ((winSide === 'down') ? (downAmount * Number(downOdds) - upAmount * Number(upOdds)) : (upAmount + downAmount) * 0.99);
     expectReturn = expectReturn >= 0 ? "+" + expectReturn.toFixed(2) : expectReturn.toFixed(2);
     this.setState({
       lastRoundAmountInfo: {

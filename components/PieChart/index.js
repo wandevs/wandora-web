@@ -23,8 +23,8 @@ class PieChart extends React.Component {
     const upCnt = this.props.upCnt;
     const downCnt = this.props.downCnt;
     const totalCnt = upCnt + downCnt;
-    const upPercent = (upCnt*100 / totalCnt).toFixed(1) + '%';
-    const downPercent = (downCnt*100 / totalCnt).toFixed(1) + '%';
+    const upPercent = (upCnt*100 / totalCnt).toFixed(2) + '%';
+    const downPercent = (downCnt*100 / totalCnt).toFixed(2) + '%';
     const { DataView } = DataSet;
     const { Html } = Guide;
     const data = [
@@ -47,7 +47,7 @@ class PieChart extends React.Component {
     const cols = {
       percent: {
         formatter: val => {
-          val = (val * 100).toFixed(1) + "%";
+          val = (val * 100).toFixed(2) + "%";
           return val;
         }
       }

@@ -56,7 +56,7 @@ class TransactionHistory extends Component {
         <div className={style.title + ' ' + style.subLine}>
           <Icon type="history" className={style.logo} />
           <div className={style.subTitle}>Transaction History</div>
-          <div className={style.rightText}>Total: {total.toFixed(1)} WAN</div>
+          <div className={style.rightText}>Total: {total.toFixed(2)} WAN</div>
         </div>
         <Table columns={this.columns} dataSource={this.props.transactionHistory.slice().reverse()} pagination={{ pageSize: 10 }}/>
       </div>
