@@ -727,8 +727,8 @@ class IndexPage extends Component {
       }
     }
 
-    let upOdds = Number(this.state.trendInfo.upPoolAmount) === 0 ? "NA" : (Number(this.state.trendInfo.downPoolAmount) / Number(this.state.trendInfo.upPoolAmount) * 0.99).toFixed(2);
-    let downOdds = Number(this.state.trendInfo.downPoolAmount) === 0 ? "NA" : (Number(this.state.trendInfo.upPoolAmount) / Number(this.state.trendInfo.downPoolAmount) * 0.99).toFixed(2);
+    let upOdds = Number(this.state.trendInfo.upPoolAmount) === 0 ? "NaN" : (Number(this.state.trendInfo.downPoolAmount) / Number(this.state.trendInfo.upPoolAmount) * 0.99).toFixed(2);
+    let downOdds = Number(this.state.trendInfo.downPoolAmount) === 0 ? "NaN" : (Number(this.state.trendInfo.upPoolAmount) / Number(this.state.trendInfo.downPoolAmount) * 0.99).toFixed(2);
     let expectReturn = Math.abs(upAmount * Number(upOdds) - downAmount * Number(downOdds)).toFixed(2);
 
     this.setState({
@@ -780,8 +780,8 @@ class IndexPage extends Component {
       }
     }
 
-    let upOdds = Number(upPoolAmount) === 0 ? "NA" : (Number(downPoolAmount) / Number(upPoolAmount) * 0.99).toFixed(2);
-    let downOdds = Number(downPoolAmount) === 0 ? "NA" : (Number(upPoolAmount) / Number(downPoolAmount) * 0.99).toFixed(2);
+    let upOdds = Number(upPoolAmount) === 0 ? "NaN" : (Number(downPoolAmount) / Number(upPoolAmount) * 0.99).toFixed(2);
+    let downOdds = Number(downPoolAmount) === 0 ? "NaN" : (Number(upPoolAmount) / Number(downPoolAmount) * 0.99).toFixed(2);
     let expectReturn = (winSide === 'up') ? (upAmount * Number(upOdds) - downAmount * Number(downOdds)) : ((winSide === 'down') ? (downAmount * Number(downOdds) - upAmount * Number(upOdds)) : (upAmount + downAmount) * 0.99);
     expectReturn = expectReturn >= 0 ? "+" + expectReturn.toFixed(2) : expectReturn.toFixed(2);
     this.setState({
