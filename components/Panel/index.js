@@ -164,9 +164,9 @@ class Panel extends Component {
                   <div className={style.boxText2}>{this.state.endLeft.m}m</div>
                   {/* <div className={style.boxText2}>{this.state.endLeft.s}s</div> */}
                   <div style={{ marginLeft: '10px' }}>later.</div>
-                  <Tooltip title={"Show Help"}>
+                  {/* <Tooltip title={"Show Help"}>
                     <Icon type="question-circle" onClick={this.showHelp1} className={style.helpIcon} style={{ margin: '13px', color: 'gray', fontSize: '16px' }} />
-                  </Tooltip>
+                  </Tooltip> */}
                 </div>
               </div>
               <div className={style.secondLine}>
@@ -198,9 +198,9 @@ class Panel extends Component {
                       <div className={style.subLine}>
                         <div className={style.subLine2}>The total lottery pool in this period.</div>
                         {/* <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours)</div> */}
-                        <Tooltip title={"Show Help"}>
+                        {/* <Tooltip title={"Show Help"}>
                           <Icon type="question-circle" onClick={this.showHelp2} className={style.helpIcon} style={{ color: 'gray', fontSize: '16px' }} />
-                        </Tooltip>
+                        </Tooltip> */}
                       </div>
                       <div className={style.subLine2}>{distrbuteText}</div>
                     </div>
