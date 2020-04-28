@@ -136,19 +136,28 @@ class Panel extends Component {
               <PieChart upCnt={this.state.upPoolAmount} downCnt={this.state.downPoolAmount} />
             </div>
             <div className={style.middleBlock}>
-              <div className={style.middleBlockText}>My Prediction</div>
+              <div className={style.middleBlockText}>Return Rate</div>
               <div className={style.middleBlockContent}>
-                <img src={upArrow} width="6" height="6" style={{marginRight:"5px"}} />
-                {this.props.amountInfo.upAmount + " ("+ this.props.amountInfo.upOdds +")"}
+                <img src={upArrow} width="6" height="6" style={{ marginRight: "5px" }} />
+                {this.props.amountInfo.upOdds}
               </div>
               <div className={style.middleBlockContent} style={{ color: "#E30079" }}>
-                <img src={downArrow} width="6" height="6" style={{marginRight:"5px"}}/>
-                {this.props.amountInfo.downAmount + " ("+ this.props.amountInfo.downOdds +")"}
+                <img src={downArrow} width="6" height="6" style={{ marginRight: "5px" }} />
+                {this.props.amountInfo.downOdds}
               </div>
-              <div className={style.middleBlockText}>Expected Return</div>
+              <div className={style.middleBlockText}>My Prediction</div>
+              <div className={style.middleBlockContent}>
+                <img src={upArrow} width="6" height="6" style={{ marginRight: "5px" }} />
+                {this.props.amountInfo.upAmount + " (" + Number(this.props.amountInfo.upAmount) * Number(this.props.amountInfo.upOdds).toFixed(2) + ")"}
+              </div>
+              <div className={style.middleBlockContent} style={{ color: "#E30079" }}>
+                <img src={downArrow} width="6" height="6" style={{ marginRight: "5px" }} />
+                {this.props.amountInfo.downAmount + " (" + Number(this.props.amountInfo.downAmount) * Number(this.props.amountInfo.downOdds).toFixed(2) + ")"}
+              </div>
+              {/* <div className={style.middleBlockText}>Expected Return</div>
               <div className={style.middleBlockContent} style={{ color: "#0CA0FE" }}>
                 {this.props.amountInfo.expectReturn}
-              </div>
+              </div> */}
             </div>
 
             <div className={style.rightBlock}>
