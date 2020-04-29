@@ -12,9 +12,9 @@ import DistributionHistory from '../components/DistributionHistory';
 import UserPanel from '../components/UserPanel';
 import sleep from 'ko-sleep';
 import { alertAntd, toUnitAmount } from '../utils/utils.js';
-import { mainnetSCAddrEth2Usd, testnetSCAddrEtc2Usd, networkId, nodeUrl } from '../conf/config.js';
+import { mainnetSCAddrEth2Usd, testnetSCAddrEth2Usd, networkId, nodeUrl } from '../conf/config.js';
 
-const lotterySCAddr = networkId == 1 ? mainnetSCAddrEth2Usd : testnetSCAddrEtc2Usd;
+const lotterySCAddr = networkId == 1 ? mainnetSCAddrEth2Usd : testnetSCAddrEth2Usd;
 const storagePrefix = 'eth2usd_';
 var Web3 = require("web3");
 
