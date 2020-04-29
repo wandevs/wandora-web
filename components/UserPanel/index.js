@@ -85,13 +85,9 @@ class UserPanel extends Component {
               </div>
               <div className={style.subLine}>
                 <div className={style.blockBodyTitle} style={{margin:"7px 26px 0px 50px"}}>Total Profit:</div>
-                <div className={style.blockBodyContent} style={{ color: "#0CA0FE" }}>{"+ " + totalHistory.fromLottery}</div>
+                <div className={style.blockBodyContent} style={{ color: "#0CA0FE" }}>{"+ " + totalHistory.totalAmount}</div>
               </div>
             </div>
-            {/* <div className={style.blockBottom + ' ' + style.subLine}>
-              <div className={style.blockBottomTail}>Total Profit:</div>
-              <div className={style.blockBottomValue} style={{ color: "#0CA0FE" }}>{totalHistory.totalAmount}</div>
-            </div> */}
           </div>
         </div>
       </div>
