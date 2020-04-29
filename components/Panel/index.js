@@ -145,7 +145,7 @@ class Panel extends Component {
                 <img src={downArrow} width="6" height="6" style={{ marginRight: "5px" }} />
                 {this.props.amountInfo.downOdds}
               </div>
-              <div className={style.middleBlockText}>My Prediction</div>
+              <div className={style.middleBlockText} style={{marginTop:"20px"}}>My Prediction</div>
               <div className={style.middleBlockContent}>
                 <img src={upArrow} width="6" height="6" style={{ marginRight: "5px" }} />
                 {this.props.amountInfo.upAmount + " (" + Number(this.props.amountInfo.upAmount) * Number(this.props.amountInfo.upOdds).toFixed(2) + ")"}

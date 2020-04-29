@@ -223,7 +223,7 @@ class IndexPage extends Component {
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
     trend.upPoolAmount = Number(roundInfo.upAmount) / 1e18;
     trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
-    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(2);
+    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(3);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
     this.setTrendInfo(trend);
     this.flushTransactionHistory();
@@ -258,7 +258,7 @@ class IndexPage extends Component {
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
     trend.upPoolAmount = Number(roundInfo.upAmount) / 1e18;
     trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
-    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(2);
+    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(3);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
 
     this.setTrendInfo(trend);

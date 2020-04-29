@@ -75,19 +75,23 @@ class UserPanel extends Component {
                   {totalHistory.totalBuy}</div>
               </div>
               <div className={style.subLine}>
-                <div className={style.blockBodyTitle} style={{margin:"7px 50px 0px 50px"}}>Return:</div>
+                <div className={style.blockBodyTitle} style={{margin:"7px 42px 0px 50px"}}>Winning:</div>
                 <div className={style.blockBodyContent}>
                   {"+ " + totalHistory.inReturn}</div>
               </div>
               <div className={style.subLine}>
-                <div className={style.blockBodyTitle} style={{margin:"7px 50px 0px 50px"}}>Lottery:</div>
+                <div className={style.blockBodyTitle} style={{margin:"7px 48px 0px 50px"}}>Lottery:</div>
                 <div className={style.blockBodyContent}>{"+ " + totalHistory.fromLottery}</div>
               </div>
+              <div className={style.subLine}>
+                <div className={style.blockBodyTitle} style={{margin:"7px 26px 0px 50px"}}>Total Profit:</div>
+                <div className={style.blockBodyContent} style={{ color: "#0CA0FE" }}>{"+ " + totalHistory.fromLottery}</div>
+              </div>
             </div>
-            <div className={style.blockBottom + ' ' + style.subLine}>
+            {/* <div className={style.blockBottom + ' ' + style.subLine}>
+              <div className={style.blockBottomTail}>Total Profit:</div>
               <div className={style.blockBottomValue} style={{ color: "#0CA0FE" }}>{totalHistory.totalAmount}</div>
-              <div className={style.blockBottomTail}>Total Profit</div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

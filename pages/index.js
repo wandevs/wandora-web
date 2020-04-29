@@ -126,7 +126,11 @@ class IndexPage extends Component {
 
   async componentDidMount() {
     var web3 = new Web3();
-    web3.setProvider(new Web3.providers.HttpProvider(nodeUrl));
+    if (nodeUrl.includes('wss')) {
+      web3.setProvider(new Web3.providers.WebsocketProvider(nodeUrl));
+    } else {
+      web3.setProvider(new Web3.providers.HttpProvider(nodeUrl));
+    }
     this.web3 = web3;
     this.lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
 
@@ -225,7 +229,7 @@ class IndexPage extends Component {
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
     trend.upPoolAmount = Number(roundInfo.upAmount) / 1e18;
     trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
-    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(2);
+    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(3);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
     this.setTrendInfo(trend);
     this.flushTransactionHistory();
@@ -260,7 +264,7 @@ class IndexPage extends Component {
     trend.btcPriceStart = Number(roundInfo.openPrice) / 1e8;
     trend.upPoolAmount = Number(roundInfo.upAmount) / 1e18;
     trend.downPoolAmount = Number(roundInfo.downAmount) / 1e18;
-    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(2);
+    trend.randomPoolAmount = ((Number(randomInfo.stakeAmount)) / 1e18 * (trend.feeRatio / 1000) + Number(extraPrice) / 1e18).toFixed(3);
     trend.randomEndTime = Number((trend.lotteryRound + 1) * trend.randomTimeCycle) + Number(trend.gameStartTime);
     this.setTrendInfo(trend);
     this.updateTrendHistoryFromNode();
@@ -780,7 +784,7 @@ class IndexPage extends Component {
 
     let upOdds = Number(upPoolAmount) === 0 ? "NaN" : (Number(downPoolAmount) / Number(upPoolAmount) * 0.99).toFixed(2);
     let downOdds = Number(downPoolAmount) === 0 ? "NaN" : (Number(upPoolAmount) / Number(downPoolAmount) * 0.99).toFixed(2);
-    let expectReturn = (winSide === 'up') ? (upAmount * Number(upOdds) - downAmount * Number(downOdds)) : ((winSide === 'down') ? (downAmount * Number(downOdds) - upAmount * Number(upOdds)) : (upAmount + downAmount) * 0.99);
+    let expectReturn = (winSide === 'up') ? (upAmount * Number(upOdds) - downAmount) : ((winSide === 'down') ? (downAmount * Number(downOdds) - upAmount) : (upAmount + downAmount) * 0.99);
     expectReturn = expectReturn >= 0 ? "+" + expectReturn.toFixed(2) : expectReturn.toFixed(2);
     this.setState({
       lastRoundAmountInfo: {
