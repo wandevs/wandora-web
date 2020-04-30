@@ -198,7 +198,8 @@ class Panel extends Component {
                       </div>
                     }
                   </div>
-                  <div>
+                  { Number(this.state.randomPoolAmount) > 0 ?
+                  (<div>
                     <div className={style.subLine}>
                       <div className={style.poolValue}>{this.state.randomPoolAmount}</div>
                       <div className={style.unitText}>WAN</div>
@@ -206,14 +207,11 @@ class Panel extends Component {
                     <div style={{ margin: "26px 0px 0px 100px" }}>
                       <div className={style.subLine}>
                         <div className={style.subLine2}>The total lottery pool in this period.</div>
-                        {/* <div className={style.subLine2}>The total prize pot in this period {this.props.trendInfo.lotteryRound} （to be distributed after {d} days {h} hours)</div> */}
-                        {/* <Tooltip title={"Show Help"}>
-                          <Icon type="question-circle" onClick={this.showHelp2} className={style.helpIcon} style={{ color: 'gray', fontSize: '16px' }} />
-                        </Tooltip> */}
                       </div>
                       <div className={style.subLine2}>{distrbuteText}</div>
                     </div>
-                  </div>
+                  </div>)
+                  :null}
                 </div>
               </div>
             </div>
