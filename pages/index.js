@@ -63,15 +63,15 @@ class IndexPage extends Component {
       amountInfo: {
         upAmount: 0,
         downAmount: 0,
-        upOdds: 0.9,
-        downOdds: 0.9,
+        upOdds: 1,
+        downOdds: 1,
         expectReturn: 0,
       },
       lastRoundAmountInfo: {
         upAmount: 0,
         downAmount: 0,
-        upOdds: 0.9,
-        downOdds: 0.9,
+        upOdds: 1,
+        downOdds: 1,
         expectReturn: 0,
       },
       lastRoundLotteryInfo: {
@@ -768,9 +768,10 @@ class IndexPage extends Component {
 
     for (var i in trendHistory) {
       if (Number(trendHistory[i].round) === (Number(this.state.trendInfo.round) - 1)) {
-        if (trendHistory[i].openPrice > trendHistory[i].closePrice) {
+        // console.log('trendHistory',trendHistory[i]);
+        if (trendHistory[i].startPrice > trendHistory[i].endPrice) {
           winSide = 'up';
-        } else if (trendHistory[i].openPrice < trendHistory[i].closePrice) {
+        } else if (trendHistory[i].startPrice < trendHistory[i].endPrice) {
           winSide = 'down';
         } else {
           winSide = 'draw';
