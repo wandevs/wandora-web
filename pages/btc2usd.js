@@ -766,10 +766,10 @@ class IndexPage extends Component {
 
     for (var i in trendHistory) {
       if (Number(trendHistory[i].round) === (Number(this.state.trendInfo.round) - 1)) {
-        if (trendHistory[i].startPrice > trendHistory[i].endPrice) {
-          winSide = 'up';
-        } else if (trendHistory[i].startPrice < trendHistory[i].endPrice) {
+        if (Number(trendHistory[i].startPrice) > Number(trendHistory[i].endPrice)) {
           winSide = 'down';
+        } else if (Number(trendHistory[i].startPrice) < Number(trendHistory[i].endPrice)) {
+          winSide = 'up';
         } else {
           winSide = 'draw';
         }
@@ -782,7 +782,7 @@ class IndexPage extends Component {
 
     let upOdds = Number(upPoolAmount) === 0 ? "NaN" : (Number(downPoolAmount) / Number(upPoolAmount) * 1.0).toFixed(2);
     let downOdds = Number(downPoolAmount) === 0 ? "NaN" : (Number(upPoolAmount) / Number(downPoolAmount) * 1.0).toFixed(2);
-    let expectReturn = (winSide === 'up') ? (upAmount * Number(upOdds) - downAmount * Number(downOdds)) : ((winSide === 'down') ? (downAmount * Number(downOdds) - upAmount * Number(upOdds)) : (upAmount + downAmount) * 1.0);
+    let expectReturn = (winSide === 'up') ? (upAmount * Number(upOdds) - downAmount) : ((winSide === 'down') ? (downAmount * Number(downOdds) - upAmount) : (upAmount + downAmount) * 1.0);
     expectReturn = expectReturn >= 0 ? "+" + expectReturn.toFixed(2) : expectReturn.toFixed(2);
     this.setState({
       lastRoundAmountInfo: {

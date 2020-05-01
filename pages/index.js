@@ -768,11 +768,10 @@ class IndexPage extends Component {
 
     for (var i in trendHistory) {
       if (Number(trendHistory[i].round) === (Number(this.state.trendInfo.round) - 1)) {
-        // console.log('trendHistory',trendHistory[i]);
-        if (trendHistory[i].startPrice > trendHistory[i].endPrice) {
-          winSide = 'up';
-        } else if (trendHistory[i].startPrice < trendHistory[i].endPrice) {
+        if (Number(trendHistory[i].startPrice) > Number(trendHistory[i].endPrice)) {
           winSide = 'down';
+        } else if (Number(trendHistory[i].startPrice) < Number(trendHistory[i].endPrice)) {
+          winSide = 'up';
         } else {
           winSide = 'draw';
         }
