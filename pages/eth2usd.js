@@ -263,7 +263,7 @@ class IndexPage extends Component {
 
     this.setTrendInfo(trend);
     this.updateTrendHistoryFromNode();
-    this.updateRandomHistoryFromNode();
+    // this.updateRandomHistoryFromNode();
     if (roundOld != trend.round) {
       this.flushTransactionHistory();
     }
