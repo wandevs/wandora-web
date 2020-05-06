@@ -40,14 +40,14 @@ class Layout extends Component {
             <div className={style.buttonText1}>WAN</div>
             <div className={style.buttonText2}>{" / BTC"}</div>
           </Link>
-          {/* <Link to="/btc2usd" className={[style.menuBt2, props.location.pathname === '/btc2usd' ? active : normal].join(' ')}>
+          <Link to="/btc2usd" className={[style.menuBt2, props.location.pathname === '/btc2usd' ? active : normal].join(' ')}>
             <div className={style.buttonText1}>BTC</div>
             <div className={style.buttonText2}>{" / USD"}</div>
           </Link>
           <Link to="/eth2usd" className={[style.menuBt3, props.location.pathname === '/eth2usd' ? active : normal].join(' ')}>
             <div className={style.buttonText1}>ETH</div>
             <div className={style.buttonText2}>{" / USD"}</div>
-          </Link> */}
+          </Link>
           <img style={{ height: "25px", margin: "3px 8px 3px 3px" }} src={networkLogo} />
           <div className={style.gameRule} onClick={this.showGameRule}>Game Rules</div>
           <WalletButton />
