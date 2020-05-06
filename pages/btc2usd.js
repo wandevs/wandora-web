@@ -884,7 +884,7 @@ class IndexPage extends Component {
         <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} />
         <UserPanel lastRoundAmountInfo={this.state.lastRoundAmountInfo} totalHistory={this.state.totalHistory} lastRoundLotteryInfo={this.state.lastRoundLotteryInfo} />
         <TransactionHistory transactionHistory={this.state.transactionHistory} />
-        <DistributionHistory lotteryHistory={this.state.lotteryHistory} spinning={this.state.randomSpinning} />
+        {/* <DistributionHistory lotteryHistory={this.state.lotteryHistory} spinning={this.state.randomSpinning} /> */}
       </div>
     );
   }
