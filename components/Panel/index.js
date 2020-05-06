@@ -148,11 +148,11 @@ class Panel extends Component {
               <div className={style.middleBlockText} style={{marginTop:"20px"}}>My Prediction</div>
               <div className={style.middleBlockContent}>
                 <img src={upArrow} width="6" height="6" style={{ marginRight: "5px" }} />
-                {this.props.amountInfo.upAmount + " (" + Number(this.props.amountInfo.upAmount) * Number(this.props.amountInfo.upOdds).toFixed(2) + ")"}
+                {this.props.amountInfo.upAmount + " (" + (Number(this.props.amountInfo.upAmount) * Number(this.props.amountInfo.upOdds)).toFixed(2) + ")"}
               </div>
               <div className={style.middleBlockContent} style={{ color: "#E30079" }}>
                 <img src={downArrow} width="6" height="6" style={{ marginRight: "5px" }} />
-                {this.props.amountInfo.downAmount + " (" + Number(this.props.amountInfo.downAmount) * Number(this.props.amountInfo.downOdds).toFixed(2) + ")"}
+                {this.props.amountInfo.downAmount + " (" + (Number(this.props.amountInfo.downAmount) * Number(this.props.amountInfo.downOdds)).toFixed(2) + ")"}
               </div>
               {/* <div className={style.middleBlockText}>Expected Return</div>
               <div className={style.middleBlockContent} style={{ color: "#0CA0FE" }}>
