@@ -670,7 +670,7 @@ class IndexPage extends Component {
       to: lotterySCAddr,
       data: selectUp ? '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000001' : '0xf4ee1fbc0000000000000000000000000000000000000000000000000000000000000000',
       value,
-      gasPrice: "0x29E8D60800",
+      gasPrice: "0x3B9ACA00",
       // gasLimit: "0x87A23",
     };
 
