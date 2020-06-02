@@ -304,7 +304,7 @@ class IndexPage extends Component {
           round: roundArray[i],
           startPrice: ret.openPrice / 1e8,
           endPrice: ret.closePrice / 1e8,
-          result: (ret.openPrice > ret.closePrice) ? 'down' : (ret.openPrice < ret.closePrice) ? 'up' : 'draw',
+          result: (Number(ret.openPrice) > Number(ret.closePrice)) ? 'down' : (ret.openPrice < ret.closePrice) ? 'up' : 'draw',
           upAmount: ret.upAmount / 1e18,
           downAmount: ret.downAmount / 1e18,
           feeTotal: (ret.upAmount / 1e18 + ret.downAmount / 1e18) * this.state.trendInfo.feeRatio / 1000,
