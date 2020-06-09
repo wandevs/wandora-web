@@ -75,6 +75,10 @@
 ## Mainnet
 Mainnet smart contract address: '0xdfad0145311acb8f0e0305aceef5d11a05df9aa0'; (WAN/BTC)
 
+Mainnet smart contract address: '0x68f7ac0a94c553d86a606abd115e2128750335e1'; (BTC/USD)
+
+Mainnet smart contract address: '0x9f2f486de9ce5519ac54032c66c0f9d9670f7d87'; (ETH/USD)
+
 ## Testnet
 Testnet smart contract address: '0x6e1f4097ec38965256a17a9c8ed3ef38162647ad'; (WAN/BTC)
 
