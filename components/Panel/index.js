@@ -168,11 +168,13 @@ class Panel extends Component {
                   <div>{this.props.unit}</div>
                 </div>
                 <div className={style.subLine}>
-                  <div>Place your prediction whether the price will go up or down after</div>
-                  <div className={style.boxText2}>{this.state.endLeft.h}h</div>
-                  <div className={style.boxText2}>{this.state.endLeft.m}m</div>
+                  <div>
+                    Place your prediction whether the price will go up or down after
+                    <div className={style.boxText2}>{this.state.endLeft.h}h</div>
+                    <div className={style.boxText2}>{this.state.endLeft.m}m</div>
+                    <div className={style.later} style={{ marginLeft: '10px', display: 'inline-block' }}>later.</div>
+                  </div>
                   {/* <div className={style.boxText2}>{this.state.endLeft.s}s</div> */}
-                  <div style={{ marginLeft: '10px' }}>later.</div>
                   {/* <Tooltip title={"Show Help"}>
                     <Icon type="question-circle" onClick={this.showHelp1} className={style.helpIcon} style={{ margin: '13px', color: 'gray', fontSize: '16px' }} />
                   </Tooltip> */}
