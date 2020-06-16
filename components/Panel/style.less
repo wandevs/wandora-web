@@ -291,3 +291,82 @@
         font-size  : 15px;
     }
 }
+
+@media screen and (max-width: 767px) {
+  .panel {
+    min-width: 0;
+    margin: 0;
+    height: 920px;
+  }
+  .upBlock {
+    flex-direction: column;
+  }
+  .pieChart {
+    left: 0;
+    width: 100%;
+  }
+  .middleBlock {
+    width: 100%;
+    text-align: center;
+    padding: 40px 0 0 0;
+  }
+  .middleBlockContent {
+    display: inline-block;
+  }
+  .firstLine {
+    min-width: 0;
+    margin: 5px;
+    line-height: 20px;
+    font-size: 16px;
+    padding: 10px;
+  }
+  .bold {
+    margin-left: 0;
+  }
+  .boxText2 {
+    height: 20px;
+    margin: 0;
+    line-height: 20px;
+    font-size: 16px;
+    padding: 0;
+    text-align: left;
+  }
+  .secondLine {
+    margin: 0;
+    padding: 0;
+    .subLine {
+      flex-direction: column-reverse;
+    }
+  }
+  .rightBlock {
+    height: inherit;
+  }
+  .mobileSubLine {
+    flex-direction: row!important;
+  }
+  .mobileText {
+    margin: 26px 0px 0px 60px!important;
+  }
+  .btnCont {
+    display: flex;
+    margin: 20px 0;
+    justify-content: center;
+  }
+  .upButton, .downButton, .upButtonDisable, .downButtonDisable {
+    margin: 0 10px;
+  }
+  .bottomLine {
+    margin-top: inherit;
+    display: inherit;
+    min-height: 150px;
+  }
+  .bottomText {
+    display: block;
+  }
+  .boxText {
+    display: inline-block;
+  }
+  .poolValue {
+    margin: 16px 0px 0px 35%;
+  }
+}

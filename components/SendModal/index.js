@@ -73,6 +73,7 @@ class SendModalForm extends Component {
     return (
       <div>
         <Modal
+          className="sendM"
           title={"Transaction for " + this.props.type}
           visible={this.props.visible}
           onOk={this.handleOk}

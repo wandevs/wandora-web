@@ -119,3 +119,43 @@
 .bt20:hover, .bt10:hover, .bt5:hover {
     background:rgb(40, 48, 133);
 }
+
+@media screen and (max-width: 767px) {
+  .bt20 {
+    top: 350px;
+    left: 7%
+  }
+  .bt10 {
+    top: 350px;
+    left: 40%
+  }
+  .bt5 {
+    top: 350px;
+    left: 73%
+  }
+  :global {
+    .sendM {
+      .ant-modal-content {
+        width: 100%;
+      }
+      .ant-modal-header {
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+      .ant-modal-body {
+        padding: 10px;
+        min-height: 350px;
+      }
+      .HydroSDK-button {
+        width: 97%;
+        max-width: initial;
+      }
+      .ant-input-affix-wrapper .ant-input {
+        width: inherit;
+      }
+      .ant-input-affix-wrapper .ant-input-suffix {
+        right: 7%;
+      }
+    }
+  }
+}

@@ -180,7 +180,7 @@ class Panel extends Component {
               </div>
               <div className={style.secondLine}>
                 <div className={style.subLine}>
-                  <div>
+                  <div className={style.btnCont}>
                     {this.state.disable
                       ? <div className={style.upButtonDisable}>
                         <div className={style.btText}><img src={bigUpArrow} width="15px" height="18px" style={{ margin: '2px 5px 0px 0px' }} />UP</div>
@@ -200,11 +200,11 @@ class Panel extends Component {
                   </div>
                   { Number(this.state.randomPoolAmount) > 0 ?
                   (<div>
-                    <div className={style.subLine}>
+                    <div className={`${style.subLine} ${style.mobileSubLine}`}>
                       <div className={style.poolValue}>{this.state.randomPoolAmount}</div>
                       <div className={style.unitText}>WAN</div>
                     </div>
-                    <div style={{ margin: "26px 0px 0px 100px" }}>
+                    <div className={style.mobileText} style={{ margin: "26px 0px 0px 100px" }}>
                       <div className={style.subLine}>
                         <div className={style.subLine2}>The total lottery pool in this period.</div>
                       </div>

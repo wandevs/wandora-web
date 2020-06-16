@@ -126,3 +126,17 @@
         background:rgba(31,32,52,1);
     }
 }
+@media screen and (max-width: 767px) {
+  .body {
+    min-width: inherit;
+    margin: 5px;
+  }
+  :global {
+    .ant-table-body {
+      overflow-y: auto;
+    }
+    .ant-table table {
+      width: 1100px;
+    }
+  }
+}

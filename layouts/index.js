@@ -31,24 +31,26 @@ class Layout extends Component {
     let active = style.menuItem + ' ' + style.menuItemActive;
     let normal = style.menuItem;
     return (
-      <div>
+      <div className={style.conT}>
         <div className={style.header}>
           <Wallet title="Wan Game" nodeUrl={nodeUrl} />
           <img className={style.logo} width="28px" height="28px" src={logo} alt="Logo" />
           <div className={style.title}>Wandora Box</div>
-          <Link to="/" className={[style.menuBt1, props.location.pathname === '/' ? active : normal].join(' ')}>
-            <div className={style.buttonText1}>WAN</div>
-            <div className={style.buttonText2}>{" / BTC"}</div>
-          </Link>
-          <Link to="/btc2usd" className={[style.menuBt2, props.location.pathname === '/btc2usd' ? active : normal].join(' ')}>
-            <div className={style.buttonText1}>BTC</div>
-            <div className={style.buttonText2}>{" / USD"}</div>
-          </Link>
-          <Link to="/eth2usd" className={[style.menuBt3, props.location.pathname === '/eth2usd' ? active : normal].join(' ')}>
-            <div className={style.buttonText1}>ETH</div>
-            <div className={style.buttonText2}>{" / USD"}</div>
-          </Link>
-          <img style={{ height: "25px", margin: "3px 8px 3px 3px" }} src={networkLogo} />
+          <div className={style.typeCon}>
+            <Link to="/" className={[style.menuBt1, props.location.pathname === '/' ? active : normal].join(' ')}>
+              <div className={style.buttonText1}>WAN</div>
+              <div className={style.buttonText2}>{" / BTC"}</div>
+            </Link>
+            <Link to="/btc2usd" className={[style.menuBt2, props.location.pathname === '/btc2usd' ? active : normal].join(' ')}>
+              <div className={style.buttonText1}>BTC</div>
+              <div className={style.buttonText2}>{" / USD"}</div>
+            </Link>
+            <Link to="/eth2usd" className={[style.menuBt3, props.location.pathname === '/eth2usd' ? active : normal].join(' ')}>
+              <div className={style.buttonText1}>ETH</div>
+              <div className={style.buttonText2}>{" / USD"}</div>
+            </Link>
+          </div>
+          <img className={style.networkLogo} style={{ height: "25px", margin: "3px 8px 3px 3px" }} src={networkLogo} />
           <div className={style.gameRule} onClick={this.showGameRule}>Game Rules</div>
           <WalletButton />
         </div>

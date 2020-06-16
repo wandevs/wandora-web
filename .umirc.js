@@ -87,6 +87,6 @@ export default {
         chunks: ['vendors', 'antdesigns', 'ethers', 'charts', 'antv', 'idna', 'walletsdk', 'mimedb', 'psl', 'umi']
       }
     ],
-    "./umi-plugin-entry.js"
+    // "./umi-plugin-entry.js"
   ],
 };

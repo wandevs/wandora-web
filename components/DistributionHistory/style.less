@@ -158,3 +158,31 @@
         color: white;
     }
 }
+@media screen and (max-width: 767px) {
+  .body {
+    min-width: inherit;
+    margin: 5px;
+
+    .subLine {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      margin-left: 0;
+      min-height: 100px;
+      margin-bottom: 80px;
+
+      .logo {
+        position: static;
+      }
+      .subTitle {
+        position: static;
+        width: 80%;
+        text-align: left;
+      }
+      .subSelect {
+        top: 130px;
+        width: 95%;
+        left: 15px;
+      }
+    }
+  }
+}

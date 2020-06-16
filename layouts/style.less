@@ -126,3 +126,70 @@
     border-bottom: 1px solid #414EDD;
     color          : rgba(255, 255, 255, 1);
 }
+
+@media screen and (max-width: 767px) {
+  .conT {
+    overflow: hidden;
+
+    .header {
+      width: 100%;
+      margin: auto;
+      height: 120px;
+      position: relative;
+  
+      .title {
+        font-size: 12px;
+        max-width: 45vw;
+        margin-left: 12px;
+      }
+  
+      .typeCon {
+        position: absolute;
+        top: 60px;
+        width: 100%;
+  
+        .menuItem {
+          width: 33%;
+          padding-top: 10px;
+          margin: 0;
+        }
+        .menuBt1 {
+          left: 16px;
+        }
+  
+        .menuBt2 {
+          left: 38%;
+        }
+  
+        .menuBt3 {
+          left: 71%;
+        }
+      }
+  
+      .networkLogo,
+      .gameRule {
+        display: none;
+      }
+    }
+  }
+
+  :global {
+    .HydroSDK-button {
+        max-width: 50vw;
+        overflow: visible;
+        font-size: 12px;
+    }
+
+    .HydroSDK-dialog {
+        width: 90vw;
+        position: absolute;
+        left: 5vw;
+        top: 5vw;
+        bottom: unset;
+        right: unset;
+    }
+    .HydroSDK-address-option>span:nth-child(2) {
+      display: none;
+    }
+  }
+}
