@@ -49,7 +49,7 @@ class UserPanel extends Component {
             <div className={style.blockHead}>
               <img src={smallTitle} height="15px" width="2px" style={{ marginRight: "12px", marginTop: "-3px" }} />
               Last Lottery</div>
-            <div className={style.blockBody}>
+            <div className={`${style.blockBody} ${style.mobileText}`}>
               <div className={style.subLine}>
                 <div className={style.blockBodyContent}>{lastRoundLotteryInfo.eachAmount}</div>
                 <div className={style.blockBodyContent} style={{ color: "#E30079" }}>{lastRoundLotteryInfo.winTimes}</div>
