@@ -68,7 +68,7 @@ class UserPanel extends Component {
             <div className={style.blockHead}>
               <img src={smallTitle} height="15px" width="2px" style={{ marginRight: "12px", marginTop: "-3px" }} />
               History</div>
-            <div className={style.blockBody}>
+            <div className={`${style.blockBody} ${style.mobileBlock}`}>
               <div className={style.subLine}>
                 <div className={style.blockBodyTitle} style={{margin:"7px 50px 0px 50px"}}>Buying:</div>
                 <div className={style.blockBodyContent} style={{ color: "#E30079" }}>
