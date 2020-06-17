@@ -9,8 +9,8 @@
   <title>Wandora Box</title>
   <script>
     function getExplorer() {
-      let explorer = window.navigator.userAgent;
-      let ie11 = ("ActiveXObject" in window);
+      var explorer = window.navigator.userAgent;
+      var ie11 = ("ActiveXObject" in window);
       function compare(s) {
         return (explorer.indexOf(s) >= 0);
       }

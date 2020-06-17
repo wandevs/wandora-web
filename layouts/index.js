@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import withRouter from 'umi/withRouter';
 import { connect } from 'react-redux';
 import { message } from 'antd';
 import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet, getTransactionReceipt } from "wan-dex-sdk-wallet";
@@ -8,7 +7,7 @@ import style from './style.less';
 import logo from '../img/wandoraLogo.png';
 import {alertAntd, toUnitAmount} from '../utils/utils.js';
 import {networkId, nodeUrl} from '../conf/config.js';
-import { Link } from 'umi';
+import { Link, withRouter } from 'umi';
 import sleep from 'ko-sleep';
 
 
