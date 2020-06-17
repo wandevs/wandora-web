@@ -9,6 +9,7 @@ import logo from '../img/wandoraLogo.png';
 import {alertAntd, toUnitAmount} from '../utils/utils.js';
 import {networkId, nodeUrl} from '../conf/config.js';
 import { Link } from 'umi';
+import sleep from 'ko-sleep';
 
 
 const networkLogo = networkId == 1 ? require('../img/mainnet.svg') : require('../img/testnet.svg');
@@ -18,8 +19,17 @@ class Layout extends Component {
     super(props);
   }
 
-  componentWillMount() {
+  async componentWillMount() {
+    let timer = 0;
+    while(this.props.selectedAccount === null) {
+      if(timer > 10) {
+        break;
+      }
+      await sleep(500);
+      timer++;
+    }
 
+    this.setState({});
   }
 
   showGameRule = () => {
