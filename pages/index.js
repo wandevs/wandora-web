@@ -12,7 +12,9 @@ import DistributionHistory from '../components/DistributionHistory';
 import UserPanel from '../components/UserPanel';
 import sleep from 'ko-sleep';
 import { alertAntd, toUnitAmount } from '../utils/utils.js';
-import { mainnetSCAddrWan2Btc, testnetSCAddrWan2Btc, networkId, nodeUrl } from '../conf/config.js';
+import { mainnetSCAddrWan2Btc, testnetSCAddrWan2Btc, networkId } from '../conf/config.js';
+import { isSwitchFinish, getNodeUrl, getWeb3} from '../conf/web3switch';
+
 
 const lotterySCAddr = networkId == 1 ? mainnetSCAddrWan2Btc : testnetSCAddrWan2Btc;
 
@@ -125,12 +127,7 @@ class IndexPage extends Component {
   }
 
   async componentDidMount() {
-    var web3 = new Web3();
-    if (nodeUrl.includes('wss')) {
-      web3.setProvider(new Web3.providers.WebsocketProvider(nodeUrl));
-    } else {
-      web3.setProvider(new Web3.providers.HttpProvider(nodeUrl));
-    }
+    var web3 = getWeb3();
     this.web3 = web3;
     this.lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
 
@@ -359,6 +356,10 @@ class IndexPage extends Component {
         fromBlock: this.getRandomHistoryStartBlock(),
         toBlock: blockNumber
       });
+
+      if (events.length > 10) {
+        events.splice(0, events.length - 10);
+      }
 
       if (events && events.length > 0) {
         let addrTotal = {};

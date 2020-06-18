@@ -12,7 +12,9 @@ import DistributionHistory from '../components/DistributionHistory';
 import UserPanel from '../components/UserPanel';
 import sleep from 'ko-sleep';
 import { alertAntd, toUnitAmount } from '../utils/utils.js';
-import { mainnetSCAddrBtc2Usd, testnetSCAddrBtc2Usd, networkId, nodeUrl } from '../conf/config.js';
+import { mainnetSCAddrBtc2Usd, testnetSCAddrBtc2Usd, networkId } from '../conf/config.js';
+import { isSwitchFinish, getNodeUrl, getWeb3} from '../conf/web3switch';
+
 
 const lotterySCAddr = networkId == 1 ? mainnetSCAddrBtc2Usd : testnetSCAddrBtc2Usd;
 const storagePrefix = 'btc2usd_';
@@ -125,8 +127,7 @@ class IndexPage extends Component {
   }
 
   async componentDidMount() {
-    var web3 = new Web3();
-    web3.setProvider(new Web3.providers.HttpProvider(nodeUrl));
+    var web3 = getWeb3();
     this.web3 = web3;
     this.lotterySC = new this.web3.eth.Contract(lotteryAbi, lotterySCAddr);
     try {

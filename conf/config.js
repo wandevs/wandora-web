@@ -11,10 +11,3 @@ export const testnetSCAddrEth2Usd = '0xd796ec40644d47cc5eddb8bdb3eba13ad3dbddf2'
 
 // change networkId to switch network
 export const networkId = 1; //1:mainnet, 3:testnet;
-
-// export const nodeUrl = networkId == 1 ? "https://gwan-ssl.wandevs.org:56891" : "http://192.168.1.179:54320";
-// export const nodeUrl = networkId == 1 ? "https://gwan-ssl.wandevs.org:56891" : "https://molin.tech:16666";
-export const nodeUrl = networkId == 1 ? "https://gwan-ssl.wandevs.org:56891" : "https://gwan-ssl.wandevs.org:46891";
-// export const nodeUrl = networkId == 1 ? "https://mywanwallet.io/api" : "https://demodex.wandevs.org:48545";
-
-// export const nodeUrl = networkId == 1 ? "https://gwan-ssl.wandevs.org:56891" : "https://demodex.wandevs.org:48545";

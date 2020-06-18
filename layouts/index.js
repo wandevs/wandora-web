@@ -6,9 +6,10 @@ import "wan-dex-sdk-wallet/index.css";
 import style from './style.less';
 import logo from '../img/wandoraLogo.png';
 import {alertAntd, toUnitAmount} from '../utils/utils.js';
-import {networkId, nodeUrl} from '../conf/config.js';
+import {networkId} from '../conf/config.js';
 import { Link, withRouter } from 'umi';
 import sleep from 'ko-sleep';
+import { isSwitchFinish, getNodeUrl, getWeb3} from '../conf/web3switch';
 
 
 const networkLogo = networkId == 1 ? require('../img/mainnet.svg') : require('../img/testnet.svg');
@@ -19,13 +20,10 @@ class Layout extends Component {
   }
 
   async componentWillMount() {
+
     let timer = 0;
-    while(this.props.selectedAccount === null) {
-      if(timer > 10) {
-        break;
-      }
-      await sleep(500);
-      timer++;
+    while(!isSwitchFinish()) {
+      await sleep(100);
     }
 
     this.setState({});
@@ -37,13 +35,17 @@ class Layout extends Component {
   }
 
   render() {
+    if (!isSwitchFinish()) {
+      return (<div>Loading...</div>);
+    }
+
     const props = this.props;
     let active = style.menuItem + ' ' + style.menuItemActive;
     let normal = style.menuItem;
     return (
       <div className={style.conT}>
         <div className={style.header}>
-          <Wallet title="Wan Game" nodeUrl={nodeUrl} />
+          <Wallet title="Wan Game" nodeUrl={getNodeUrl()} />
           <img className={style.logo} width="28px" height="28px" src={logo} alt="Logo" />
           <div className={style.title}>Wandora Box</div>
           <div className={style.typeCon}>
