@@ -123,11 +123,11 @@
 @media screen and (max-width: 767px) {
   .bt20 {
     top: 260px;
-    left: 32%
+    left: 25%
   }
   .bt10 {
     top: 260px;
-    left: 53%
+    left: 50%
   }
   .bt5 {
     top: 260px;
@@ -150,12 +150,26 @@
       .HydroSDK-button {
         width: 97%;
         max-width: initial;
+        position: relative;
       }
       .ant-input-affix-wrapper .ant-input {
         width: inherit;
       }
       .ant-input-affix-wrapper .ant-input-suffix {
         right: 7%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  :global {
+    .sendM {
+      .ant-modal-footer {
+        padding: 10px 0px;
+      }
+      .ant-btn {
+        width: 35%;
       }
     }
   }
