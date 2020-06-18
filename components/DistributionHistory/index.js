@@ -33,9 +33,20 @@ class DistributionHistory extends Component {
       let info = this.props.lotteryHistory[i];
       if (info && info.length > 0) {
         defaultData = info;
+        let time;
+        if (info[0].time) {
+          time = new Date(info[0].time);
+        } else {
+          time = new Date(Date.now());
+        }
 
-        let time = new Date(info[0].time);
         let dateStrs = time.toDateString().split(' ');
+        if (dateStrs[0] === "Invalid") {
+          time = new Date(Date.now());
+          dateStrs = time.toDateString().split(' ');
+        }
+        console.log('dateStrs', dateStrs, info[0].time);
+
         let dateStr = dateStrs[1] + ' ' + dateStrs[3];
         if (!dataArray[dateStr]) {
           dataArray[dateStr] = {};

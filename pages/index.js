@@ -341,7 +341,7 @@ class IndexPage extends Component {
       this.randomHistoryScanStart = true;
       let randomHistories = {};
       const { selectedAccount } = this.props;
-      const address = selectedAccount ? selectedAccount.get('address') : null;
+      const address = selectedAccount ? selectedAccount.get('address') : "";
 
       let roundArray = this.getRandomRoundRange();
       if (roundArray.length === 0) {
@@ -357,8 +357,8 @@ class IndexPage extends Component {
         toBlock: blockNumber
       });
 
-      if (events.length > 3) {
-        events.splice(0, events.length - 3);
+      if (events.length > 10) {
+        events.splice(0, events.length - 10);
       }
 
       if (events && events.length > 0) {
