@@ -9,7 +9,6 @@ let nodeUrlsTestnet = [
 
 let nodeUrlsMainnet = [
     'wss://api.wanchain.org:8443/ws/v3/3a852a0e0575b2c967d130883cacd0c5667af36b27c687cf3d9602deef37e68b',
-    'wss://api2.wanchain.org:8443/ws/v3/3a852a0e0575b2c967d130883cacd0c5667af36b27c687cf3d9602deef37e68b',
     'wss://api.wanglutech.net:8443/ws/v3/3a852a0e0575b2c967d130883cacd0c5667af36b27c687cf3d9602deef37e68b',
 ]
 

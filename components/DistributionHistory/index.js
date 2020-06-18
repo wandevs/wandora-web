@@ -45,7 +45,6 @@ class DistributionHistory extends Component {
           time = new Date(Date.now());
           dateStrs = time.toDateString().split(' ');
         }
-        console.log('dateStrs', dateStrs, info[0].time);
 
         let dateStr = dateStrs[1] + ' ' + dateStrs[3];
         if (!dataArray[dateStr]) {
