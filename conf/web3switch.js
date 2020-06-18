@@ -2,15 +2,15 @@ import Web3 from 'web3';
 import { networkId } from './config';
 
 let nodeUrlsTestnet = [
-    'wss://apitest.wanchain.org:8443/ws/v3/627f78bd371c3980a8782a505ffb7ec263ae0031213bb0cd2d10ed32e25b4f29',
+    'wss://apitest.wanchain.org:8443/ws/v3/3a852a0e0575b2c967d130883cacd0c5667af36b27c687cf3d9602deef37e68b',
     'https://gwan-ssl.wandevs.org:46891',
     'https://demodex.wandevs.org:48545',
 ];
 
 let nodeUrlsMainnet = [
-    'wss://api.wanchain.org:8443/ws/v3/627f78bd371c3980a8782a505ffb7ec263ae0031213bb0cd2d10ed32e25b4f29',
-    'wss://api2.wanchain.org:8443/ws/v3/627f78bd371c3980a8782a505ffb7ec263ae0031213bb0cd2d10ed32e25b4f29',
-    'wss://api.wanglutech.net:8443/ws/v3/627f78bd371c3980a8782a505ffb7ec263ae0031213bb0cd2d10ed32e25b4f29',
+    'wss://api.wanchain.org:8443/ws/v3/3a852a0e0575b2c967d130883cacd0c5667af36b27c687cf3d9602deef37e68b',
+    'wss://api2.wanchain.org:8443/ws/v3/3a852a0e0575b2c967d130883cacd0c5667af36b27c687cf3d9602deef37e68b',
+    'wss://api.wanglutech.net:8443/ws/v3/3a852a0e0575b2c967d130883cacd0c5667af36b27c687cf3d9602deef37e68b',
 ]
 
 let nodeUrls = networkId === 1 ? nodeUrlsMainnet : nodeUrlsTestnet;
