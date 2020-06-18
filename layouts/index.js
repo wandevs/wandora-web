@@ -29,6 +29,7 @@ class Layout extends Component {
     }
 
     this.setState({});
+    console.log("!!Welcome To Use Wandora Box!!");
   }
 
   showGameRule = () => {
