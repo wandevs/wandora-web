@@ -1,0 +1,103 @@
+.bigCircle {
+    width: 210px;
+    height: 210px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    position: relative;
+    top: -298px;
+    left: 20px;
+    pointer-events:none;
+}
+
+.smallCircle {
+    width:87px;
+    height:87px;
+    background:rgba(39,40,64,1);
+    border-radius:50%;
+    position: relative;
+    top: -446px;
+    left: 82px;
+    pointer-events:none;
+}
+
+.circelText {
+    font-size:24px;
+    font-family:Roboto Condensed;
+    font-weight:700;
+    color:rgba(255,255,255,1);
+    position: relative;
+    top: -156px;
+    left: 2px;
+    text-align: center;
+    z-index: 999;
+}
+
+.totalText {
+    font-size:12px;
+    font-family:Roboto Condensed;
+    font-weight:700;
+    color:rgba(255,255,255,0.4);
+    position: relative;
+    top: -156px;
+    left: 2px;
+    text-align: center;
+    z-index: 999;
+}
+
+.wanText {
+    font-size:12px;
+    font-family:Roboto Condensed;
+    font-weight:700;
+    color:rgba(255,255,255,0.4);
+    position: relative;
+    top: -156px;
+    left: 2px;
+    text-align: center;
+    z-index: 999;
+}
+
+.redLabel {
+    display:flex;
+    justify-content: flex-start;
+}
+
+.greenLabel {
+    display:flex;
+    justify-content: flex-start;
+}
+
+.redBox {
+    width:10px;
+    height:10px;
+    background:linear-gradient(45deg,rgba(225,20,102,1) 0%,rgba(227,0,121,1) 100%);
+    border-radius:1px;
+    margin: 5px;
+    margin-left: 15px;
+}
+
+.greenBox {
+    width:10px;
+    height:10px;
+    background:linear-gradient(90deg,rgba(64,218,191,1) 0%,rgba(39,199,171,1) 100%);
+    border-radius:1px;
+    margin: 5px;
+}
+
+.inALine {
+    display:flex;
+    justify-content: center;
+    position: relative;
+    top: -378px;
+    left: 2px;
+}
+
+@media screen and (max-width: 767px) {
+  .smallCircle {
+    left: 39%;
+    opacity: 0;
+  }
+  .bigCircle {
+    left: 24%;
+    border: 1px solid rgba(255, 255, 255, 0)
+  }
+}

@@ -8,6 +8,8 @@ export const testnetSCAddrBtc2Usd = '0x95be29f63fc312e57bda53f0e2c92aff791fdf4c'
 export const mainnetSCAddrEth2Usd = '0x9f2f486de9ce5519ac54032c66c0f9d9670f7d87';//mainnet
 export const testnetSCAddrEth2Usd = '0xd796ec40644d47cc5eddb8bdb3eba13ad3dbddf2';//testnet 
 
+export const mainnetSCAddrPotus = '0x23cb8daa0a0e46c4d915a433ba25d8672856274e';//mainnet
+export const testnetSCAddrPotus = '0x23cb8daa0a0e46c4d915a433ba25d8672856274e';//testnet 
 
 // change networkId to switch network
 export const networkId = 1; //1:mainnet, 3:testnet;

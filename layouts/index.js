@@ -61,6 +61,10 @@ class Layout extends Component {
               <div className={style.buttonText1}>ETH</div>
               <div className={style.buttonText2}>{" / USD"}</div>
             </Link>
+            <Link to="/potus" className={[style.menuBt4, props.location.pathname === '/potus' ? active : normal].join(' ')}>
+              <div className={style.buttonText1}>POTUS2020</div>
+              <div className={style.buttonText2}>{""}</div>
+            </Link>
           </div>
           <img className={style.networkLogo} style={{ height: "25px", margin: "3px 8px 3px 3px" }} src={networkLogo} />
           <div className={style.gameRule} onClick={this.showGameRule}>Game Rules</div>

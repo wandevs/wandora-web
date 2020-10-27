@@ -1,0 +1,380 @@
+.panel {
+    margin       : 21px;
+    height       : 350px;
+    background   : rgba(31, 32, 52, 1);
+    border-radius: 4px;
+    min-width    : 1156px;
+}
+
+.upButton {
+    width          : 155px;
+    height         : 45px;
+    background     : linear-gradient(90deg, rgba(64, 218, 191, 1) 0%, rgba(39, 199, 171, 1) 100%);
+    border-radius  : 4px;
+    display        : flex;
+    justify-content: center;
+    position       : relative;
+    cursor         : pointer;
+    z-index        : 999;
+    margin         : 0px 20px 10px 0px;
+}
+
+.upButton:hover {
+    background: linear-gradient(90deg, rgb(43, 146, 127) 0%, rgb(8, 89, 75) 100%);
+}
+
+.upButtonDisable {
+    width          : 155px;
+    height         : 45px;
+    border-radius  : 4px;
+    display        : flex;
+    justify-content: center;
+    position       : relative;
+    background     : gray;
+    margin         : 0px 20px 10px 0px;
+}
+
+.downButton {
+    width          : 155px;
+    height         : 45px;
+    background     : linear-gradient(45deg, rgba(225, 20, 102, 1) 0%, rgba(227, 0, 121, 1) 100%);
+    border-radius  : 4px;
+    display        : flex;
+    justify-content: center;
+    position       : relative;
+    cursor         : pointer;
+    z-index        : 999;
+    margin         : 0px 20px 20px 0px;
+}
+
+.downButton:hover {
+    background: linear-gradient(45deg, rgb(114, 63, 83) 0%, rgb(94, 1, 51) 100%);
+}
+
+.downButtonDisable {
+    width          : 155px;
+    height         : 45px;
+    border-radius  : 4px;
+    display        : flex;
+    justify-content: center;
+    position       : relative;
+    background     : gray;
+    margin         : 0px 20px 20px 0px;
+}
+
+.btText {
+    display        : flex;
+    justify-content: center;
+    width          : 26px;
+    height         : 18px;
+    font-size      : 24px;
+    font-family    : Roboto Condensed;
+    font-weight    : bold;
+    color          : rgba(255, 255, 255, 1);
+    line-height    : 23px;
+    margin         : 12px;
+}
+
+.roundPoolUp {
+    width      : 191px;
+    height     : 13px;
+    font-size  : 16px;
+    font-family: Roboto Condensed;
+    font-weight: 400;
+    color      : rgba(255, 255, 255, 1);
+    line-height: 15px;
+    opacity    : 0.4;
+    position   : relative;
+    top        : 23px;
+    left       : 56px;
+}
+
+.roundPoolDown {
+    width      : 191px;
+    height     : 13px;
+    font-size  : 16px;
+    font-family: Roboto Condensed;
+    font-weight: 400;
+    color      : rgba(255, 255, 255, 1);
+    line-height: 15px;
+    opacity    : 0.4;
+    position   : relative;
+    top        : 125px;
+    left       : 56px;
+}
+
+.bottomLine {
+    margin-top     : 35px;
+    height         : 45px;
+    background     : rgba(39, 40, 64, 1);
+    border-radius  : 4px;
+    display        : flex;
+    justify-content: center;
+    padding        : 14px;
+    position       : relative;
+}
+
+.bottomText {
+    height      : 18px;
+    font-size   : 18px;
+    font-family : Roboto Condensed;
+    font-weight : 400;
+    color       : rgba(64, 218, 191, 1);
+    line-height : 15px;
+    margin-left : 5px;
+    margin-right: 5px;
+}
+
+.boxText {
+    width        : 40px;
+    height       : 30px;
+    background   : rgba(31, 32, 52, 1);
+    border-radius: 6px;
+    font-size    : 18px;
+    font-family  : Roboto Condensed;
+    font-weight  : bold;
+    color        : rgba(64, 218, 191, 1);
+    line-height  : 15px;
+    margin-top   : -6px;
+    margin-left  : 6px;
+    margin-right : 6px;
+    padding-top  : 6px;
+}
+
+.boxText2 {
+    width        : 40px;
+    height       : 30px;
+    background   : rgba(39, 40, 64, 1);
+    border-radius: 6px;
+    font-size    : 18px;
+    font-family  : Roboto Condensed;
+    font-weight  : bold;
+    color        : rgba(64, 218, 191, 1);
+    line-height  : 15px;
+    margin-left  : 6px;
+    padding-top  : 6px;
+    margin-top   : 6px;
+    text-align   : center;
+    display: inline-block;
+}
+
+.rightBlock {
+    margin-left: 0px;
+    height     : 260px;
+    position   : relative;
+}
+
+.firstLine {
+    margin-left   : 30px;
+    margin-right  : 0px;
+    text-align    : left;
+    border-bottom : 1px solid rgba(255, 255, 255, 0.1);
+    font-size     : 22px;
+    font-family   : Roboto Condensed;
+    font-weight   : 400;
+    color         : rgba(255, 255, 255, 1);
+    line-height   : 40px;
+    padding-top   : 38px;
+    padding-bottom: 20px;
+    min-width     : 760px;
+}
+
+.bold {
+    font-family : Roboto Condensed;
+    font-weight : 700;
+    margin-right: 10px;
+    margin-left : 10px;
+}
+
+.subLine {
+    display        : flex;
+    justify-content: flex-start;
+    flex-wrap      : wrap;
+}
+
+.secondLine {
+    margin-left   : 30px;
+    margin-right  : 0px;
+    text-align    : left;
+    line-height   : 40px;
+    padding-top   : 24px;
+    padding-bottom: 20px;
+}
+
+.subLine2 {
+    font-size  : 16px;
+    font-family: Roboto Condensed;
+    font-weight: 400;
+    color      : rgba(255, 255, 255, 1);
+    line-height: 15px;
+    opacity    : 0.4;
+    margin     : 2px;
+}
+
+.poolValue {
+    font-size  : 40px;
+    font-family: Roboto Condensed;
+    font-weight: 300;
+    color      : #ffffff;
+    line-height: 15px;
+    margin     : 16px 0px 0px 100px;
+}
+
+.unitText {
+    font-size  : 14px;
+    font-family: Roboto Condensed;
+    font-weight: 400;
+    color      : rgba(255, 255, 255, 1);
+    line-height: 15px;
+    margin-top : 18px;
+    margin-left: 10px;
+}
+
+.pieChart {
+    position: relative;
+    top     : 0px;
+    left    : 12px;
+    width   : 250px;
+    height  : 250px;
+}
+
+.upBlock {
+    display     : flex;
+    justify-self: start;
+}
+
+.helpIcon {
+    cursor: pointer;
+}
+
+.middleBlock {
+    min-width : 180px;
+    width     : 200px;
+    text-align: left;
+    padding   : 40px 0px 0px 35px;
+}
+
+.middleBlockText {
+    font-size  : 14px;
+    font-family: Roboto Condensed;
+    font-weight: 700;
+    line-height: 15px;
+    margin     : 5px;
+}
+
+.middleBlockContent {
+    width        : 129px;
+    height       : 35px;
+    background   : rgba(39, 40, 64, 1);
+    border-radius: 4px;
+    font-size    : 18px;
+    font-family  : Roboto Condensed;
+    font-weight  : 700;
+    color        : rgba(42, 201, 173, 1);
+    line-height  : 18px;
+    text-align   : center;
+    padding-top  : 9px;
+    margin       : 0px 0px 8px 5px;
+}
+
+:global {
+    .ant-modal-confirm-body .ant-modal-confirm-title {
+        color      : white;
+        font-family: 'Roboto Condensed';
+        font-size  : 24px;
+        text-align : center;
+        line-height: 3;
+    }
+
+    .ant-modal-confirm-body .ant-modal-confirm-content {
+        color      : white;
+        font-family: 'Roboto Condensed';
+        font-size  : 15px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+  .panel {
+    min-width: 0;
+    margin: 0;
+    height: 950px;
+  }
+  .upBlock {
+    flex-direction: column;
+  }
+  .pieChart {
+    left: 0;
+    width: 100%;
+  }
+  .middleBlock {
+    width: 100%;
+    text-align: center;
+    padding: 40px 0 0 0;
+  }
+  .middleBlockContent {
+    display: inline-block;
+  }
+  .firstLine {
+    min-width: 0;
+    margin: 5px;
+    line-height: 23px;
+    font-size: 16px;
+    padding: 10px;
+  }
+  .bold {
+    margin-left: 0;
+  }
+  .boxText2 {
+    height: 20px;
+    margin-left: 6px;
+    line-height: 20px;
+    font-size: 16px;
+    padding: 0;
+    text-align: center;
+    display: inline-block;
+  }
+  .secondLine {
+    margin: 0;
+    padding: 0;
+    .subLine {
+      flex-direction: column-reverse;
+    }
+  }
+  .rightBlock {
+    height: inherit;
+  }
+  .mobileSubLine {
+    flex-direction: row!important;
+  }
+  .mobileText {
+    margin: 26px 0px 0px 60px!important;
+  }
+  .btnCont {
+    display: flex;
+    margin: 20px 0;
+    justify-content: center;
+  }
+  .upButton, .downButton, .upButtonDisable, .downButtonDisable {
+    margin: 0 10px;
+    width: 40%;
+  }
+  .bottomLine {
+    margin-top: inherit;
+    display: inherit;
+    min-height: 180px;
+    line-height: 30px;
+  }
+  .bottomText {
+    display: block;
+  }
+  .boxText {
+    display: inline-block;
+    line-height: 18px;
+  }
+  .poolValue {
+    margin: 16px 0px 0px 35%;
+  }
+  .later {
+    padding-top: 5px;
+  }
+}
