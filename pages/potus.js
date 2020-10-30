@@ -1,8 +1,8 @@
 import { connect } from "react-redux";
 import { Component } from "../components/base";
 import BigNumber from 'bignumber.js';
-import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet, getTransactionReceipt } from "wan-dex-sdk-wallet";
-import "wan-dex-sdk-wallet/index.css";
+import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet, getTransactionReceipt } from "wan-web-wallet";
+import "wan-web-wallet/index.css";
 import lotteryAbi from "./abi/lottery";
 import style from './style.less';
 import PotusPanel from '../components/PotusPanel';

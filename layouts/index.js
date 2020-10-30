@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { message } from 'antd';
-import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet, getTransactionReceipt } from "wan-dex-sdk-wallet";
-import "wan-dex-sdk-wallet/index.css";
+import { Wallet, getSelectedAccount, WalletButton, WalletButtonLong, getSelectedAccountWallet, getTransactionReceipt } from "wan-web-wallet";
+import "wan-web-wallet/index.css";
 import style from './style.less';
 import logo from '../img/wandoraLogo.png';
 import {alertAntd, toUnitAmount} from '../utils/utils.js';

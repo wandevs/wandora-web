@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { reducer } from './reducer';
-import { WalletReducer } from "wan-dex-sdk-wallet";
+import { WalletReducer } from "wan-web-wallet";
 
 const composeEnhancers =
   process.env.NODE_ENV === 'development' &&
