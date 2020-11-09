@@ -19769,10 +19769,10 @@ walletlink@^1.0.0:
     eth-eip712-util "^2.3.0"
     keccak "^2.0.0"
 
-wan-web-wallet@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/wan-web-wallet/-/wan-web-wallet-1.0.1.tgz#ed0dbda7f2fbffc3be4a3de1390f628ee3a53a6a"
-  integrity sha512-mGEl+bouaD89Z/p2xVMF0kAE8xne9RtKyV9fDQ5pVpM2NArrvNuI7IZr7aSvClTrwjtL27UVTPBjc94aIPsq+w==
+wan-web-wallet@0.2.3:
+  version "0.2.3"
+  resolved "https://registry.npmjs.org/wan-web-wallet/-/wan-web-wallet-0.2.3.tgz#c9439080171fb2b66d758075e2da8d25a3059d65"
+  integrity sha512-wZEnpb3o7nbo7nytCtlapWORBoJCKvTD6kY6lGFD6JkMsUoexm+nnzi144GO6Oq4SGFvLr6OUzmaVwBXbayA4Q==
   dependencies:
     "@ledgerhq/hw-app-eth" "^4.46.0"
     "@ledgerhq/hw-transport-u2f" "^4.46.0"

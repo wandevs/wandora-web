@@ -10,7 +10,7 @@
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "umi": "^3.1.1",
-    "wan-web-wallet": "1.0.1",
+    "wan-web-wallet": "0.2.3",
     "web3": "^1.2.4"
   },
   "devDependencies": {
