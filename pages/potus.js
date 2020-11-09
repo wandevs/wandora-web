@@ -6,7 +6,7 @@ import "wan-web-wallet/index.css";
 import lotteryAbi from "./abi/lottery";
 import style from './style.less';
 import PotusPanel from '../components/PotusPanel';
-import TrendHistory from '../components/TrendHistory';
+import TrendHistory from '../components/TrendHistoryPotus';
 import TransactionHistory from '../components/TransactionHistory';
 import DistributionHistory from '../components/DistributionHistory';
 import UserPanel from '../components/UserPanel';
@@ -880,8 +880,8 @@ class IndexPage extends Component {
     return (
       <div className={style.app}>
         <PotusPanel walletButton={WalletButtonLong} trendInfo={this.state.trendInfo} amountInfo={this.state.amountInfo} sendTransaction={this.sendTransaction} watchTransactionStatus={this.watchTransactionStatus} symbol={'ETH'} unit={'USD / ETH'}/>
-        {/* <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} /> */}
-        {/* <UserPanel lastRoundAmountInfo={this.state.lastRoundAmountInfo} totalHistory={this.state.totalHistory} lastRoundLotteryInfo={this.state.lastRoundLotteryInfo} /> */}
+        <TrendHistory trendHistory={this.state.trendHistory} trendInfo={this.state.trendInfo} />
+        <UserPanel lastRoundAmountInfo={this.state.lastRoundAmountInfo} totalHistory={this.state.totalHistory} lastRoundLotteryInfo={this.state.lastRoundLotteryInfo} />
         <TransactionHistory transactionHistory={this.state.transactionHistory} />
         {/* <DistributionHistory lotteryHistory={this.state.lotteryHistory} spinning={this.state.randomSpinning} /> */}
       </div>

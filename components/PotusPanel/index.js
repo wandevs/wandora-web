@@ -130,7 +130,10 @@ class PotusPanel extends Component {
     }
     return (
       <div className={style.panel}>
-        <Spin size="large" tip="The contract is being settled, please hold on..." spinning={this.state.endLeft.h == 0 && this.state.endLeft.m == 0}>
+        <Spin size="large" tip="The contract is being settled, please hold on..." 
+        // spinning={this.state.endLeft.h == 0 && this.state.endLeft.m == 0}
+        spinning={false}
+        >
           <div className={style.upBlock}>
             <div className={style.pieChart}>
               <PieChart upCnt={this.state.upPoolAmount} downCnt={this.state.downPoolAmount} upName={"Trump"} downName={"Biden"} />
@@ -163,11 +166,11 @@ class PotusPanel extends Component {
             <div className={style.rightBlock}>
               <div className={style.firstLine}>
                 <div className={style.subLine}>
-                  <div>Who will lead the 2020 US presidential election results at UTC 10:00 on November 4, Donald Trump or Joe Biden ?</div>
+                  <div>Biden lead the 2020 US presidential election results. 2020-11-08</div>
                 </div>
                 <div className={style.subLine}>
                   <div>
-                    Place your prediction before 00:00 UTC, 3th Nov. 2020
+                    {/* Place your prediction before 00:00 UTC, 3th Nov. 2020 */}
                   </div>
                   {/* <div className={style.boxText2}>{this.state.endLeft.s}s</div> */}
                   {/* <Tooltip title={"Show Help"}>
@@ -178,7 +181,8 @@ class PotusPanel extends Component {
               <div className={style.secondLine}>
                 <div className={style.subLine}>
                   <div className={style.btnCont}>
-                    {this.state.disable
+                    {
+                    true
                       ? <div className={style.upButtonDisable}>
                         <div className={style.btText}>Trump</div>
                       </div>
@@ -186,7 +190,8 @@ class PotusPanel extends Component {
                         <div className={style.btText}>Trump</div>
                       </div>
                     }
-                    {this.state.disable
+                    {
+                    true
                       ? <div className={style.downButtonDisable}>
                         <div className={style.btText}>Biden</div>
                       </div>
@@ -214,10 +219,10 @@ class PotusPanel extends Component {
             </div>
           </div>
           <div className={style.bottomLine}>
-            <Icon type="bulb" style={{ color: '#40DABF', fontSize: '16px' }} />
+            {/* <Icon type="bulb" style={{ color: '#40DABF', fontSize: '16px' }} />
             <div className={style.bottomText}>Buying in this round will be closed in</div>
             <div className={style.boxText}>{this.state.buyLeft.h}h</div>
-            <div className={style.boxText}>{this.state.buyLeft.m}m</div>
+            <div className={style.boxText}>{this.state.buyLeft.m}m</div> */}
             {/* <div className={style.boxText}>{this.state.buyLeft.s}s</div> */}
             <span />
             
