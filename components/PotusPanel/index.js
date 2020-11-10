@@ -166,11 +166,11 @@ class PotusPanel extends Component {
             <div className={style.rightBlock}>
               <div className={style.firstLine}>
                 <div className={style.subLine}>
-                  <div>Biden lead the 2020 US presidential election results. 2020-11-08</div>
+                  <div>Who will lead the 2020 US presidential election results at UTC 10:00 on November 4, Donald Trump or Joe Biden ?</div>
                 </div>
                 <div className={style.subLine}>
                   <div>
-                    {/* Place your prediction before 00:00 UTC, 3th Nov. 2020 */}
+                    Result: Biden.
                   </div>
                   {/* <div className={style.boxText2}>{this.state.endLeft.s}s</div> */}
                   {/* <Tooltip title={"Show Help"}>
